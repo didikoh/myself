@@ -1,12 +1,12 @@
+import { Request, Response } from 'express';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 interface Message {
   role: string;
   content: string;
 }
 
-interface RequestBody {
+interface ChatRequestBody {
   messages: Message[];
 }
 
@@ -18,7 +18,7 @@ Be friendly, professional, and concise in your responses.`;
 // Resume context placeholder - 替换为实际的简历信息
 const resumeContext = `
 Portfolio Owner Information:
-- Name: [Your Name]
+- Name: KOH WEI ZHEN
 - Role: Full-stack Developer
 - Skills: TypeScript, React, Node.js, Python
 - Experience: [Add your experience details]
@@ -29,30 +29,7 @@ Portfolio Owner Information:
 Please customize this section with actual portfolio information.
 `;
 
-export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse
-) {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*'); // 可以修改为具体的 github.io 域名
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
-
-  // Handle preflight request
-  if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
-  // Only allow POST requests
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export async function handleChat(req: Request, res: Response) {
   try {
     // Get API key from environment variable
     const apiKey = process.env.GEMINI_API_KEY;
@@ -61,14 +38,14 @@ export default async function handler(
     }
 
     // Parse request body
-    const { messages } = req.body as RequestBody;
+    const { messages } = req.body as ChatRequestBody;
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: 'Invalid request: messages array required' });
     }
 
     // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     // Build the conversation history with system prompt and context
     const conversationHistory = [

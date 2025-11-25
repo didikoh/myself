@@ -1,6 +1,6 @@
 # Portfolio Chatbot Backend
 
-TypeScript backend using Gemini 2.5 Flash for portfolio website chatbot.
+Express + TypeScript backend using Gemini 2.5 Flash for portfolio website chatbot.
 
 ## Setup
 
@@ -14,43 +14,34 @@ npm install
 cp .env.example .env
 ```
 
-3. Add your Gemini API key to `.env`:
+3. Add your Gemini API key and port to `.env`:
 ```
 GEMINI_API_KEY=your_actual_api_key
+PORT=3000
 ```
 
 ## Development
 
-Run locally with Vercel CLI:
+Run locally:
 ```bash
 npm run dev
 ```
 
-## Deployment to Vercel
+## Build & Production
 
-1. Install Vercel CLI (if not already installed):
+Build the project:
 ```bash
-npm i -g vercel
+npm run build
 ```
 
-2. Login to Vercel:
+Run production build:
 ```bash
-vercel login
+npm start
 ```
-
-3. Deploy:
-```bash
-vercel
-```
-
-4. Set environment variable in Vercel dashboard:
-   - Go to your project settings
-   - Add `GEMINI_API_KEY` environment variable
-   - Redeploy
 
 ## API Usage
 
-**Endpoint:** `POST /api/portfolio-bot`
+**Endpoint:** `POST /api/chat`
 
 **Request Body:**
 ```json
@@ -72,13 +63,36 @@ vercel
 
 ## Customization
 
-Edit the following in `api/portfolio-bot.ts`:
+Edit the following in `src/controllers/chatController.ts`:
 - `systemPrompt`: Modify the AI assistant's behavior
 - `resumeContext`: Add your actual resume/portfolio information
-- CORS settings: Update `Access-Control-Allow-Origin` for your specific domain
+
+Edit CORS settings in `src/index.ts` to restrict origins if needed.
+
+## Deployment to Vercel
+
+完成开发后，直接在 Vercel 网页上：
+1. 导入此 GitHub 仓库
+2. 设置环境变量 `GEMINI_API_KEY`
+3. Vercel 会自动检测并部署
+
+## Project Structure
+
+```
+backend/
+├── src/
+│   ├── index.ts                 # Express app entry
+│   ├── routes/
+│   │   └── chat.ts             # Chat routes
+│   └── controllers/
+│       └── chatController.ts   # Chat logic & Gemini integration
+├── package.json
+├── tsconfig.json
+└── .env
+```
 
 ## Notes
 
-- The function uses Gemini 2.5 Flash model (`gemini-2.0-flash-exp`)
-- CORS is configured to allow requests from any origin (modify for production)
-- API key is read from environment variables for security
+- Uses Gemini 2.0 Flash Exp model
+- CORS configured to allow all origins (modify for production)
+- API key read from environment variables
