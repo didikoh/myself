@@ -1,0 +1,4 @@
+https://goprop360.com/goland/therise/
+
+Web & Virtual Tour Experience — GuocoLand “The Rise”
+A React-based marketing website that provides a clean, responsive entry point into the project with conventional pages such as overview, location, gallery, and 360° virtual tours. The 360 tours are embedded into the web interface to let users explore interiors and surroundings without needing full 3D interaction. This layer focuses on content presentation, storytelling, and accessibility for all devices, complementing the advanced 3D interactive module used for data-driven visualization.

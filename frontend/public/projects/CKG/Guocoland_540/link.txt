@@ -1,0 +1,4 @@
+https://goprop360.com/goland/therise/masterplan
+
+3D Interactive Property Engine — GuocoLand “The Rise”
+A real-time 3D visualization and masterplan engine built with React and Babylon.js, backed by a PHP + MySQL API for dynamic property data. It focuses on interactive unit and plot visualization, allowing users to explore the site masterplan, filter properties, and inspect building forms directly in 3D. The system connects 3D views with live data such as unit information and availability, turning the experience into a functional sales and decision-support tool rather than just a static viewer.

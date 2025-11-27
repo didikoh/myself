@@ -1,0 +1,4 @@
+https://goprop360.com/goland/anyara/go540/
+
+Anyara: Web + 3D Interactive Land Plot Selection Platform
+Anyara is an integrated property platform designed for landed developments, built using vanilla JavaScript and Verge3D for optimal performance. The system includes a 3D interactive masterplan where users can explore land plots in real time, apply filters, view lot-specific information, and highlight availability directly within the 3D environment. Drone-based 360° panoramas provide a realistic overview of the site surroundings. The platform is also connected to MHUB, enabling users to seamlessly transition from land exploration to actual booking and sales registration within the same digital workflow.

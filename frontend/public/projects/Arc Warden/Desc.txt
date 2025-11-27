@@ -1,0 +1,4 @@
+Animara — An Online NFT Character Gaming Platform
+Animara is an online platform that allows players to use their own NFT characters to participate in a variety of mini-games. The project combines digital ownership with interactive gameplay to create a unique cross-genre gaming experience.
+I contributed to the development of several mini-games, including a third-person shooter, a football game, and a horror escape mode. I also assisted in fixing and optimizing scenes used for promotional video production.
+
