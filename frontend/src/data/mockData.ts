@@ -1,57 +1,184 @@
-import type { PersonalInfo, Skill, Project, SocialLink } from '../types';
+import type { PersonalInfo, Skill, Project, SocialLink } from "../types";
 
 export const personalInfo: PersonalInfo = {
-  name: 'Koh Wei Zhen',
-  title: 'Game Developer & Web Developer',
-  description: 'Enthusiastic game developer and web developer with expertise in Unity, Unreal Engine, React, and full-stack development. Passionate about creating innovative digital experiences at the intersection of creativity and technology.',
-  avatar: 'my-photo/me.jpg', // Cat avatar placeholder
-  email: 'didikoh@hotmail.com',
-  github: 'https://github.com/didikoh',
-  linkedin: 'https://linkedin.com/in/koh-wei-zhen'
+  name: "Koh Wei Zhen",
+  title: "Game Developer & Web Developer",
+  description:
+    "Enthusiastic game developer and web developer with expertise in Unity, Unreal Engine, React, and full-stack development. Passionate about creating innovative digital experiences at the intersection of creativity and technology.",
+  avatar: "my-photo/me.jpg", // Cat avatar placeholder
+  email: "didikoh@hotmail.com",
+  github: "https://github.com/didikoh",
+  linkedin: "https://linkedin.com/in/koh-wei-zhen",
 };
 
 export const skills: Skill[] = [
   // Game Development
-  { id: '1', name: 'Unity', level: 5, category: 'frontend' },
-  { id: '2', name: 'C#', level: 4, category: 'backend' },
-  { id: '3', name: 'Unreal Engine', level: 3, category: 'frontend' },
-  { id: '4', name: 'C++', level: 2, category: 'backend' },
-  { id: '5', name: 'Blueprint', level: 4, category: 'frontend' },
-  { id: '6', name: 'AR Foundation', level: 3, category: 'frontend' },
-  { id: '7', name: 'Babylon.js', level: 5, category: 'frontend' },
-  
+  { id: "1", name: "Unity", level: 5, category: "frontend" },
+  { id: "2", name: "C#", level: 4, category: "backend" },
+  { id: "3", name: "Unreal Engine", level: 3, category: "frontend" },
+  { id: "4", name: "C++", level: 2, category: "backend" },
+  { id: "5", name: "Blueprint", level: 4, category: "frontend" },
+  { id: "6", name: "AR Foundation", level: 3, category: "frontend" },
+  { id: "7", name: "Babylon.js", level: 5, category: "frontend" },
+
   // Web Development
-  { id: '8', name: 'React', level: 5, category: 'frontend' },
-  { id: '9', name: 'TypeScript', level: 5, category: 'frontend' },
-  { id: '10', name: 'Angular', level: 4, category: 'frontend' },
-  { id: '11', name: 'Node.js', level: 4, category: 'backend' },
-  { id: '12', name: 'PHP', level: 4, category: 'backend' },
-  { id: '13', name: 'MySQL', level: 4, category: 'backend' },
-  { id: '14', name: 'Python', level: 3, category: 'backend' },
-  { id: '15', name: 'JavaScript', level: 5, category: 'frontend' },
-  
+  { id: "8", name: "React", level: 5, category: "frontend" },
+  { id: "9", name: "TypeScript", level: 5, category: "frontend" },
+  { id: "10", name: "Angular", level: 4, category: "frontend" },
+  { id: "11", name: "Node.js", level: 4, category: "backend" },
+  { id: "12", name: "PHP", level: 4, category: "backend" },
+  { id: "13", name: "MySQL", level: 4, category: "backend" },
+  { id: "14", name: "Python", level: 3, category: "backend" },
+  { id: "15", name: "JavaScript", level: 5, category: "frontend" },
+
   // Media & Design
-  { id: '16', name: 'Blender', level: 1, category: 'tools' },
-  { id: '18', name: 'Photoshop', level: 1, category: 'tools' },
-  { id: '19', name: 'Playwright', level: 4, category: 'tools' },
-  { id: '20', name: 'Audacity', level: 2, category: 'tools' },
+  { id: "16", name: "Blender", level: 1, category: "tools" },
+  { id: "18", name: "Photoshop", level: 1, category: "tools" },
+  { id: "19", name: "Playwright", level: 4, category: "tools" },
+  { id: "20", name: "Audacity", level: 2, category: "tools" },
 ];
 
 export const projects: Project[] = [
   {
-    id: '1',
-    title: 'The Rise - Guocoland',
-    description: 'Interactive 3D real estate marketing website with virtual tours, built using React, Babylon.js.',
+    id: "1",
+    title: "The Rise - Guocoland Masterplan",
+    description:
+      "A real-time 3D visualization and masterplan engine built with React and Babylon.js, backed by a PHP + MySQL API for dynamic property data. It focuses on interactive unit and plot visualization, allowing users to explore the site masterplan, filter properties, and inspect building forms directly in 3D. The system connects 3D views with live data such as unit information and availability, turning the experience into a functional sales and decision-support tool rather than just a static viewer.",
     images: [
-      '/projects/guocoland/masterplan1.png',
-      '/projects/guocoland/website1.png',
+      "/projects/CKG/Guocoland_540/Masterplan_1.webp",
+      "/projects/CKG/Guocoland_540/Masterplan_2.webp",
+      "/projects/CKG/Guocoland_540/Filter.webp",
     ],
-    technologies: ['React', 'TypeScript', 'Babylon.js'],
+    technologies: ["React", "TypeScript", "Babylon.js"],
     links: [
-      { type: 'demo', url: 'https://goprop360.com/goland/therise/', label: 'Website' },
-      { type: 'demo', url: 'https://goprop360.com/goland/therise/masterplan', label: '3D Masterplan' }
+      {
+        type: "website",
+        url: "https://goprop360.com/goland/therise/masterplan",
+        label: "Website",
+      },
+      {
+        type: "video",
+        url: "/projects/CKG/Guocoland_540/Guocoland_masterplan.mp4",
+        label: "Video",
+      },
     ],
-    featured: true
+    featured: true,
+  },
+  {
+    id: "2",
+    title: "The Rise - Guocoland Web",
+    description:
+      "A React-based marketing website that provides a clean, responsive entry point into the project with conventional pages such as overview, location, gallery, and 360° virtual tours. The 360 tours are embedded into the web interface to let users explore interiors and surroundings without needing full 3D interaction. This layer focuses on content presentation, storytelling, and accessibility for all devices, complementing the advanced 3D interactive module used for data-driven visualization.",
+    images: [
+      "/projects/CKG/Guocoland_Web/Landing.webp",
+      "/projects/CKG/Guocoland_Web/Floorplan.webp",
+      "/projects/CKG/Guocoland_Web/Interior.webp",
+      "/projects/CKG/Guocoland_Web/Location.webp",
+    ],
+    technologies: ["React", "TypeScript", "Pano2VR", "Object2VR"],
+    links: [
+      {
+        type: "website",
+        url: "https://goprop360.com/goland/therise/",
+        label: "Website",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "3",
+    title: "Exsim Causewayz JBCC",
+    description:
+      "A fully interactive 3D web platform that showcases Causewayz Square @ JBCC with immersive Babylon.js scenes, 360° tours, floor plans.",
+    images: [
+      "/projects/CKG/Causewayz_Exsim/LandingSD.webp",
+      "/projects/CKG/Causewayz_Exsim/LandingHD.webp",
+      "/projects/CKG/Causewayz_Exsim/540.webp",
+      "/projects/CKG/Causewayz_Exsim/Concept.webp",
+      "/projects/CKG/Causewayz_Exsim/FloorPlan.webp",
+    ],
+    technologies: ["React", "TypeScript", "Babylon.js"],
+    links: [
+      {
+        type: "website",
+        url: "https://causewayz.com.my/",
+        label: "Website",
+      },
+      {
+        type: "video",
+        url: "/projects/CKG/Causewayz_Exsim/0930.mp4",
+        label: "Video",
+      },
+    ],
+    featured: true,
+  },
+  {
+    id: "4",
+    title: "Anyara Hills",
+    description:
+      "Anyara is an integrated property platform designed for landed developments, built using vanilla JavaScript and Verge3D for optimal performance. The system includes a 3D interactive masterplan where users can explore land plots in real time, apply filters, view lot-specific information, and highlight availability directly within the 3D environment. Drone-based 360° panoramas provide a realistic overview of the site surroundings. The platform is also connected to MHUB, enabling users to seamlessly transition from land exploration to actual booking and sales registration within the same digital workflow.",
+    images: [
+      "/projects/CKG/Anyara/Landing.webp",
+      "/projects/CKG/Anyara/Masterplan.webp",
+      "/projects/CKG/Anyara/Location.webp",
+      "/projects/CKG/Anyara/Drone.webp",
+    ],
+    technologies: [
+      "Vanilla JavaScript",
+      "Verge3D",
+      "PHP",
+      "MySQL",
+      "HTML",
+      "CSS",
+    ],
+    links: [
+      {
+        type: "website",
+        url: "https://goprop360.com/goland/anyara/go540/",
+        label: "Website",
+      },
+      {
+        type: "video",
+        url: "/projects/CKG/Anyara/Anyara.mp4",
+        label: "Video",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "5",
+    title: "Bangsar Hill Park - Unreal Engine",
+    description:
+      "A Unreal Engine interactive showcase delivering real-time 3D interaction and immersive environments for use in sales galleries and high-end presentations.",
+    images: [
+      "/projects/CKG/BHP/Home.webp",
+      "/projects/CKG/BHP/Unit.webp",
+      "/projects/CKG/BHP/Facility.webp",
+    ],
+    technologies: ["Unreal Engine", "C++", "Blueprint"],
+    links: [
+      {
+        type: "video",
+        url: "/projects/CKG/BHP/BHP.mp4",
+        label: "Video",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "",
+    title: "",
+    description: "",
+    images: [""],
+    technologies: [""],
+    links: [
+      {
+        type: "website",
+        url: "",
+        label: "Website",
+      },
+    ],
+    featured: false,
   },
   // {
   //   id: '2',

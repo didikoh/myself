@@ -138,7 +138,7 @@ const Projects: React.FC = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {projects.map((project) => (
+          {projects.map((project) => (project.id != '' &&
             <motion.div
               key={project.id}
               className={`${styles.projectCard} ${project.featured ? styles.featured : ''}`}
