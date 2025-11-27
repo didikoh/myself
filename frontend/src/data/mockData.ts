@@ -166,6 +166,27 @@ export const projects: Project[] = [
     featured: false,
   },
   {
+    id: "6",
+    title: "Bangsar Hill Park - Web 540",
+    description:
+      "A React and Babylon.js powered 3D property visualization platform offering immersive building exploration, unit browsing, and aerial views for real estate presentations.",
+    images: [
+      "/projects/CKG/BHP_Web/Landing.webp",
+      "/projects/CKG/BHP_Web/Unit.webp",
+      "/projects/CKG/BHP_Web/Facility.webp",
+      "/projects/CKG/BHP_Web/LevelView.webp",
+    ],
+    technologies: ["React", "TypeScript", "Babylon.js", "Pano2VR","PHP"],
+    links: [
+      {
+        type: "website",
+        url: "",
+        label: "Website",
+      },
+    ],
+    featured: false,
+  },
+  {
     id: "",
     title: "",
     description: "",
