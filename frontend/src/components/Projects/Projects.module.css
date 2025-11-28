@@ -34,11 +34,42 @@
   margin: 0 auto;
 }
 
+.projectsGridWrapper {
+  position: relative;
+  margin-bottom: 3rem;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+}
+
+.projectsGridWrapper.collapsed {
+  max-height: 800px;
+  position: relative;
+}
+
+.projectsGridWrapper.collapsed::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(to bottom, transparent 0%, var(--color-bg) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
 .projectsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 2rem;
-  margin-bottom: 3rem;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 .projectCard {
@@ -89,6 +120,33 @@
   position: relative;
   width: 100%;
   height: 100%;
+}
+
+.enlargeButton {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 3;
+}
+
+.enlargeButton:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.projectCard:hover .enlargeButton {
+  opacity: 1;
 }
 
 .projectImage {
@@ -179,6 +237,12 @@
 .catEmoji {
   font-size: 1.1rem;
   animation: purr 3s ease-in-out infinite;
+}
+
+.projectIcon {
+  font-size: 1.3rem;
+  animation: purr 3s ease-in-out infinite;
+  color: var(--color-cat);
 }
 
 @keyframes purr {
@@ -280,7 +344,6 @@
 
 .viewAllButton {
   display: block;
-  margin: 0 auto;
   padding: 1rem 2rem;
   background: transparent;
   border: 2px solid var(--color-accent);
@@ -293,7 +356,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  max-width: 250px;
+  cursor: pointer;
 }
 
 .viewAllButton:hover {
@@ -301,6 +364,141 @@
   border-color: var(--color-cat);
   color: white;
   transform: translateY(-2px);
+}
+
+.collapseButton {
+  display: flex;
+  padding: 1rem 2rem;
+  background: transparent;
+  border: 2px solid var(--color-text-secondary);
+  border-radius: 50px;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.collapseButton:hover {
+  background: var(--color-text-secondary);
+  border-color: var(--color-text-secondary);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Gallery Modal Styles */
+.galleryOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.galleryCloseButton {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10001;
+}
+
+.galleryCloseButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+.galleryContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.galleryImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.galleryNavButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  padding: 1rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10000;
+}
+
+.galleryNavButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.galleryNavLeft {
+  left: 2rem;
+}
+
+.galleryNavRight {
+  right: 2rem;
+}
+
+.galleryIndicators {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10000;
+}
+
+.galleryDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.galleryDotActive {
+  background: white;
+  transform: scale(1.2);
+}
+
+.galleryDot:hover {
+  background: rgba(255, 255, 255, 0.5);
 }
 
 @media (max-width: 768px) {
@@ -323,5 +521,30 @@
   
   .projectContent {
     padding: 1rem;
+  }
+
+  .galleryOverlay {
+    padding: 1rem;
+  }
+
+  .galleryCloseButton {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .galleryNavButton {
+    padding: 0.6rem;
+  }
+
+  .galleryNavLeft {
+    left: 0.5rem;
+  }
+
+  .galleryNavRight {
+    right: 0.5rem;
+  }
+
+  .galleryIndicators {
+    bottom: 1rem;
   }
 }

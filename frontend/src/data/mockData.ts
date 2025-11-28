@@ -43,7 +43,7 @@ export const projects: Project[] = [
     id: "1",
     title: "The Rise - Guocoland Masterplan",
     description:
-      "A real-time 3D visualization and masterplan engine built with React and Babylon.js, backed by a PHP + MySQL API for dynamic property data. It focuses on interactive unit and plot visualization, allowing users to explore the site masterplan, filter properties, and inspect building forms directly in 3D. The system connects 3D views with live data such as unit information and availability, turning the experience into a functional sales and decision-support tool rather than just a static viewer.",
+      "A real-time 3D masterplan viewer built with React and Babylon.js, featuring interactive property filters, land-material switching, toggleable building models, and integrated unit information for an intuitive property exploration experience.",
     images: [
       "/projects/CKG/Guocoland_540/Masterplan_1.webp",
       "/projects/CKG/Guocoland_540/Masterplan_2.webp",
@@ -68,7 +68,7 @@ export const projects: Project[] = [
     id: "2",
     title: "The Rise - Guocoland Web",
     description:
-      "A React-based marketing website that provides a clean, responsive entry point into the project with conventional pages such as overview, location, gallery, and 360° virtual tours. The 360 tours are embedded into the web interface to let users explore interiors and surroundings without needing full 3D interaction. This layer focuses on content presentation, storytelling, and accessibility for all devices, complementing the advanced 3D interactive module used for data-driven visualization.",
+      "A React-based marketing site combined with fast-loading Pano2VR and Object2VR unit tours, allowing users to quickly browse unit types without the overhead of full 3D interaction.",
     images: [
       "/projects/CKG/Guocoland_Web/Landing.webp",
       "/projects/CKG/Guocoland_Web/Floorplan.webp",
@@ -116,7 +116,7 @@ export const projects: Project[] = [
     id: "4",
     title: "Anyara Hills",
     description:
-      "Anyara is an integrated property platform designed for landed developments, built using vanilla JavaScript and Verge3D for optimal performance. The system includes a 3D interactive masterplan where users can explore land plots in real time, apply filters, view lot-specific information, and highlight availability directly within the 3D environment. Drone-based 360° panoramas provide a realistic overview of the site surroundings. The platform is also connected to MHUB, enabling users to seamlessly transition from land exploration to actual booking and sales registration within the same digital workflow.",
+      "Anyara is a vanilla JavaScript + Verge3D land platform featuring a real-time 3D masterplan with plot filtering, lot information, availability highlights, and integrated drone 360° views, fully connected to MHUB for seamless booking.",
     images: [
       "/projects/CKG/Anyara/Landing.webp",
       "/projects/CKG/Anyara/Masterplan.webp",
@@ -124,7 +124,7 @@ export const projects: Project[] = [
       "/projects/CKG/Anyara/Drone.webp",
     ],
     technologies: [
-      "Vanilla JavaScript",
+      "JavaScript",
       "Verge3D",
       "PHP",
       "MySQL",
@@ -167,40 +167,197 @@ export const projects: Project[] = [
   },
   {
     id: "6",
-    title: "Bangsar Hill Park - Web 540",
+    title: "Bangsar Hill Park - Web 3D",
     description:
-      "A React and Babylon.js powered 3D property visualization platform offering immersive building exploration, unit browsing, and aerial views for real estate presentations.",
+      "A React and Babylon.js 3D viewer offering immersive building exploration with full-floor sectional views, interactive level switching, unit browsing, and aerial perspectives.",
     images: [
       "/projects/CKG/BHP_Web/Landing.webp",
       "/projects/CKG/BHP_Web/Unit.webp",
       "/projects/CKG/BHP_Web/Facility.webp",
       "/projects/CKG/BHP_Web/LevelView.webp",
     ],
-    technologies: ["React", "TypeScript", "Babylon.js", "Pano2VR","PHP"],
+    technologies: ["React", "TypeScript", "Babylon.js", "Pano2VR"],
     links: [
       {
         type: "website",
-        url: "",
+        url: "https://goprop.ai/go540/bhp/",
         label: "Website",
       },
     ],
     featured: false,
   },
   {
-    id: "",
-    title: "",
-    description: "",
-    images: [""],
-    technologies: [""],
+    id: "7",
+    title: "(DEMO) Collectiv Lnad - Celora 3D",
+    description:
+      "A game-like 3D property explorer built with React and Babylon.js, offering interactive type and orientation filters, sectional floor-plan browsing, facility exploration, and integrated Pano2VR level views for a seamless, fully unified experience.",
+    images: [
+      "/projects/CKG/Celora/Home.webp",
+      "/projects/CKG/Celora/Info.webp",
+      "/projects/CKG/Celora/Unit.webp",
+    ],
+    technologies: ["React", "TypeScript", "Babylon.js", "Pano2VR"],
+    links: [
+      {
+        type: "demo",
+        url: "https://goprop360.com/demo/celora/",
+        label: "Demo",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "8",
+    title: "(DEMO) Collectiv Lnad - Celora branding",
+    description:
+      "An interactive branding site that uses Babylon.js to deliver cinematic scroll-based 3D background animations, allowing users to explore the Celora building through smooth, immersive transitions.",
+    images: [
+      "/projects/CKG/Celora_Branding/1.webp",
+      "/projects/CKG/Celora_Branding/2.webp",
+      "/projects/CKG/Celora_Branding/3.webp",
+    ],
+    technologies: ["React", "TypeScript", "Babylon.js"],
     links: [
       {
         type: "website",
-        url: "",
+        url: "https://goprop360.com/demo/celora_branding/",
         label: "Website",
       },
     ],
     featured: false,
   },
+  {
+    id: "9",
+    title: "Goprop platform",
+    description:
+      "A full-stack real estate platform that provides interactive 3D visuals and region-based information—covering facilities, landmarks, amenities, and property details—across multiple cities.",
+    images: [
+      "/projects/CKG/Goprop/Home.webp",
+      "/projects/CKG/Goprop/Rain.webp",
+      "/projects/CKG/Goprop/Amenities.webp",
+      "/projects/CKG/Goprop/Details.webp",
+      "/projects/CKG/Goprop/Chatbot.webp",
+    ],
+    technologies: [
+      "React",
+      "TypeScript",
+      "PHP",
+      "MySQL",
+      "LLM Integration",
+      "Babylon.js",
+    ],
+    links: [
+      {
+        type: "website",
+        url: "https://goprop.ai/my",
+        label: "Website",
+      },
+      {
+        type: "video",
+        url: "/projects/CKG/Goprop/goprop_platform.mp4",
+        label: "Video",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "10",
+    title: "Goprop Landing Website",
+    description:
+      "A modern landing website for GoProp, designed to showcase our services, guide users into the main platform, and capture business leads through smooth animations, responsive UI, and integrated analytics.",
+    images: [
+      "/projects/CKG/Goprop_Home/Landing.webp",
+      "/projects/CKG/Goprop_Home/Feature.webp",
+      "/projects/CKG/Goprop_Home/Service1.webp",
+      "/projects/CKG/Goprop_Home/Service2.webp",
+    ],
+    technologies: ["React", "TypeScript", "PHPMailer"],
+    links: [
+      {
+        type: "website",
+        url: "https://goprop.ai",
+        label: "Website",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "11",
+    title: "Iskandar Wawari Johor",
+    description:
+      "A large-scale Unity visualization built for an 8-screen video wall, delivering an immersive, museum-style presentation of IIB Wawari’s key developments and regional highlights.",
+    images: [
+      "/projects/CKG/Iskandar/Welcome.webp",
+      "/projects/CKG/Iskandar/Masterplan.webp",
+      "/projects/CKG/Iskandar/Development.webp",
+      "/projects/CKG/Iskandar/Development2.webp",
+    ],
+    technologies: ["Unity", "C#"],
+    links: [
+      {
+        type: "video",
+        url: "8tv.mp4",
+        label: "Video",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "12",
+    title: "Skyworld Pearlmont",
+    description:
+      "A modern React-based landing page featuring smooth animations and multi-page content to introduce PPVC initiatives, healthy living concepts, and user registration for SW Pearlmont.",
+    images: [
+      "/projects/CKG/Pearlmont/Landing.webp",
+      "/projects/CKG/Pearlmont/Concept.webp",
+      "/projects/CKG/Pearlmont/Concept2.webp",
+      "/projects/CKG/Pearlmont/Footer.webp",
+    ],
+    technologies: ["React", "TypeScript"],
+    links: [
+      {
+        type: "website",
+        url: "https://skyworld.my/skyworldpearlmont/",
+        label: "Website",
+      },
+    ],
+    featured: false,
+  },
+  {
+    id: "13",
+    title: "Be-studio System",
+    description:
+      "A React-based membership and class-management system for be studio, featuring course purchases, credit tracking, coupons, user accounts, and an integrated admin dashboard for managing members, classes, and transactions.",
+    images: [
+      "/projects/Own/BeStudio/Home.webp",
+      "/projects/Own/BeStudio/Course.webp",
+      "/projects/Own/BeStudio/Admin.webp",
+    ],
+    technologies: ["React", "TypeScript", "PHP", "MySQL"],
+    links: [
+      {
+        type: "website",
+        url: "https://bestudiobp.com/",
+        label: "Website",
+      },
+    ],
+    featured: true,
+  },
+  // {
+  //   id: "",
+  //   title: "",
+  //   description: "",
+  //   images: [],
+  //   technologies: [],
+  //   links: [
+  //     {
+  //       type: "website",
+  //       url: "",
+  //       label: "Website",
+  //     },
+  //   ],
+  //   featured: false,
+  // },
   // {
   //   id: '2',
   //   title: 'HoloLens Education XR App',
