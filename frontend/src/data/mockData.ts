@@ -395,7 +395,7 @@ export const socialLinks: SocialLink[] = [
 
 export const aboutInfo: AboutInfo = {
   introduction:
-    "I'm a passionate developer who loves creating immersive digital experiences. With expertise spanning game development and web technologies, I bring ideas to life through code.",
+    "Birthday: 1999/2/25 | Zodiac: Pisces ♓ | MBTI: ENFP",
   roles: [
     {
       icon: "🎮",
@@ -405,9 +405,9 @@ export const aboutInfo: AboutInfo = {
     },
     {
       icon: "💻",
-      title: "Frontend Developer",
+      title: "Full-Stack Web Developer",
       description:
-        "Crafting responsive web applications with React, TypeScript, and modern JavaScript frameworks.",
+        "Designing and developing dynamic web applications using React, TypeScript, Node.js, and PHP to deliver seamless user experiences.",
     },
     {
       icon: "🌐",
@@ -417,11 +417,14 @@ export const aboutInfo: AboutInfo = {
     },
   ],
   education: {
-    universityName: "Tunku Abdul Rahman University of Management and Technology",
-    degree: "Bachelor of Science (Honours)",
-    major: "Interactive Software Technology",
-    startYear: 2016,
-    endYear: 2019,
+    universityName: "Asia Pacific University of Technology & Innovation (APU)",
+    degree: "Bachelor of Computer Game Development",
+    major: "Dual Degree Programmed with Staffordshire University, United Kingdom",
+    startYear: 2018,
+    endYear: 2021,
+    cgpa: "3.20/4.00 (Second Upper)",
+    location: "Bukit Jalil, Kuala Lumpur",
+    certificateLink: "https://drive.google.com/file/d/1j5oTN--x9bFQoxvBipbJByctxbXU9Iza/view",
   },
   funFacts: [
     {

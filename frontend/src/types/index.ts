@@ -57,6 +57,9 @@ export interface Education {
   major: string;
   startYear: number;
   endYear: number;
+  cgpa?: string;
+  location?: string;
+  certificateLink?: string;
 }
 
 export interface FunFact {

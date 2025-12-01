@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { aboutInfo } from '../../data/mockData';
 import styles from './About.module.css';
+import { FaGoogleDrive } from 'react-icons/fa6';
 
 const About: React.FC = () => {
   return (
@@ -24,7 +25,44 @@ const About: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <p className={styles.intro}>{aboutInfo.introduction}</p>
+          <div className={styles.introCards}>
+            <motion.div
+              className={styles.introCard}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+            >
+              <div className={styles.introIcon}>🎂</div>
+              <h4 className={styles.introLabel}>Birthday</h4>
+              <p className={styles.introValue}>1999/2/25</p>
+            </motion.div>
+            <motion.div
+              className={styles.introCard}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+            >
+              <div className={styles.introIcon}>♓</div>
+              <h4 className={styles.introLabel}>Zodiac</h4>
+              <p className={styles.introValue}>Pisces</p>
+            </motion.div>
+            <motion.div
+              className={styles.introCard}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+            >
+              <div className={styles.introIcon}>🧠</div>
+              <h4 className={styles.introLabel}>MBTI</h4>
+              <p className={styles.introValue}>ENFP</p>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Key Roles/Specialties */}
@@ -70,9 +108,26 @@ const About: React.FC = () => {
               <h4 className={styles.degree}>{aboutInfo.education.degree}</h4>
               <p className={styles.major}>{aboutInfo.education.major}</p>
               <p className={styles.university}>{aboutInfo.education.universityName}</p>
+              {aboutInfo.education.location && (
+                <p className={styles.location}>{aboutInfo.education.location}</p>
+              )}
               <p className={styles.duration}>
                 {aboutInfo.education.startYear} - {aboutInfo.education.endYear}
               </p>
+              {aboutInfo.education.cgpa && (
+                <p className={styles.cgpa}>CGPA: {aboutInfo.education.cgpa}</p>
+              )}
+              {aboutInfo.education.certificateLink && (
+                <a
+                  href={aboutInfo.education.certificateLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.certificateButton}
+                >
+                  <span className={styles.buttonIcon}><FaGoogleDrive/></span>
+                  View Certificate
+                </a>
+              )}
             </div>
           </div>
         </motion.div>
