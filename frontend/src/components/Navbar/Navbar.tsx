@@ -17,9 +17,12 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navItems = [
+    { href: '#home', label: 'Home' },
     { href: '#about', label: 'About' },
+    { href: '#experience', label: 'Experience' },
     { href: '#skills', label: 'Skills' },
     { href: '#projects', label: 'Projects' },
+    { href: '#playground', label: 'Playground' },
     { href: '#contact', label: 'Contact' }
   ];
 

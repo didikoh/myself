@@ -1,4 +1,4 @@
-import type { PersonalInfo, Skill, Project, SocialLink } from "../types";
+import type { PersonalInfo, Skill, Project, SocialLink, TimelineSkill, AboutInfo, WorkExperience, PlaygroundProject } from "../types";
 
 export const personalInfo: PersonalInfo = {
   name: "Koh Wei Zhen",
@@ -11,31 +11,52 @@ export const personalInfo: PersonalInfo = {
   linkedin: "https://linkedin.com/in/koh-wei-zhen",
 };
 
+export const timelineSkills: TimelineSkill[] = [
+  { year: 2016, month: 'Jan', skill: 'HTML' },
+  { year: 2016, month: 'Mar', skill: 'CSS' },
+  { year: 2016, month: 'Jun', skill: 'JavaScript' },
+  { year: 2017, month: 'Feb', skill: 'PHP' },
+  { year: 2017, month: 'May', skill: 'MySQL' },
+  { year: 2018, month: 'Jan', skill: 'Unity' },
+  { year: 2018, month: 'Apr', skill: 'C#' },
+  { year: 2019, month: 'Aug', skill: 'React' },
+  { year: 2019, month: 'Nov', skill: 'TypeScript' },
+  { year: 2020, month: 'Mar', skill: 'Node.js' },
+  { year: 2020, month: 'Sep', skill: 'Angular' },
+  { year: 2021, month: 'Jan', skill: 'Babylon.js' },
+  { year: 2021, month: 'Jun', skill: 'Python' },
+  { year: 2022, month: 'Feb', skill: 'Unreal Engine' },
+  { year: 2022, month: 'May', skill: 'C++' },
+  { year: 2022, month: 'Oct', skill: 'Blueprint' },
+  { year: 2023, month: 'Mar', skill: 'AR Foundation' },
+  { year: 2023, month: 'Aug', skill: 'Playwright' },
+];
+
 export const skills: Skill[] = [
   // Game Development
-  { id: "1", name: "Unity", level: 5, category: "frontend" },
-  { id: "2", name: "C#", level: 4, category: "backend" },
-  { id: "3", name: "Unreal Engine", level: 3, category: "frontend" },
-  { id: "4", name: "C++", level: 2, category: "backend" },
-  { id: "5", name: "Blueprint", level: 4, category: "frontend" },
-  { id: "6", name: "AR Foundation", level: 3, category: "frontend" },
-  { id: "7", name: "Babylon.js", level: 5, category: "frontend" },
+  { id: "1", name: "Unity", level: 5, category: "frontend", icon: "SiUnity" },
+  { id: "2", name: "C#", level: 4, category: "backend", icon: "TbBrandCSharp" },
+  { id: "3", name: "Unreal Engine", level: 3, category: "frontend", icon: "SiUnrealengine" },
+  { id: "4", name: "C++", level: 2, category: "backend", icon: "SiCplusplus" },
+  { id: "5", name: "Blueprint", level: 4, category: "frontend", icon: "SiUnrealengine" },
+  { id: "6", name: "AR Foundation", level: 3, category: "frontend", icon: "TbAugmentedReality" },
+  { id: "7", name: "Babylon.js", level: 5, category: "frontend", icon: "SiBabylondotjs" },
 
   // Web Development
-  { id: "8", name: "React", level: 5, category: "frontend" },
-  { id: "9", name: "TypeScript", level: 5, category: "frontend" },
-  { id: "10", name: "Angular", level: 4, category: "frontend" },
-  { id: "11", name: "Node.js", level: 4, category: "backend" },
-  { id: "12", name: "PHP", level: 4, category: "backend" },
-  { id: "13", name: "MySQL", level: 4, category: "backend" },
-  { id: "14", name: "Python", level: 3, category: "backend" },
-  { id: "15", name: "JavaScript", level: 5, category: "frontend" },
+  { id: "8", name: "React", level: 5, category: "frontend", icon: "SiReact" },
+  { id: "9", name: "TypeScript", level: 5, category: "frontend", icon: "SiTypescript" },
+  { id: "10", name: "Angular", level: 4, category: "frontend", icon: "SiAngular" },
+  { id: "11", name: "Node.js", level: 4, category: "backend", icon: "SiNodedotjs" },
+  { id: "12", name: "PHP", level: 4, category: "backend", icon: "SiPhp" },
+  { id: "13", name: "MySQL", level: 4, category: "backend", icon: "SiMysql" },
+  { id: "14", name: "Python", level: 3, category: "backend", icon: "SiPython" },
+  { id: "15", name: "JavaScript", level: 5, category: "frontend", icon: "SiJavascript" },
 
   // Media & Design
-  { id: "16", name: "Blender", level: 1, category: "tools" },
-  { id: "18", name: "Photoshop", level: 1, category: "tools" },
-  { id: "19", name: "Playwright", level: 4, category: "tools" },
-  { id: "20", name: "Audacity", level: 2, category: "tools" },
+  { id: "16", name: "Blender", level: 1, category: "tools", icon: "SiBlender" },
+  { id: "18", name: "Photoshop", level: 1, category: "tools", icon: "SiAdobephotoshop" },
+  { id: "19", name: "Playwright", level: 4, category: "tools", icon: "SiPlaywright" },
+  { id: "20", name: "Audacity", level: 2, category: "tools", icon: "SiAudacity" },
 ];
 
 export const projects: Project[] = [
@@ -343,106 +364,6 @@ export const projects: Project[] = [
     ],
     featured: true,
   },
-  // {
-  //   id: "",
-  //   title: "",
-  //   description: "",
-  //   images: [],
-  //   technologies: [],
-  //   links: [
-  //     {
-  //       type: "website",
-  //       url: "",
-  //       label: "Website",
-  //     },
-  //   ],
-  //   featured: false,
-  // },
-  // {
-  //   id: '2',
-  //   title: 'HoloLens Education XR App',
-  //   description: 'Immersive educational XR application for Microsoft HoloLens providing interactive virtual learning environments.',
-  //   images: [
-  //     '/api/placeholder/400/250',
-  //     '/api/placeholder/400/250?text=AR+Interface',
-  //     '/api/placeholder/400/250?text=3D+Models',
-  //     '/api/placeholder/400/250?text=Interaction'
-  //   ],
-  //   technologies: ['Unity', 'C#', 'AR Foundation', 'HoloLens SDK'],
-  //   links: [
-  //     { type: 'github', url: 'https://github.com/didikoh/hololens-education' },
-  //     { type: 'video', url: '/assets/videos/hololens-demo.mp4' },
-  //     { type: 'youtube', url: 'https://youtube.com/watch?v=hololens-demo' }
-  //   ],
-  //   featured: true
-  // },
-  // {
-  //   id: '3',
-  //   title: 'Metaverse Gaming Experience',
-  //   description: 'Multiplayer VR gaming experience built with Unreal Engine 5, featuring blockchain integration and immersive environments.',
-  //   images: [
-  //     '/api/placeholder/400/250',
-  //     '/api/placeholder/400/250?text=VR+World',
-  //     '/api/placeholder/400/250?text=Multiplayer',
-  //     '/api/placeholder/400/250?text=Blockchain'
-  //   ],
-  //   technologies: ['Unreal Engine 5', 'C++', 'Blueprint', 'Blockchain'],
-  //   links: [
-  //     { type: 'github', url: 'https://github.com/didikoh/metaverse-game' },
-  //     { type: 'youtube', url: 'https://youtube.com/watch?v=metaverse-gameplay' },
-  //     { type: 'download', url: 'https://github.com/didikoh/metaverse-game/releases' }
-  //   ],
-  //   featured: true
-  // },
-  // {
-  //   id: '4',
-  //   title: 'Unity AR Mobile Game',
-  //   description: 'Augmented reality mobile game with character animation systems and interactive gameplay mechanics.',
-  //   images: [
-  //     '/api/placeholder/400/250',
-  //     '/api/placeholder/400/250?text=AR+Camera',
-  //     '/api/placeholder/400/250?text=Characters'
-  //   ],
-  //   technologies: ['Unity', 'C#', 'AR Foundation', 'Mobile Development'],
-  //   links: [
-  //     { type: 'github', url: 'https://github.com/didikoh/ar-mobile-game' },
-  //     { type: 'video', url: '/assets/videos/ar-game-demo.mp4' }
-  //   ],
-  //   featured: false
-  // },
-  // {
-  //   id: '5',
-  //   title: 'Web Portal with AI Chatbot',
-  //   description: 'Enterprise web portal featuring AI chatbot integration, built with Angular frontend and Python/C# backend.',
-  //   images: [
-  //     '/api/placeholder/400/250',
-  //     '/api/placeholder/400/250?text=Chat+Interface',
-  //     '/api/placeholder/400/250?text=Dashboard'
-  //   ],
-  //   technologies: ['Angular', 'Python', 'C#', 'AI/ML'],
-  //   links: [
-  //     { type: 'github', url: 'https://github.com/didikoh/web-portal-ai' },
-  //     { type: 'demo', url: 'https://web-portal-demo.netlify.app' }
-  //   ],
-  //   featured: false
-  // },
-  // {
-  //   id: '6',
-  //   title: 'Blockchain Gaming Platform',
-  //   description: 'Gaming platform with TON Wallet integration for blockchain-based transactions and NFT marketplace.',
-  //   images: [
-  //     '/api/placeholder/400/250',
-  //     '/api/placeholder/400/250?text=NFT+Market',
-  //     '/api/placeholder/400/250?text=Wallet+UI'
-  //   ],
-  //   technologies: ['Unity', 'Blockchain', 'TON Wallet', 'Smart Contracts'],
-  //   links: [
-  //     { type: 'github', url: 'https://github.com/didikoh/blockchain-gaming' },
-  //     { type: 'website', url: 'https://blockchain-gaming.ton.org' },
-  //     { type: 'youtube', url: 'https://youtube.com/watch?v=blockchain-demo' }
-  //   ],
-  //   featured: false
-  // }
 ];
 
 export const socialLinks: SocialLink[] = [
@@ -471,3 +392,168 @@ export const socialLinks: SocialLink[] = [
   //   icon: 'twitter'
   // }
 ];
+
+export const aboutInfo: AboutInfo = {
+  introduction:
+    "I'm a passionate developer who loves creating immersive digital experiences. With expertise spanning game development and web technologies, I bring ideas to life through code.",
+  roles: [
+    {
+      icon: "🎮",
+      title: "Game Developer",
+      description:
+        "Building interactive experiences with Unity and Unreal Engine, from 2D indie games to immersive 3D worlds.",
+    },
+    {
+      icon: "💻",
+      title: "Frontend Developer",
+      description:
+        "Crafting responsive web applications with React, TypeScript, and modern JavaScript frameworks.",
+    },
+    {
+      icon: "🌐",
+      title: "3D/Interactive Developer",
+      description:
+        "Creating real-time 3D visualizations and interactive content using Babylon.js and WebGL technologies.",
+    },
+  ],
+  education: {
+    universityName: "Tunku Abdul Rahman University of Management and Technology",
+    degree: "Bachelor of Science (Honours)",
+    major: "Interactive Software Technology",
+    startYear: 2016,
+    endYear: 2019,
+  },
+  funFacts: [
+    {
+      icon: "🐱",
+      text: "Cat enthusiast and proud cat parent",
+    },
+    {
+      icon: "🎨",
+      text: "Love exploring digital art and 3D modeling",
+    },
+    {
+      icon: "🎵",
+      text: "Enjoy gaming and discovering new indie titles",
+    },
+    {
+      icon: "☕",
+      text: "Coffee-powered coding sessions are my favorite",
+    },
+  ],
+};
+
+export const workExperiences: WorkExperience[] = [
+  {
+    id: "1",
+    position: "Software Developer",
+    company: "Know Idea Sdn Bhd",
+    location: "Kuala Lumpur",
+    startDate: "September 2024",
+    endDate: "Present",
+    responsibilities: [
+      "Developed virtual real estate sales platforms integrating 3D visuals, interactive tools, and backend systems.",
+      "Built responsive web frontends using React with Vite and TypeScript.",
+      "Designed backend systems using PHP and MySQL.",
+      "Created interactive 3D web experiences with Babylon.js.",
+      "Managed hosting environments and deployment workflows.",
+      "Built real estate visualization tools with Unity and Unreal Engine.",
+      "Collaborated with clients and designers to align digital sales materials with branding goals.",
+    ],
+    technologies: ["React", "TypeScript", "Vite", "PHP", "MySQL", "Babylon.js", "Unity", "Unreal Engine"],
+  },
+  {
+    id: "2",
+    position: "Game Developer",
+    company: "ART WARDENS SDN BHD",
+    location: "Penang",
+    startDate: "May 2024",
+    endDate: "August 2024",
+    responsibilities: [
+      "Developed local and online multiplayer game-play using Unreal Engine 5.",
+      "Designed and implemented character animation systems.",
+      "Created in-game logic and interactive systems using Blueprint.",
+      "Built immersive game scenes and cinematic sequences.",
+      "Conducted research on TON Wallet and TON Coin for blockchain integration.",
+      "Developed Unity-based game-play features and integrated blockchain-based transactions.",
+      "Collaborated with teams to prototype and test blockchain game mechanics.",
+    ],
+    technologies: ["Unreal Engine 5", "Blueprint", "Unity", "Blockchain", "TON Wallet"],
+  },
+  {
+    id: "3",
+    position: "Unity Developer",
+    company: "FUSIONEX GROUP",
+    location: "Kuala Lumpur",
+    startDate: "September 2022",
+    endDate: "February 2024",
+    responsibilities: [
+      "Spearheaded Unity development for groundbreaking Metaverse and Augmented Reality (AR) projects, crafting immersive virtual environments and interactive elements.",
+      "Collaborated with cross-functional teams to ensure successful implementation, meeting project milestones for AR and Metaverse experiences.",
+      "Conducted rigorous testing and optimization to deliver seamless, high-quality user experiences.",
+      "Collaborated on web development initiatives involving portals and AI chatbots, employing Angular for front-end design and a back-end stack comprising C# and Python.",
+      "Assisted in manual testing within a QA role, creating comprehensive test plans.",
+    ],
+    technologies: ["Unity", "AR Foundation", "Angular", "C#", "Python", "Metaverse"],
+  },
+  {
+    id: "4",
+    position: "Game Programmer",
+    company: "Gamecode Media",
+    location: "Kuala Lumpur",
+    startDate: "March 2022",
+    endDate: "July 2022",
+    responsibilities: [
+      "Conceptualized and designed game elements, rules, characters, and settings, employing Unreal Engine Blueprint for PC and VR game development.",
+      "Tested and refined gameplay features and prototypes, ensuring engaging and functional user experiences.",
+      "Maintained code integrity, conducted tests, and promptly addressed issues and bugs to enhance overall game performance.",
+    ],
+    technologies: ["Unreal Engine", "Blueprint", "VR"],
+  },
+  {
+    id: "5",
+    position: "XR Software Developer (Intern)",
+    company: "Ministry XR",
+    location: "Kuala Lumpur",
+    startDate: "March 2020",
+    endDate: "June 2021",
+    responsibilities: [
+      "Participated in the development of HoloLens education project, an innovative XR application that provides students with an immersive and interactive virtual environment where complex concepts are brought to life through engaging simulations and interactive lessons.",
+      "Collaborated closely with designers to implement immersive XR environments, ensuring seamless integration of 3D models, animations, and interactive elements.",
+      "Engaged in collaborative discussions with the development team, contributing valuable insights to enhance the educational impact of XR technology within the application.",
+    ],
+    technologies: ["HoloLens", "XR", "Unity"],
+  },
+];
+
+export const playgroundProjects: PlaygroundProject[] = [
+  {
+    id: "1",
+    title: "My Cats Introduction Website",
+    description:
+      "A fun and interactive website dedicated to introducing my beloved cats. Features animations, photo galleries, and personality profiles for each cat.",
+    image: "/playground/cats-website.jpg",
+    icon: "🐱",
+    technologies: ["React", "TypeScript", "CSS Animations"],
+    link: "#",
+  },
+  {
+    id: "2",
+    title: "Creative Experiments",
+    description:
+      "A collection of creative coding experiments exploring interactive animations, generative art, and playful web interactions.",
+    image: "/playground/experiments.jpg",
+    icon: "🎨",
+    technologies: ["JavaScript", "Canvas API", "WebGL"],
+  },
+  {
+    id: "3",
+    title: "Mini Game Collection",
+    description:
+      "Small browser-based games created for fun and learning. Includes puzzles, arcade-style games, and interactive challenges.",
+    image: "/playground/games.jpg",
+    icon: "🎮",
+    technologies: ["HTML5", "JavaScript", "Phaser"],
+  },
+];
+

@@ -1,62 +1,33 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { skills } from '../../data/mockData';
-import type { Skill } from '../../types';
+import { skills, timelineSkills } from '../../data/mockData';
+import * as SimpleIcons from 'react-icons/si';
+import * as TablerIcons from 'react-icons/tb';
 import styles from './Skills.module.css';
 
 const Skills: React.FC = () => {
-  const categorizedSkills = skills.reduce((acc, skill) => {
-    if (!acc[skill.category]) {
-      acc[skill.category] = [];
+  const getIcon = (iconName?: string) => {
+    if (!iconName) return null;
+    
+    // Check if it's a Tabler icon (Tb prefix)
+    if (iconName.startsWith('Tb')) {
+      const IconComponent = (TablerIcons as any)[iconName];
+      return IconComponent ? <IconComponent /> : null;
     }
-    acc[skill.category].push(skill);
-    return acc;
-  }, {} as Record<string, Skill[]>);
-
-  const categoryConfig = {
-    frontend: { title: 'Game & Frontend Development', icon: '�' },
-    backend: { title: 'Backend & Programming', icon: '⚙️' },
-    tools: { title: 'Media & Design Tools', icon: '🎨' },
-    other: { title: 'Other Technologies', icon: '💡' }
+    
+    // Otherwise, treat as Simple Icon (Si prefix)
+    const IconComponent = (SimpleIcons as any)[iconName];
+    return IconComponent ? <IconComponent /> : null;
   };
 
-  const renderCatLevel = (level: number) => {
-    return Array.from({ length: 5 }, (_, index) => (
-      <motion.span
-        key={index}
-        className={`${styles.catIcon} ${index < level ? styles.active : styles.inactive}`}
-        whileHover={{ 
-          scale: 1.3, 
-          rotate: 10,
-          transition: { duration: 0.2 }
-        }}
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: index * 0.1 }}
-      >
-        🐱
-      </motion.span>
-    ));
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
+  const halfLength = Math.ceil(skills.length / 2);
+  const firstRowSkills = skills.slice(0, halfLength);
+  const secondRowSkills = skills.slice(halfLength);
 
   return (
     <section id="skills" className={styles.skills}>
       <div className={styles.container}>
+        {/* Header */}
         <motion.div 
           className={styles.header}
           initial={{ opacity: 0, y: -30 }}
@@ -64,82 +35,122 @@ const Skills: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.title}>My Skills</h2>
+          <h2 className={styles.title}>My Skills Journey</h2>
           <p className={styles.subtitle}>
-            Here are the technologies and tools I work with. Each skill is rated by cute cats - 
-            the more cats, the more proficient I am! 🐱
+            From my first line of code to cutting-edge technologies - 
+            here's my learning journey through the years
           </p>
         </motion.div>
 
+        {/* Timeline Section */}
         <motion.div 
-          className={styles.skillsGrid}
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+          className={styles.timelineSection}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          {Object.entries(categorizedSkills).map(([category, categorySkills]) => (
+          <h3 className={styles.sectionTitle}>Learning Timeline</h3>
+          <div className={styles.timelineWrapper}>
+            <div className={styles.timeline}>
+              <div className={styles.timelineLine} />
+              {timelineSkills.map((item, index) => (
+                <motion.div
+                  key={index}
+                  className={styles.timelineNode}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  <div className={styles.timelineDot} />
+                  <div className={styles.timelineContent}>
+                    <div className={styles.timelineDate}>
+                      {item.month} {item.year}
+                    </div>
+                    <div className={styles.timelineSkill}>{item.skill}</div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Skills Carousel Section */}
+        <motion.div 
+          className={styles.carouselSection}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <h3 className={styles.sectionTitle}>Technologies & Tools</h3>
+          
+          {/* First Row - Left to Right */}
+          <div className={styles.marqueeContainer}>
             <motion.div 
-              key={category}
-              className={styles.skillCategory}
-              variants={itemVariants}
-              whileHover={{ 
-                scale: 1.02,
-                transition: { duration: 0.2 }
+              className={styles.marquee}
+              animate={{ x: ["-50%", "0%"] }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 25,
+                  ease: "linear",
+                },
               }}
             >
-              <h3 className={styles.categoryTitle}>
-                <span className={styles.categoryIcon}>
-                  {categoryConfig[category as keyof typeof categoryConfig]?.icon}
-                </span>
-                {categoryConfig[category as keyof typeof categoryConfig]?.title}
-              </h3>
-              
-              {categorySkills.map((skill, index) => (
-                <motion.div 
-                  key={skill.id}
-                  className={styles.skillItem}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+              {[...firstRowSkills, ...firstRowSkills].map((skill, index) => (
+                <motion.div
+                  key={`row1-${skill.id}-${index}`}
+                  className={styles.skillCard}
+                  whileHover={{ 
+                    scale: 1.15,
+                    y: -5,
+                    transition: { duration: 0.2 }
+                  }}
                 >
-                  <span className={styles.skillName}>{skill.name}</span>
-                  <div className={styles.skillLevel}>
-                    {renderCatLevel(skill.level)}
+                  <div className={styles.skillCardContent}>
+                    <span className={styles.skillIcon}>{getIcon(skill.icon)}</span>
+                    <span className={styles.skillName}>{skill.name}</span>
                   </div>
                 </motion.div>
               ))}
             </motion.div>
-          ))}
-        </motion.div>
+          </div>
 
-        <motion.div 
-          className={styles.skillsOverview}
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
-          <h3 className={styles.overviewTitle}>All Technologies I Work With</h3>
-          <div className={styles.skillTags}>
-            {skills.map((skill, index) => (
-              <motion.span
-                key={skill.id}
-                className={styles.skillTag}
-                initial={{ opacity: 0, scale: 0 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.05 }}
-                whileHover={{ 
-                  scale: 1.1,
-                  y: -2,
-                  transition: { duration: 0.2 }
-                }}
-              >
-                {skill.name}
-              </motion.span>
-            ))}
+          {/* Second Row - Right to Left */}
+          <div className={styles.marqueeContainer}>
+            <motion.div 
+              className={styles.marquee}
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                x: {
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  duration: 25,
+                  ease: "linear",
+                },
+              }}
+            >
+              {[...secondRowSkills, ...secondRowSkills].map((skill, index) => (
+                <motion.div
+                  key={`row2-${skill.id}-${index}`}
+                  className={styles.skillCard}
+                  whileHover={{ 
+                    scale: 1.15,
+                    y: -5,
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  <div className={styles.skillCardContent}>
+                    <span className={styles.skillIcon}>{getIcon(skill.icon)}</span>
+                    <span className={styles.skillName}>{skill.name}</span>
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </motion.div>
       </div>

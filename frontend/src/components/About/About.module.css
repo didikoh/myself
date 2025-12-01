@@ -1,0 +1,241 @@
+.about {
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  background: var(--color-bg);
+  position: relative;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--color-text-primary);
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: var(--color-accent);
+  margin: 1rem auto 0;
+  border-radius: 2px;
+}
+
+/* Introduction Block */
+.introBlock {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.intro {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Roles Block */
+.rolesBlock {
+  margin-bottom: 4rem;
+}
+
+.blockTitle {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.rolesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.roleCard {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-border);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.roleCard:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.roleIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.roleTitle {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  color: var(--color-text-primary);
+}
+
+.roleDescription {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+}
+
+/* Education Block */
+.educationBlock {
+  margin-bottom: 4rem;
+}
+
+.educationCard {
+  background: var(--color-surface);
+  padding: 2.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  transition: all 0.3s ease;
+}
+
+.educationCard:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.educationIcon {
+  font-size: 4rem;
+  flex-shrink: 0;
+}
+
+.educationContent {
+  flex: 1;
+}
+
+.degree {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.major {
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.university {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.duration {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+}
+
+/* Fun Facts Block */
+.funFactsBlock {
+  margin-bottom: 2rem;
+}
+
+.funFactsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.funFactItem {
+  background: var(--color-surface);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.funFactItem:hover {
+  border-color: var(--color-cat);
+  transform: translateX(5px);
+}
+
+.funFactIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.funFactText {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about {
+    padding: 4rem 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+  }
+
+  .intro {
+    font-size: 1.1rem;
+  }
+
+  .blockTitle {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .rolesList {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .educationCard {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .degree {
+    font-size: 1.3rem;
+  }
+
+  .major {
+    font-size: 1.1rem;
+  }
+
+  .funFactsList {
+    grid-template-columns: 1fr;
+  }
+
+  .funFactItem {
+    padding: 1.2rem;
+  }
+}

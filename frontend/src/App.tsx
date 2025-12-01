@@ -1,8 +1,11 @@
 import React from 'react';
 import Navbar from './components/Navbar/Navbar';
-import Hero from './components/Hero/Hero';
+import Home from './components/Home/Home';
+import About from './components/About/About';
+import Experience from './components/Experience/Experience';
 import Skills from './components/Skills/Skills';
 import Projects from './components/Projects/Projects';
+import Playground from './components/Playground/Playground';
 import Contact from './components/Contact/Contact';
 import './App.css';
 
@@ -11,9 +14,12 @@ const App: React.FC = () => {
     <div className="App">
       <Navbar />
       <main>
-        <Hero />
+        <Home />
+        <About />
         <Skills />
+        <Experience />
         <Projects />
+        <Playground />
         <Contact />
       </main>
     </div>

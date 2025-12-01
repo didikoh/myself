@@ -13,6 +13,13 @@ export interface Skill {
   name: string;
   level: number; // 1-5 (number of cats)
   category: 'frontend' | 'backend' | 'tools' | 'other';
+  icon?: string;
+}
+
+export interface TimelineSkill {
+  year: number;
+  month: string;
+  skill: string;
 }
 
 export interface ProjectLink {
@@ -36,4 +43,51 @@ export interface SocialLink {
   name: string;
   url: string;
   icon: string;
+}
+
+export interface Role {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface Education {
+  universityName: string;
+  degree: string;
+  major: string;
+  startYear: number;
+  endYear: number;
+}
+
+export interface FunFact {
+  icon: string;
+  text: string;
+}
+
+export interface AboutInfo {
+  introduction: string;
+  roles: Role[];
+  education: Education;
+  funFacts?: FunFact[];
+}
+
+export interface WorkExperience {
+  id: string;
+  position: string;
+  company: string;
+  location: string;
+  startDate: string;
+  endDate: string;
+  responsibilities: string[];
+  technologies?: string[];
+}
+
+export interface PlaygroundProject {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  icon: string;
+  technologies: string[];
+  link?: string;
 }
