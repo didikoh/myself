@@ -1,4 +1,13 @@
-import type { PersonalInfo, Skill, Project, SocialLink, TimelineSkill, AboutInfo, WorkExperience, PlaygroundProject } from "../types";
+import type {
+  PersonalInfo,
+  Skill,
+  Project,
+  SocialLink,
+  TimelineSkill,
+  AboutInfo,
+  WorkExperience,
+  PlaygroundProject,
+} from "../types";
 
 export const personalInfo: PersonalInfo = {
   name: "Koh Wei Zhen",
@@ -12,51 +21,137 @@ export const personalInfo: PersonalInfo = {
 };
 
 export const timelineSkills: TimelineSkill[] = [
-  { year: 2016, month: 'Jan', skill: 'HTML' },
-  { year: 2016, month: 'Mar', skill: 'CSS' },
-  { year: 2016, month: 'Jun', skill: 'JavaScript' },
-  { year: 2017, month: 'Feb', skill: 'PHP' },
-  { year: 2017, month: 'May', skill: 'MySQL' },
-  { year: 2018, month: 'Jan', skill: 'Unity' },
-  { year: 2018, month: 'Apr', skill: 'C#' },
-  { year: 2019, month: 'Aug', skill: 'React' },
-  { year: 2019, month: 'Nov', skill: 'TypeScript' },
-  { year: 2020, month: 'Mar', skill: 'Node.js' },
-  { year: 2020, month: 'Sep', skill: 'Angular' },
-  { year: 2021, month: 'Jan', skill: 'Babylon.js' },
-  { year: 2021, month: 'Jun', skill: 'Python' },
-  { year: 2022, month: 'Feb', skill: 'Unreal Engine' },
-  { year: 2022, month: 'May', skill: 'C++' },
-  { year: 2022, month: 'Oct', skill: 'Blueprint' },
-  { year: 2023, month: 'Mar', skill: 'AR Foundation' },
-  { year: 2023, month: 'Aug', skill: 'Playwright' },
+  { year: 2017, month: "", skill: "HTML" },
+  { year: 2017, month: "", skill: "CSS" },
+  { year: 2018, month: "", skill: "Python" },
+  { year: 2018, month: "", skill: "C#" },
+  { year: 2018, month: "", skill: "Unity" },
+  { year: 2018, month: "", skill: "JavaScript" },
+  { year: 2019, month: "", skill: "Blender" },
+  { year: 2019, month: "", skill: "Unreal Engine 4" },
+  { year: 2019, month: "", skill: "C++" },
+  { year: 2020, month: "", skill: "Mixed Reality" },
+  { year: 2020, month: "", skill: "Multiplayer Synchornize" },
+  { year: 2020, month: "", skill: "Game AI" },
+  { year: 2021, month: "", skill: "Automation" },
+  { year: 2022, month: "", skill: "Unreal Engine 5" },
+  { year: 2022, month: "", skill: "Virtual Reality" },
+  { year: 2022, month: "", skill: "Steam Advanced Session" },
+  { year: 2023, month: "", skill: "Augmented Reality" },
+  { year: 2023, month: "", skill: "Metaverse Development" },
+  { year: 2023, month: "", skill: "ASP.NET" },
+  { year: 2023, month: "", skill: "Angular" },
+  { year: 2024, month: "", skill: "LLM API Calling" },
+  { year: 2024, month: "", skill: "Telegram Bot API" },
+  { year: 2024, month: "", skill: "Telegram Mini App" },
+  { year: 2024, month: "", skill: "Web3 Integration" },
+  { year: 2024, month: "", skill: "Verge3D" },
+  { year: 2025, month: "", skill: "Playwright" },
+  { year: 2025, month: "", skill: "React" },
+  { year: 2025, month: "", skill: "Vite" },
+  { year: 2025, month: "", skill: "Typescript" },
+  { year: 2025, month: "", skill: "Babylon.js" },
+  { year: 2025, month: "", skill: "PHP" },
+  { year: 2025, month: "", skill: "RESTful API" },
+  { year: 2025, month: "", skill: "Laravel" },
+  { year: 2025, month: "", skill: "MySQL" },
+  { year: 2025, month: "", skill: "Node.js" },
+  { year: 2025, month: "", skill: "Cloudflare" },
+  { year: 2025, month: "", skill: "Unreal Engine Advanced" },
+  { year: 2025, month: "", skill: "Chatbot RAG" },
 ];
 
 export const skills: Skill[] = [
   // Game Development
   { id: "1", name: "Unity", level: 5, category: "frontend", icon: "SiUnity" },
   { id: "2", name: "C#", level: 4, category: "backend", icon: "TbBrandCSharp" },
-  { id: "3", name: "Unreal Engine", level: 3, category: "frontend", icon: "SiUnrealengine" },
+  {
+    id: "3",
+    name: "Unreal Engine",
+    level: 3,
+    category: "frontend",
+    icon: "SiUnrealengine",
+  },
   { id: "4", name: "C++", level: 2, category: "backend", icon: "SiCplusplus" },
-  { id: "5", name: "Blueprint", level: 4, category: "frontend", icon: "SiUnrealengine" },
-  { id: "6", name: "AR Foundation", level: 3, category: "frontend", icon: "TbAugmentedReality" },
-  { id: "7", name: "Babylon.js", level: 5, category: "frontend", icon: "SiBabylondotjs" },
+  {
+    id: "5",
+    name: "Blueprint",
+    level: 4,
+    category: "frontend",
+    icon: "SiUnrealengine",
+  },
+  {
+    id: "6",
+    name: "AR Foundation",
+    level: 3,
+    category: "frontend",
+    icon: "TbAugmentedReality",
+  },
+  {
+    id: "7",
+    name: "Babylon.js",
+    level: 5,
+    category: "frontend",
+    icon: "SiBabylondotjs",
+  },
 
   // Web Development
   { id: "8", name: "React", level: 5, category: "frontend", icon: "SiReact" },
-  { id: "9", name: "TypeScript", level: 5, category: "frontend", icon: "SiTypescript" },
-  { id: "10", name: "Angular", level: 4, category: "frontend", icon: "SiAngular" },
-  { id: "11", name: "Node.js", level: 4, category: "backend", icon: "SiNodedotjs" },
+  {
+    id: "9",
+    name: "TypeScript",
+    level: 5,
+    category: "frontend",
+    icon: "SiTypescript",
+  },
+  {
+    id: "10",
+    name: "Angular",
+    level: 4,
+    category: "frontend",
+    icon: "SiAngular",
+  },
+  {
+    id: "11",
+    name: "Node.js",
+    level: 4,
+    category: "backend",
+    icon: "SiNodedotjs",
+  },
   { id: "12", name: "PHP", level: 4, category: "backend", icon: "SiPhp" },
   { id: "13", name: "MySQL", level: 4, category: "backend", icon: "SiMysql" },
   { id: "14", name: "Python", level: 3, category: "backend", icon: "SiPython" },
-  { id: "15", name: "JavaScript", level: 5, category: "frontend", icon: "SiJavascript" },
+  {
+    id: "15",
+    name: "JavaScript",
+    level: 5,
+    category: "frontend",
+    icon: "SiJavascript",
+  },
 
   // Media & Design
   { id: "16", name: "Blender", level: 1, category: "tools", icon: "SiBlender" },
-  { id: "18", name: "Photoshop", level: 1, category: "tools", icon: "SiAdobephotoshop" },
-  { id: "19", name: "Playwright", level: 4, category: "tools", icon: "SiPlaywright" },
-  { id: "20", name: "Audacity", level: 2, category: "tools", icon: "SiAudacity" },
+  {
+    id: "18",
+    name: "Photoshop",
+    level: 1,
+    category: "tools",
+    icon: "SiAdobephotoshop",
+  },
+  {
+    id: "19",
+    name: "Playwright",
+    level: 4,
+    category: "tools",
+    icon: "SiPlaywright",
+  },
+  {
+    id: "20",
+    name: "Audacity",
+    level: 2,
+    category: "tools",
+    icon: "SiAudacity",
+  },
 ];
 
 export const projects: Project[] = [
@@ -144,14 +239,7 @@ export const projects: Project[] = [
       "/projects/CKG/Anyara/Location.webp",
       "/projects/CKG/Anyara/Drone.webp",
     ],
-    technologies: [
-      "JavaScript",
-      "Verge3D",
-      "PHP",
-      "MySQL",
-      "HTML",
-      "CSS",
-    ],
+    technologies: ["JavaScript", "Verge3D", "PHP", "MySQL", "HTML", "CSS"],
     links: [
       {
         type: "website",
@@ -394,8 +482,7 @@ export const socialLinks: SocialLink[] = [
 ];
 
 export const aboutInfo: AboutInfo = {
-  introduction:
-    "Birthday: 1999/2/25 | Zodiac: Pisces ♓ | MBTI: ENFP",
+  introduction: "Birthday: 1999/2/25 | Zodiac: Pisces ♓ | MBTI: ENFP",
   roles: [
     {
       icon: "🎮",
@@ -419,12 +506,14 @@ export const aboutInfo: AboutInfo = {
   education: {
     universityName: "Asia Pacific University of Technology & Innovation (APU)",
     degree: "Bachelor of Computer Game Development",
-    major: "Dual Degree Programmed with Staffordshire University, United Kingdom",
+    major:
+      "Dual Degree Programmed with Staffordshire University, United Kingdom",
     startYear: 2018,
     endYear: 2021,
     cgpa: "3.20/4.00 (Second Upper)",
     location: "Bukit Jalil, Kuala Lumpur",
-    certificateLink: "https://drive.google.com/file/d/1j5oTN--x9bFQoxvBipbJByctxbXU9Iza/view",
+    certificateLink:
+      "https://drive.google.com/file/d/1j5oTN--x9bFQoxvBipbJByctxbXU9Iza/view",
   },
   funFacts: [
     {
@@ -463,7 +552,16 @@ export const workExperiences: WorkExperience[] = [
       "Built real estate visualization tools with Unity and Unreal Engine.",
       "Collaborated with clients and designers to align digital sales materials with branding goals.",
     ],
-    technologies: ["React", "TypeScript", "Vite", "PHP", "MySQL", "Babylon.js", "Unity", "Unreal Engine"],
+    technologies: [
+      "React",
+      "TypeScript",
+      "Vite",
+      "PHP",
+      "MySQL",
+      "Babylon.js",
+      "Unity",
+      "Unreal Engine",
+    ],
   },
   {
     id: "2",
@@ -481,7 +579,13 @@ export const workExperiences: WorkExperience[] = [
       "Developed Unity-based game-play features and integrated blockchain-based transactions.",
       "Collaborated with teams to prototype and test blockchain game mechanics.",
     ],
-    technologies: ["Unreal Engine 5", "Blueprint", "Unity", "Blockchain", "TON Wallet"],
+    technologies: [
+      "Unreal Engine 5",
+      "Blueprint",
+      "Unity",
+      "Blockchain",
+      "TON Wallet",
+    ],
   },
   {
     id: "3",
@@ -497,7 +601,14 @@ export const workExperiences: WorkExperience[] = [
       "Collaborated on web development initiatives involving portals and AI chatbots, employing Angular for front-end design and a back-end stack comprising C# and Python.",
       "Assisted in manual testing within a QA role, creating comprehensive test plans.",
     ],
-    technologies: ["Unity", "AR Foundation", "Angular", "C#", "Python", "Metaverse"],
+    technologies: [
+      "Unity",
+      "AR Foundation",
+      "Angular",
+      "C#",
+      "Python",
+      "Metaverse",
+    ],
   },
   {
     id: "4",
@@ -559,4 +670,3 @@ export const playgroundProjects: PlaygroundProject[] = [
     technologies: ["HTML5", "JavaScript", "Phaser"],
   },
 ];
-
