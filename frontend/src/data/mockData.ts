@@ -455,30 +455,30 @@ export const projects: Project[] = [
 ];
 
 export const socialLinks: SocialLink[] = [
-  // {
-  //   id: '1',
-  //   name: 'GitHub',
-  //   url: 'https://github.com/didikoh',
-  //   icon: 'github'
-  // },
-  // {
-  //   id: '2',
-  //   name: 'LinkedIn',
-  //   url: 'https://linkedin.com/in/koh-wei-zhen',
-  //   icon: 'linkedin'
-  // },
-  // {
-  //   id: '1',
-  //   name: 'Email',
-  //   url: 'mailto:didikoh@hotmail.com',
-  //   icon: 'mail'
-  // },
-  // {
-  //   id: '4',
-  //   name: 'Portfolio',
-  //   url: 'https://drive.google.com/file/d/1j5oTN--x9bFQoxvBipbJByctxbXU9lza/view?usp=sharing',
-  //   icon: 'twitter'
-  // }
+  {
+    id: '1',
+    name: 'GitHub',
+    url: 'https://github.com/didikoh',
+    icon: 'github'
+  },
+  {
+    id: '2',
+    name: 'LinkedIn',
+    url: 'https://www.linkedin.com/in/wei-zhen-koh-54bb651a2/',
+    icon: 'linkedin'
+  },
+  {
+    id: '3',
+    name: 'Facebook',
+    url: 'https://www.facebook.com/didi.koh.9/',
+    icon: 'facebook'
+  },
+  {
+    id: '4',
+    name: 'Instagram',
+    url: 'https://instagram.com/didikoh',
+    icon: 'instagram'
+  }
 ];
 
 export const aboutInfo: AboutInfo = {
@@ -517,20 +517,19 @@ export const aboutInfo: AboutInfo = {
   },
   funFacts: [
     {
-      icon: "🐱",
-      text: "Cat enthusiast and proud cat parent",
+      icon: "🤖",
+      text: "Deeply interested in the evolution of AI — from model capabilities to real-world applications.",
+      src: "/about/ai.webp",
     },
     {
-      icon: "🎨",
-      text: "Love exploring digital art and 3D modeling",
+      icon: "🔬",
+      text: "Fascinated by emerging technologies like next-gen engines, advanced hardware, and neural interfaces.",
+      src: "/about/r8.webp",
     },
     {
-      icon: "🎵",
-      text: "Enjoy gaming and discovering new indie titles",
-    },
-    {
-      icon: "☕",
-      text: "Coffee-powered coding sessions are my favorite",
+      icon: "🎮",
+      text: "Passionate about gaming, both as a player and as a creator of immersive interactive experiences.",
+      src: "/about/minecraft.webp",
     },
   ],
 };

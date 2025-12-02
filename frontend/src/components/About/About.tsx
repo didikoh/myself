@@ -1,8 +1,9 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { aboutInfo } from '../../data/mockData';
-import styles from './About.module.css';
-import { FaGoogleDrive } from 'react-icons/fa6';
+import React from "react";
+import { motion } from "framer-motion";
+import { aboutInfo } from "../../data/mockData";
+import styles from "./About.module.css";
+import { FaGoogleDrive } from "react-icons/fa6";
+import enfp from "../../assets/enfp.webp";
 
 const About: React.FC = () => {
   return (
@@ -58,7 +59,9 @@ const About: React.FC = () => {
               transition={{ duration: 0.4, delay: 0.3 }}
               whileHover={{ scale: 1.05, y: -5 }}
             >
-              <div className={styles.introIcon}>🧠</div>
+              <div className={styles.introIcon}>
+                <img src={enfp} alt="MBTI Icon" />
+              </div>
               <h4 className={styles.introLabel}>MBTI</h4>
               <p className={styles.introValue}>ENFP</p>
             </motion.div>
@@ -107,9 +110,13 @@ const About: React.FC = () => {
             <div className={styles.educationContent}>
               <h4 className={styles.degree}>{aboutInfo.education.degree}</h4>
               <p className={styles.major}>{aboutInfo.education.major}</p>
-              <p className={styles.university}>{aboutInfo.education.universityName}</p>
+              <p className={styles.university}>
+                {aboutInfo.education.universityName}
+              </p>
               {aboutInfo.education.location && (
-                <p className={styles.location}>{aboutInfo.education.location}</p>
+                <p className={styles.location}>
+                  {aboutInfo.education.location}
+                </p>
               )}
               <p className={styles.duration}>
                 {aboutInfo.education.startYear} - {aboutInfo.education.endYear}
@@ -124,7 +131,9 @@ const About: React.FC = () => {
                   rel="noopener noreferrer"
                   className={styles.certificateButton}
                 >
-                  <span className={styles.buttonIcon}><FaGoogleDrive/></span>
+                  <span className={styles.buttonIcon}>
+                    <FaGoogleDrive />
+                  </span>
                   View Certificate
                 </a>
               )}
@@ -147,12 +156,17 @@ const About: React.FC = () => {
                 <motion.div
                   key={index}
                   className={styles.funFactItem}
+                  style={{
+                    backgroundImage: `url(${fact.src})`,
+                    backgroundBlendMode: 'overlay',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
                 >
-                  <span className={styles.funFactIcon}>{fact.icon}</span>
                   <span className={styles.funFactText}>{fact.text}</span>
                 </motion.div>
               ))}

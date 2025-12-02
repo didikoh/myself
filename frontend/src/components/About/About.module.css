@@ -59,6 +59,10 @@
 .introIcon {
   font-size: 3rem;
   margin-bottom: 1rem;
+  img{
+    width: 3rem;
+    height: 3rem;
+  }
 }
 
 .introLabel {
@@ -245,7 +249,7 @@
 }
 
 .funFactItem {
-  background: var(--color-surface);
+  background: #ededed;
   padding: 1.5rem;
   border-radius: 12px;
   border: 2px solid var(--color-border);
@@ -253,6 +257,8 @@
   align-items: center;
   gap: 1rem;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .funFactItem:hover {
@@ -260,15 +266,12 @@
   transform: translateX(5px);
 }
 
-.funFactIcon {
-  font-size: 2rem;
-  flex-shrink: 0;
-}
-
 .funFactText {
   font-size: 1.1rem;
-  color: var(--color-text-secondary);
+  color: rgb(99, 99, 99);
   line-height: 1.5;
+  position: relative;
+  z-index: 1;
 }
 
 /* Responsive Design */

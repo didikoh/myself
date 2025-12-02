@@ -65,6 +65,7 @@ export interface Education {
 export interface FunFact {
   icon: string;
   text: string;
+  src: string;
 }
 
 export interface AboutInfo {

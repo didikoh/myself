@@ -24,13 +24,6 @@
   display: inline-block;
 }
 
-.title::after {
-  content: '🐱‍💻';
-  font-size: 1.5rem;
-  margin-left: 0.5rem;
-  animation: typing 3s infinite;
-}
-
 @keyframes typing {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
@@ -84,12 +77,12 @@
   position: relative;
   min-width: max-content;
   padding: 2rem 0;
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .timelineLine {
   position: absolute;
-  top: 50%;
+  top: 40px;
   left: 0;
   right: 0;
   height: 2px;

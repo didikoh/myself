@@ -48,7 +48,7 @@ const Navbar: React.FC = () => {
           transition={{ type: "spring", stiffness: 300 }}
         >
           <span className={styles.catIcon}>🐱</span>
-          <span>Portfolio</span>
+          <span>KOH WEI ZHEN</span>
         </motion.div>
 
         {/* Desktop Navigation */}
