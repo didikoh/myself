@@ -221,7 +221,7 @@ const Contact: React.FC = () => {
                 <div className={styles.contactDetails}>
                   <div className={styles.contactLabel}>Location</div>
                   <div className={styles.contactValue}>
-                    Available for remote work
+                    Based in Kuala Lumpur, Malaysia<br/> Able to work remotely worldwide
                   </div>
                 </div>
               </motion.div>

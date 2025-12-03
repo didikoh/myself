@@ -58,11 +58,10 @@ const Skills: React.FC = () => {
                 <motion.div
                   key={index}
                   className={styles.timelineNode}
-                  initial={{ opacity: 0, y: 50 }}
+                  initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.5, delay: index * 0.05 }}
-                  whileHover={{ scale: 1.1 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.3 }}
                 >
                   <div className={styles.timelineDot} />
                   <div className={styles.timelineContent}>

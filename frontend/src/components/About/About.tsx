@@ -157,7 +157,7 @@ const About: React.FC = () => {
                   key={index}
                   className={styles.funFactItem}
                   style={{
-                    backgroundImage: `url(${fact.src})`,
+                    backgroundImage: `url(${import.meta.env.BASE_URL}${fact.src})`,
                     backgroundBlendMode: 'overlay',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',

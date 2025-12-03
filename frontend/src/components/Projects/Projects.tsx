@@ -286,7 +286,7 @@ const Projects: React.FC = () => {
                           currentImageIndices[project.id] || 0
                         }`}
                         src={
-                          project.images[currentImageIndices[project.id] || 0]
+                          import.meta.env.BASE_URL + project.images[currentImageIndices[project.id] || 0]
                         }
                         alt={`${project.title} - Image ${
                           (currentImageIndices[project.id] || 0) + 1
@@ -459,7 +459,7 @@ const Projects: React.FC = () => {
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={galleryIndex}
-                    src={galleryImages[galleryIndex]}
+                    src={import.meta.env.BASE_URL +galleryImages[galleryIndex]}
                     alt={`Gallery image ${galleryIndex + 1}`}
                     className={styles.galleryImage}
                     initial={{ opacity: 0, scale: 0.9 }}

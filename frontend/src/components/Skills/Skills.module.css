@@ -56,6 +56,8 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: var(--color-cat) var(--color-surface);
+  scroll-behavior: smooth;
+  will-change: scroll-position;
 }
 
 .timelineWrapper::-webkit-scrollbar {
@@ -105,6 +107,13 @@
   min-width: 120px;
   cursor: pointer;
   z-index: 1;
+  will-change: transform;
+  transform: translateZ(0);
+  transition: transform 0.2s ease;
+}
+
+.timelineNode:hover {
+  transform: translateZ(0) scale(1.05);
 }
 
 .timelineDot {
@@ -115,12 +124,14 @@
   border-radius: 50%;
   box-shadow: 0 0 0 4px var(--color-surface), 0 0 20px rgba(255, 107, 107, 0.3);
   margin-bottom: 1rem;
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .timelineNode:hover .timelineDot {
-  transform: scale(1.5);
-  box-shadow: 0 0 0 6px var(--color-surface), 0 0 30px rgba(255, 107, 107, 0.6);
+  transform: translateZ(0) scale(1.3);
+  box-shadow: 0 0 0 6px var(--color-surface), 0 0 25px rgba(255, 107, 107, 0.5);
 }
 
 .timelineContent {
@@ -143,14 +154,16 @@
   border-radius: 8px;
   border: 1px solid var(--color-border);
   white-space: nowrap;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .timelineNode:hover .timelineSkill {
   background: var(--color-cat);
   color: white;
   border-color: var(--color-cat);
-  transform: translateY(-5px);
+  transform: translateZ(0) translateY(-3px);
 }
 
 /* Carousel Section */
