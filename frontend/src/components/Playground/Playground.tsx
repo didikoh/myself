@@ -4,7 +4,7 @@ import { playgroundProjects } from "../../data/mockData";
 import styles from "./Playground.module.css";
 
 const Playground: React.FC = () => {
-  const [comingSoon, setComingSoon] = React.useState(true);
+  const [comingSoon] = React.useState(true);
 
   if (comingSoon) {
     return (

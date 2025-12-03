@@ -166,23 +166,6 @@ const Contact: React.FC = () => {
               want to say hello, I'd love to hear from you. Drop me a message
               and I'll get back to you as soon as possible.
             </p>
-            <motion.a
-              href="https://wa.me/60182198225"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={styles.contactMethod}
-              variants={itemVariants}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <div className={styles.contactIcon}>
-                <Phone size={20} />
-              </div>
-              <div className={styles.contactDetails}>
-                <div className={styles.contactLabel}>WhatsApp</div>
-                <div className={styles.contactValue}>+60 18-219 8225</div>
-              </div>
-            </motion.a>
 
             <motion.div
               className={styles.directContact}
@@ -191,6 +174,24 @@ const Contact: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true }}
             >
+              <motion.a
+                href="https://wa.me/60182198225"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.contactMethod}
+                variants={itemVariants}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className={styles.contactIcon}>
+                  <Phone size={20} />
+                </div>
+                <div className={styles.contactDetails}>
+                  <div className={styles.contactLabel}>WhatsApp</div>
+                  <div className={styles.contactValue}>+60 18-219 8225</div>
+                </div>
+              </motion.a>
+              
               <motion.a
                 href={`mailto:${personalInfo.email}`}
                 className={styles.contactMethod}
