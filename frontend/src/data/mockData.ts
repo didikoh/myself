@@ -456,29 +456,29 @@ export const projects: Project[] = [
 
 export const socialLinks: SocialLink[] = [
   {
-    id: '1',
-    name: 'GitHub',
-    url: 'https://github.com/didikoh',
-    icon: 'github'
+    id: "1",
+    name: "GitHub",
+    url: "https://github.com/didikoh",
+    icon: "github",
   },
   {
-    id: '2',
-    name: 'LinkedIn',
-    url: 'https://www.linkedin.com/in/wei-zhen-koh-54bb651a2/',
-    icon: 'linkedin'
+    id: "2",
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/wei-zhen-koh-54bb651a2/",
+    icon: "linkedin",
   },
   {
-    id: '3',
-    name: 'Facebook',
-    url: 'https://www.facebook.com/didi.koh.9/',
-    icon: 'facebook'
+    id: "3",
+    name: "Facebook",
+    url: "https://www.facebook.com/didi.koh.9/",
+    icon: "facebook",
   },
   {
-    id: '4',
-    name: 'Instagram',
-    url: 'https://instagram.com/didikoh',
-    icon: 'instagram'
-  }
+    id: "4",
+    name: "Instagram",
+    url: "https://instagram.com/didikoh",
+    icon: "instagram",
+  },
 ];
 
 export const aboutInfo: AboutInfo = {
@@ -576,7 +576,6 @@ export const workExperiences: WorkExperience[] = [
       "Built immersive game scenes and cinematic sequences.",
       "Conducted research on TON Wallet and TON Coin for blockchain integration.",
       "Developed Unity-based game-play features and integrated blockchain-based transactions.",
-      "Collaborated with teams to prototype and test blockchain game mechanics.",
     ],
     technologies: [
       "Unreal Engine 5",
@@ -629,11 +628,11 @@ export const workExperiences: WorkExperience[] = [
     company: "Ministry XR",
     location: "Kuala Lumpur",
     startDate: "March 2020",
-    endDate: "June 2021",
+    endDate: "June 2020",
     responsibilities: [
-      "Participated in the development of HoloLens education project, an innovative XR application that provides students with an immersive and interactive virtual environment where complex concepts are brought to life through engaging simulations and interactive lessons.",
-      "Collaborated closely with designers to implement immersive XR environments, ensuring seamless integration of 3D models, animations, and interactive elements.",
-      "Engaged in collaborative discussions with the development team, contributing valuable insights to enhance the educational impact of XR technology within the application.",
+      "Contributed to the development of an XR education app for HoloLens, enabling immersive and interactive learning experiences.",
+      "Worked closely with designers to integrate 3D models, animations, and interactive elements into seamless XR environments.",
+      "Collaborated with the development team to refine features and improve the educational impact of the XR application.",
     ],
     technologies: ["HoloLens", "XR", "Unity"],
   },
