@@ -78,6 +78,11 @@ const Chatbot: React.FC = () => {
 
       const data = await response.json();
       
+      // Debug logging
+      // console.log('📦 Full API Response:', data);
+      // console.log('💬 Reply content:', data.reply);
+      // console.log('📏 Reply length:', data.reply?.length);
+      
       // Log token usage if available
       if (data.tokenInfo) {
         console.log('🤖 Token Usage:', {
@@ -87,9 +92,12 @@ const Chatbot: React.FC = () => {
         });
       }
       
+      // Check if reply is empty
+      const replyContent = data.reply || 'I apologize, but I couldn\'t generate a response. Please try asking your question differently.';
+      
       setMessages([...newMessages, {
         role: 'assistant',
-        content: data.reply
+        content: replyContent
       }]);
     } catch (error) {
       console.error('Error sending message:', error);
@@ -111,6 +119,16 @@ const Chatbot: React.FC = () => {
 
   const toggleChat = () => {
     setIsOpen(!isOpen);
+  };
+
+  const resetChat = () => {
+    setMessages([
+      {
+        role: 'assistant',
+        content: 'Hi! I\'m here to help you learn more about my portfolio. Feel free to ask me anything!'
+      }
+    ]);
+    setInputValue('');
   };
 
   return (
@@ -138,16 +156,30 @@ const Chatbot: React.FC = () => {
         <div className={styles.chatContainer} ref={chatContainerRef}>
           <div className={styles.chatHeader}>
             <h3>Portfolio Assistant</h3>
-            <button 
-              className={styles.closeButton} 
-              onClick={toggleChat}
-              aria-label="Close chat"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
+            <div className={styles.headerButtons}>
+              <button 
+                className={styles.resetButton} 
+                onClick={resetChat}
+                aria-label="Reset chat"
+                title="Reset chat"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="1 4 1 10 7 10" />
+                  <polyline points="23 20 23 14 17 14" />
+                  <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15" />
+                </svg>
+              </button>
+              <button 
+                className={styles.closeButton} 
+                onClick={toggleChat}
+                aria-label="Close chat"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div className={styles.messagesContainer}>
@@ -158,14 +190,18 @@ const Chatbot: React.FC = () => {
                   message.role === 'user' ? styles.userMessage : styles.assistantMessage
                 }`}
               >
-                <div 
-                  className={styles.messageContent}
-                  dangerouslySetInnerHTML={{ 
-                    __html: message.role === 'assistant' 
-                      ? formatGeminiText(message.content)
-                      : message.content 
-                  }}
-                />
+                {message.role === 'user' ? (
+                  <div className={styles.messageContent}>
+                    {message.content}
+                  </div>
+                ) : (
+                  <div 
+                    className={styles.messageContent}
+                    dangerouslySetInnerHTML={{ 
+                      __html: formatGeminiText(message.content || '')
+                    }}
+                  />
+                )}
               </div>
             ))}
             {isLoading && (

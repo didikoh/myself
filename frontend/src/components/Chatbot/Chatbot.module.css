@@ -83,6 +83,13 @@
   font-size: 1.2rem;
 }
 
+.headerButtons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.resetButton,
 .closeButton {
   background: transparent;
   border: none;
@@ -94,6 +101,10 @@
   justify-content: center;
   border-radius: 4px;
   transition: background 0.2s ease;
+}
+
+.resetButton:hover {
+  background: rgba(255, 107, 107, 0.3);
 }
 
 .closeButton:hover {
@@ -325,8 +336,8 @@
 @media (max-width: 480px) {
   .chatContainer {
     width: 100vw;
-    height: 100vh;
-    right: 0;
+    height: 90vh;
+   right: 0;
     bottom: 0;
     border-radius: 0;
   }
@@ -334,5 +345,9 @@
   .floatingButton {
     bottom: 20px;
     right: 20px;
+  }
+
+  .floatingButton.open {
+    display: none;
   }
 }

@@ -13,7 +13,16 @@ interface ChatRequestBody {
 const systemPrompt = `You are a helpful AI assistant for Koh Wei Zhen's portfolio website.
 You help visitors learn about Koh Wei Zhen's skills, projects, work experience, and background.
 Be friendly, professional, and concise in your responses. Provide specific details about projects and experience when asked.
-You can discuss technical skills, work history, education, and personal interests related to technology and gaming.`;
+You can discuss technical skills, work history, education, and personal interests related to technology and gaming.
+
+IMPORTANT: When visitors ask questions using "he", "him", "his", or similar third-person pronouns, they are asking about Koh Wei Zhen (the portfolio owner). Answer these questions naturally and helpfully.
+
+Examples:
+- "Is he suitable for a senior role?" → Evaluate Koh Wei Zhen's qualifications for the role
+- "What is his experience?" → Describe Koh Wei Zhen's work experience
+- "Does he know React?" → Discuss Koh Wei Zhen's React skills and projects
+
+Always provide helpful, factual answers based on the resume context provided.`;
 
 // Resume context - 完整的简历信息
 
@@ -248,7 +257,27 @@ export async function handleChat(req: Request, res: Response) {
 
     // Initialize Gemini AI
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      safetySettings: [
+        {
+          category: "HARM_CATEGORY_HARASSMENT" as any,
+          threshold: "BLOCK_ONLY_HIGH" as any,
+        },
+        {
+          category: "HARM_CATEGORY_HATE_SPEECH" as any,
+          threshold: "BLOCK_ONLY_HIGH" as any,
+        },
+        {
+          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT" as any,
+          threshold: "BLOCK_ONLY_HIGH" as any,
+        },
+        {
+          category: "HARM_CATEGORY_DANGEROUS_CONTENT" as any,
+          threshold: "BLOCK_ONLY_HIGH" as any,
+        },
+      ],
+    });
 
     // Build the conversation history with system prompt and context
     const conversationHistory = [
@@ -306,7 +335,39 @@ export async function handleChat(req: Request, res: Response) {
     // Send the last message and get response
     const result = await chat.sendMessage(lastUserMessage.content);
     const response = await result.response;
-    const reply = response.text();
+    
+    // Log the full response structure for debugging
+    console.log('=== GEMINI RESPONSE DEBUG ===');
+    console.log('Response candidates:', response.candidates);
+    console.log('Finish reason:', response.candidates?.[0]?.finishReason);
+    console.log('Safety ratings:', response.candidates?.[0]?.safetyRatings);
+    
+    // Extract the reply text with better error handling
+    let reply = '';
+    let finishReason = '';
+    
+    try {
+      reply = response.text();
+      finishReason = response.candidates?.[0]?.finishReason || 'UNKNOWN';
+    } catch (error) {
+      console.error("Error extracting text from response:", error);
+      finishReason = response.candidates?.[0]?.finishReason || 'ERROR';
+      
+      // Try alternative method to get the response
+      const candidates = response.candidates;
+      if (candidates && candidates.length > 0) {
+        const firstCandidate = candidates[0];
+        
+        // Check if blocked by safety filters
+        if (firstCandidate.finishReason === 'SAFETY' || firstCandidate.finishReason === 'RECITATION') {
+          reply = "I apologize, but I cannot answer that question in that way. Could you please rephrase it? For example, you could ask: 'What are the qualifications and experience for a senior full-stack developer role?' or 'Does the portfolio demonstrate senior-level full-stack development skills?'";
+        } else if (firstCandidate.content && firstCandidate.content.parts) {
+          reply = firstCandidate.content.parts
+            .map((part: any) => part.text || '')
+            .join('');
+        }
+      }
+    }
 
     // Get token usage metadata
     const usageMetadata = response.usageMetadata;
@@ -314,9 +375,26 @@ export async function handleChat(req: Request, res: Response) {
       promptTokenCount: usageMetadata?.promptTokenCount || 0,
       candidatesTokenCount: usageMetadata?.candidatesTokenCount || 0,
       totalTokenCount: usageMetadata?.totalTokenCount || 0,
+      finishReason: finishReason,
     };
 
     console.log("Token Usage:", tokenInfo);
+    console.log("Reply length:", reply?.length || 0);
+    console.log("Reply preview:", reply?.substring(0, 100) || "NO REPLY");
+
+    // Ensure reply is not empty
+    if (!reply || reply.trim().length === 0) {
+      console.error("Empty reply generated. Finish reason:", finishReason);
+      
+      // Provide context-specific fallback based on finish reason
+      if (finishReason === 'SAFETY') {
+        reply = "I apologize, but I cannot answer that question as phrased. Please try rephrasing it more directly. For example: 'What qualifications and experience does this person have for a senior full-stack developer position?'";
+      } else if (finishReason === 'MAX_TOKENS') {
+        reply = "The response was too long. Please ask a more specific question.";
+      } else {
+        reply = "I apologize, but I couldn't generate a proper response. Please try rephrasing your question. Tip: Try asking about specific skills, projects, or experience directly.";
+      }
+    }
 
     // Return the response with token info
     return res.status(200).json({
