@@ -63,7 +63,7 @@ Please customize this section with actual portfolio information.
 
       // Use the models.generateContent API with chat history
       const result = await this.genAI.models.generateContent({
-        model: 'gemini-2.0-flash-exp',
+        model: 'gemini-2.5-flash',
         contents: conversationHistory,
         config: {
           maxOutputTokens: 1000,

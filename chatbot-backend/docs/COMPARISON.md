@@ -6,7 +6,7 @@
 |---------|----------------|----------------|---------|
 | **Framework** | Express.js | NestJS | ✅ |
 | **Language** | TypeScript | TypeScript | ✅ |
-| **AI Model** | Gemini 2.5 Flash | Gemini 2.0 Flash Exp | ✅ |
+| **AI Model** | Gemini 2.5 Flash | Gemini 2.5 Flash | ✅ |
 | **API Package** | @google/generative-ai | @google/genai | ✅ |
 | **CORS** | Enabled | Enabled | ✅ |
 | **Environment Variables** | dotenv | dotenv | ✅ |
