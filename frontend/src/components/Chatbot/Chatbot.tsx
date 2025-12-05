@@ -18,6 +18,8 @@ const formatGeminiText = (text: string): string => {
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     // Convert ```code blocks``` to <pre><code>
     .replace(/```([\s\S]+?)```/g, '<pre><code>$1</code></pre>')
+    // Convert URLs to clickable links (must be before line breaks)
+    .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
     // Convert line breaks to <br>
     .replace(/\n/g, '<br>');
 };

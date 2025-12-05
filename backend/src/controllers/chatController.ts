@@ -31,8 +31,10 @@ PERSONAL INFORMATION:
 - Name: Koh Wei Zhen
 - Title: Game Developer & Web Developer
 - Email: didikoh@hotmail.com
+- Phone: +6018-2198225
+- Location: Kuala Lumpur, Malaysia
 - GitHub: https://github.com/didikoh
-- LinkedIn: https://linkedin.com/in/koh-wei-zhen
+- LinkedIn: https://www.linkedin.com/in/wei-zhen-koh-54bb651a2/
 - Birthday: February 25, 1999
 - Zodiac: Pisces ♓
 - MBTI: ENFP

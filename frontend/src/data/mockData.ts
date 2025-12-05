@@ -17,7 +17,7 @@ export const personalInfo: PersonalInfo = {
   avatar: "my-photo/me.jpg", // Cat avatar placeholder
   email: "didikoh@hotmail.com",
   github: "https://github.com/didikoh",
-  linkedin: "https://linkedin.com/in/koh-wei-zhen",
+  linkedin: "https://www.linkedin.com/in/wei-zhen-koh-54bb651a2/",
 };
 
 export const timelineSkills: TimelineSkill[] = [
