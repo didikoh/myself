@@ -32,6 +32,8 @@ const Projects: React.FC = () => {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [videoPopupOpen, setVideoPopupOpen] = useState(false);
+  const [videoUrl, setVideoUrl] = useState("");
 
   // Sort projects: featured first, then by order
   const sortedProjects = [...projects]
@@ -166,6 +168,18 @@ const Projects: React.FC = () => {
     document.body.style.overflow = 'auto';
   };
 
+  const openVideoPopup = (url: string) => {
+    setVideoUrl(url);
+    setVideoPopupOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeVideoPopup = () => {
+    setVideoPopupOpen(false);
+    setVideoUrl("");
+    document.body.style.overflow = 'auto';
+  };
+
   const nextGalleryImage = () => {
     setGalleryIndex((prev) => (prev + 1) % galleryImages.length);
   };
@@ -176,15 +190,19 @@ const Projects: React.FC = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (!galleryOpen) return;
-      if (e.key === 'Escape') closeGallery();
-      if (e.key === 'ArrowRight') nextGalleryImage();
-      if (e.key === 'ArrowLeft') prevGalleryImage();
+      if (galleryOpen) {
+        if (e.key === 'Escape') closeGallery();
+        if (e.key === 'ArrowRight') nextGalleryImage();
+        if (e.key === 'ArrowLeft') prevGalleryImage();
+      }
+      if (videoPopupOpen && e.key === 'Escape') {
+        closeVideoPopup();
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [galleryOpen, galleryImages.length]);
+  }, [galleryOpen, galleryImages.length, videoPopupOpen]);
 
   useEffect(() => {
     // 组件卸载时清理所有定时器
@@ -373,6 +391,22 @@ const Projects: React.FC = () => {
                   <div className={styles.projectLinks}>
                     {project.links.map((link, linkIndex) => {
                       const IconComponent = getLinkIcon(link.type);
+                      
+                      if (link.type === 'video') {
+                        return (
+                          <motion.button
+                            key={linkIndex}
+                            onClick={() => openVideoPopup(link.url)}
+                            className={styles.projectLink}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <IconComponent size={16} />
+                            {link.label || getLinkLabel(link.type)}
+                          </motion.button>
+                        );
+                      }
+                      
                       return (
                         <motion.a
                           key={linkIndex}
@@ -502,6 +536,39 @@ const Projects: React.FC = () => {
                   </>
                 )}
               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {videoPopupOpen && (
+            <motion.div
+              className={styles.videoOverlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeVideoPopup}
+            >
+              <button
+                className={styles.videoCloseButton}
+                onClick={closeVideoPopup}
+                aria-label="Close video"
+              >
+                <X size={30} />
+              </button>
+
+                <div className={styles.videoContent} onClick={(e) => e.stopPropagation()}>
+                <motion.video
+                  src={import.meta.env.BASE_URL + videoUrl}
+                  controls
+                  autoPlay
+                  className={styles.videoPlayer}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.3 }}
+                />
+                </div>
             </motion.div>
           )}
         </AnimatePresence>

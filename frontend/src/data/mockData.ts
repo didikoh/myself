@@ -174,7 +174,7 @@ export const projects: Project[] = [
       },
       {
         type: "video",
-        url: "/projects/CKG/Guocoland_540/Guocoland_masterplan.mp4",
+        url: "projects/CKG/Guocoland_540/Guocoland_masterplan.mp4",
         label: "Video",
       },
     ],
@@ -222,7 +222,7 @@ export const projects: Project[] = [
       },
       {
         type: "video",
-        url: "/projects/CKG/Causewayz_Exsim/0930.mp4",
+        url: "projects/CKG/Causewayz_Exsim/0930.mp4",
         label: "Video",
       },
     ],
@@ -248,7 +248,7 @@ export const projects: Project[] = [
       },
       {
         type: "video",
-        url: "/projects/CKG/Anyara/Anyara.mp4",
+        url: "projects/CKG/Anyara/Anyara.mp4",
         label: "Video",
       },
     ],
@@ -268,7 +268,7 @@ export const projects: Project[] = [
     links: [
       {
         type: "video",
-        url: "/projects/CKG/BHP/BHP.mp4",
+        url: "projects/CKG/BHP/BHP.mp4",
         label: "Video",
       },
     ],
@@ -363,7 +363,7 @@ export const projects: Project[] = [
       },
       {
         type: "video",
-        url: "/projects/CKG/Goprop/goprop_platform.mp4",
+        url: "projects/CKG/Goprop/goprop_platform.mp4",
         label: "Video",
       },
     ],
@@ -403,11 +403,6 @@ export const projects: Project[] = [
     ],
     technologies: ["Unity", "C#"],
     links: [
-      {
-        type: "video",
-        url: "8tv.mp4",
-        label: "Video",
-      },
     ],
     featured: false,
   },
