@@ -617,4 +617,8 @@
     max-width: 100%;
     max-height: 80%;
   }
+
+  .projectLink.websiteLink {
+    display: none;
+  }
 }

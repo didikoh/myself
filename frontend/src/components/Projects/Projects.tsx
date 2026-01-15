@@ -413,7 +413,7 @@ const Projects: React.FC = () => {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={styles.projectLink}
+                          className={`${styles.projectLink} ${link.type === 'website' ? styles.websiteLink : ''}`}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
