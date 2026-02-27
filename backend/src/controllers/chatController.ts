@@ -108,7 +108,7 @@ WORK EXPERIENCE:
 - Managed hosting environments and deployment workflows
 - Built real estate visualization tools with Unity and Unreal Engine
 - Collaborated with clients and designers to align digital sales materials with branding goals
-Technologies: React, TypeScript, Vite, PHP, MySQL, Babylon.js, Unity, Unreal Engine
+Technologies: React, TypeScript, Vite, PHP, MySQL, Babylon.js, Unity, Unreal Engine, C++
 
 2. Game Developer at ART WARDENS SDN BHD (May 2024 - August 2024, Penang)
 - Developed local and online multiplayer gameplay using Unreal Engine 5

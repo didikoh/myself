@@ -555,6 +555,7 @@ export const workExperiences: WorkExperience[] = [
       "Babylon.js",
       "Unity",
       "Unreal Engine",
+      "C++"
     ],
   },
   {
