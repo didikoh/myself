@@ -637,30 +637,12 @@ export const workExperiences: WorkExperience[] = [
 export const playgroundProjects: PlaygroundProject[] = [
   {
     id: "1",
-    title: "My Cats Introduction Website",
+    title: "Mekk",
     description:
-      "A fun and interactive website dedicated to introducing my beloved cats. Features animations, photo galleries, and personality profiles for each cat.",
-    image: "/playground/cats-website.jpg",
-    icon: "🐱",
-    technologies: ["React", "TypeScript", "CSS Animations"],
-    link: "#",
-  },
-  {
-    id: "2",
-    title: "Creative Experiments",
-    description:
-      "A collection of creative coding experiments exploring interactive animations, generative art, and playful web interactions.",
-    image: "/playground/experiments.jpg",
-    icon: "🎨",
-    technologies: ["JavaScript", "Canvas API", "WebGL"],
-  },
-  {
-    id: "3",
-    title: "Mini Game Collection",
-    description:
-      "Small browser-based games created for fun and learning. Includes puzzles, arcade-style games, and interactive challenges.",
-    image: "/playground/games.jpg",
-    icon: "🎮",
-    technologies: ["HTML5", "JavaScript", "Phaser"],
+      "Mekk is a fun little cat-chasing-mouse game where you dash around, catch sneaky mice, build satisfying combos, and try to beat your best score. Fast paws, quick reactions, and a little “mekk!” energy make every round playful and chaotic.",
+    image: "/playground/mekk.webp",
+    icon: "",
+    technologies: ["React", "TypeScript", "Vite", "PixiJS"],
+    link: "https://kooteefamily.com/mekk",
   },
 ];
