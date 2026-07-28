@@ -65,7 +65,7 @@ npm start
 {
   "reply": "I have skills in TypeScript, React, Node.js...",
   "contextInfo": {
-    "dataUpdatedAt": "2026-07-27",
+    "dataUpdatedAt": "2026-07-28",
     "retrievedSections": ["skills-2024-2025"]
   }
 }

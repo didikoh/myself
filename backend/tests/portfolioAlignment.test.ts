@@ -39,6 +39,28 @@ test("backend knowledge includes every skill in the current frontend timeline", 
   }
 });
 
+test("backend skill knowledge contains no score or proficiency ratings", () => {
+  const skillChunks = portfolioKnowledge.filter(
+    (chunk) => chunk.category === "skills",
+  );
+  const skillKnowledge = skillChunks
+    .map((chunk) => [chunk.title, chunk.content, ...chunk.keywords].join(" "))
+    .join(" ");
+
+  assert.equal(
+    skillChunks.some((chunk) => chunk.id === "skills-proficiency"),
+    false,
+  );
+  assert.doesNotMatch(
+    skillKnowledge,
+    /\b(?:rating|rated|score|proficiency level)\b|out of 5/i,
+  );
+  assert.doesNotMatch(
+    skillKnowledge,
+    /\b(?:2017|2018|2019|2020|2021|2022|2023|2024|2025|2026)\b|skill timeline|skills learned/i,
+  );
+});
+
 test("backend work records match current frontend roles, dates, and technologies", () => {
   const chunkByExperienceId: Record<string, string> = {
     "1": "experience-ck-group",

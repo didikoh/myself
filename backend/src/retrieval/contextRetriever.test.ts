@@ -6,12 +6,12 @@ function retrieve(question: string) {
   return retrieveRelevantContext([{ role: "user", content: question }]);
 }
 
-test("retrieves only the latest skill chunk for a specific 2026 stack question", () => {
+test("retrieves only the relevant skill group for a specific stack question", () => {
   const result = retrieve("Does he know Next.js and PostgreSQL?");
 
   assert.deepEqual(
     result.chunks.map((chunk) => chunk.id),
-    ["skills-2026"],
+    ["skills-web-application"],
   );
   assert.match(result.context, /Next\.js/);
   assert.match(result.context, /PostgreSQL/);
@@ -56,7 +56,8 @@ test("does not retrieve portfolio records for a greeting", () => {
   const result = retrieve("Hello!");
 
   assert.equal(result.chunks.length, 0);
-  assert.match(result.context, /No relevant portfolio records/);
+  assert.match(result.context, /Respond naturally and helpfully/);
+  assert.doesNotMatch(result.context, /No relevant portfolio records/);
 });
 
 test("keeps a direct contact lookup focused", () => {
@@ -68,10 +69,28 @@ test("keeps a direct contact lookup focused", () => {
   );
 });
 
+test("treats a self-introduction request as a profile question", () => {
+  for (const question of [
+    "Tell me about yourself",
+    "Who are you?",
+    "Please introduce yourself",
+    "Tell me about you",
+  ]) {
+    const result = retrieve(question);
+
+    assert.deepEqual(
+      result.chunks.map((chunk) => chunk.id),
+      ["profile-summary"],
+    );
+    assert.match(result.context, /Koh Wei Zhen/);
+  }
+});
+
 test("does not pull generic work history for an unlisted technology", () => {
   const result = retrieve("Does he have AWS experience?");
 
   assert.equal(result.chunks.length, 0);
+  assert.match(result.context, /suggest a useful follow-up question/);
 });
 
 test("keeps a specific experience lookup to the matching employer", () => {
@@ -89,5 +108,24 @@ test("returns only the current employer for a current-work question", () => {
   assert.deepEqual(
     result.chunks.map((chunk) => chunk.id),
     ["experience-ck-group"],
+  );
+});
+
+test("returns unscored evidence when asked to rate a skill", () => {
+  const result = retrieve("How would you rate his React skill from 1 to 5?");
+
+  assert.ok(result.chunks.some((chunk) => chunk.id === "skills-web-application"));
+  assert.doesNotMatch(
+    result.context,
+    /\b(?:rating|rated|score|level)\b|out of 5/i,
+  );
+});
+
+test("adds related work experience for a specific skill question", () => {
+  const result = retrieve("Does he know React?");
+
+  assert.deepEqual(
+    result.chunks.map((chunk) => chunk.id),
+    ["skills-web-application", "experience-ck-group"],
   );
 });

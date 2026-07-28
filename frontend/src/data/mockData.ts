@@ -1,6 +1,5 @@
 import type {
   PersonalInfo,
-  Skill,
   Project,
   SocialLink,
   TimelineSkill,
@@ -89,99 +88,6 @@ export const timelineSkills: TimelineSkill[] = [
   { year: 2026, month: "", skill: "Figma" },
   { year: 2026, month: "", skill: "LLM Gateway" },
   { year: 2026, month: "", skill: "Multi-Agent Development" },
-];
-
-export const skills: Skill[] = [
-  // Game Development
-  { id: "1", name: "Unity", level: 5, category: "frontend", icon: "SiUnity" },
-  { id: "2", name: "C#", level: 4, category: "backend", icon: "TbBrandCSharp" },
-  {
-    id: "3",
-    name: "Unreal Engine",
-    level: 3,
-    category: "frontend",
-    icon: "SiUnrealengine",
-  },
-  { id: "4", name: "C++", level: 2, category: "backend", icon: "SiCplusplus" },
-  {
-    id: "5",
-    name: "Blueprint",
-    level: 4,
-    category: "frontend",
-    icon: "SiUnrealengine",
-  },
-  {
-    id: "6",
-    name: "AR Foundation",
-    level: 3,
-    category: "frontend",
-    icon: "TbAugmentedReality",
-  },
-  {
-    id: "7",
-    name: "Babylon.js",
-    level: 5,
-    category: "frontend",
-    icon: "SiBabylondotjs",
-  },
-
-  // Web Development
-  { id: "8", name: "React", level: 5, category: "frontend", icon: "SiReact" },
-  {
-    id: "9",
-    name: "TypeScript",
-    level: 5,
-    category: "frontend",
-    icon: "SiTypescript",
-  },
-  {
-    id: "10",
-    name: "Angular",
-    level: 4,
-    category: "frontend",
-    icon: "SiAngular",
-  },
-  {
-    id: "11",
-    name: "Node.js",
-    level: 4,
-    category: "backend",
-    icon: "SiNodedotjs",
-  },
-  { id: "12", name: "PHP", level: 4, category: "backend", icon: "SiPhp" },
-  { id: "13", name: "MySQL", level: 4, category: "backend", icon: "SiMysql" },
-  { id: "14", name: "Python", level: 3, category: "backend", icon: "SiPython" },
-  {
-    id: "15",
-    name: "JavaScript",
-    level: 5,
-    category: "frontend",
-    icon: "SiJavascript",
-  },
-
-  // Media & Design
-  { id: "16", name: "Blender", level: 1, category: "tools", icon: "SiBlender" },
-  {
-    id: "18",
-    name: "Photoshop",
-    level: 1,
-    category: "tools",
-    icon: "SiAdobephotoshop",
-  },
-  {
-    id: "19",
-    name: "Playwright",
-    level: 4,
-    category: "tools",
-    icon: "SiPlaywright",
-  },
-  {
-    id: "20",
-    name: "Audacity",
-    level: 2,
-    category: "tools",
-    icon: "SiAudacity",
-  },
 ];
 
 export const projects: Project[] = [

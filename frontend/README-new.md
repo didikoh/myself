@@ -54,7 +54,7 @@ npm run dev
 ### Personal Information
 Edit `src/data/mockData.ts` to update:
 - Personal details (name, title, description)
-- Skills and proficiency levels
+- Skill learning timeline and catalog
 - Project information
 - Social media links
 

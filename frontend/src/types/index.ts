@@ -8,14 +8,6 @@ export interface PersonalInfo {
   linkedin: string;
 }
 
-export interface Skill {
-  id: string;
-  name: string;
-  level: number; // 1-5 (number of cats)
-  category: 'frontend' | 'backend' | 'tools' | 'other';
-  icon?: string;
-}
-
 export interface TimelineSkill {
   year: number;
   month: string;

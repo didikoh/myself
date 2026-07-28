@@ -104,11 +104,11 @@ export const personalInfo: PersonalInfo = {
 ```
 
 ### Skills
-Add or modify skills in the same file:
+Add or modify unscored skills in the learning timeline:
 
 ```typescript
-export const skills: Skill[] = [
-  { id: '1', name: 'React', level: 5, category: 'frontend' },
+export const timelineSkills: TimelineSkill[] = [
+  { year: 2025, month: '', skill: 'React' },
   // ... more skills
 ];
 ```
@@ -156,7 +156,7 @@ This portfolio includes fun cat-themed elements:
 - 🐱 Cat emojis in navigation and sections
 - 😸 Floating cat animations
 - 🐾 Paw print decorations
-- 🙀 Cat-based skill rating system
+- 🐾 Skill learning timeline and categorized catalog
 - 😺 Hover animations with cat themes
 
 ## 📧 Contact

@@ -136,7 +136,6 @@ const genericIntentTerms = new Set([
   "job",
   "know",
   "portfolio",
-  "proficient",
   "project",
   "projects",
   "qualification",
@@ -167,6 +166,9 @@ const aliases: Record<string, string[]> = {
   "unreal": ["ue", "ue4", "ue5"],
 };
 
+const selfIntroductionPattern =
+  /\b(who are you|about you|yourself|introduce yourself)\b/;
+
 const categoryIntentPatterns: Array<{
   category: KnowledgeCategory;
   patterns: RegExp[];
@@ -175,6 +177,7 @@ const categoryIntentPatterns: Array<{
     category: "profile",
     patterns: [
       /\bwho is\b/,
+      selfIntroductionPattern,
       /\babout (him|koh|wei zhen)\b/,
       /\b(background|bio|contact|email|github|linkedin|social|location|based)\b/,
     ],
@@ -194,7 +197,7 @@ const categoryIntentPatterns: Array<{
   {
     category: "skills",
     patterns: [
-      /\b(skill|skills|tech|technology|technologies|stack|framework|language|know|proficien|expertise|strongest)\w*\b/,
+      /\b(skill|skills|tech|technology|technologies|stack|framework|language|know|expertise)\w*\b/,
     ],
   },
   {
@@ -281,6 +284,9 @@ function scoreChunk(chunk: KnowledgeChunk, query: string): number {
   }
 
   const queryTerms = tokenize(normalizedQuery);
+  if (selfIntroductionPattern.test(normalizedQuery)) {
+    queryTerms.add("yourself");
+  }
   const normalizedTitle = normalize(chunk.title);
   const titleTerms = tokenize(normalizedTitle);
   const contentTerms = tokenize(chunk.content);
@@ -353,7 +359,7 @@ function formatContext(chunks: KnowledgeChunk[]): string {
   ].join("\n");
 
   if (chunks.length === 0) {
-    return `${header}\nNo relevant portfolio records were retrieved for this message.`;
+    return `${header}\nRESPONSE GUIDANCE\nRespond naturally and helpfully. For general questions, answer normally. If answering would require an unsupported claim about Koh Wei Zhen, do not invent facts; briefly pivot to a related portfolio topic or suggest a useful follow-up question. Do not use a generic missing-information apology.`;
   }
 
   const entries = chunks.map(
@@ -382,7 +388,7 @@ export function retrieveRelevantContext(
         scoreChunk(chunk, currentMessage) * 3 +
         scoreChunk(chunk, previousMessages),
     }))
-    .filter(({ score }) => score >= 10)
+    .filter(({ score }) => score >= 9)
     .sort(
       (left, right) =>
         right.score - left.score ||
@@ -393,8 +399,28 @@ export function retrieveRelevantContext(
   let selectedCharacters = 0;
   const bestScore = ranked[0]?.score ?? 0;
 
-  for (const { chunk, score } of ranked) {
+  const addChunk = (chunk: KnowledgeChunk): boolean => {
+    if (
+      selected.length >= maxChunks ||
+      selected.some((selectedChunk) => selectedChunk.id === chunk.id)
+    ) {
+      return false;
+    }
+
     const chunkCharacters = chunk.title.length + chunk.content.length;
+    if (
+      selected.length > 0 &&
+      selectedCharacters + chunkCharacters > maxCharacters
+    ) {
+      return false;
+    }
+
+    selected.push(chunk);
+    selectedCharacters += chunkCharacters;
+    return true;
+  };
+
+  for (const { chunk, score } of ranked) {
     if (score < bestScore * 0.5) {
       break;
     }
@@ -403,15 +429,22 @@ export function retrieveRelevantContext(
       break;
     }
 
-    if (
-      selected.length > 0 &&
-      selectedCharacters + chunkCharacters > maxCharacters
-    ) {
-      continue;
-    }
+    addChunk(chunk);
+  }
 
-    selected.push(chunk);
-    selectedCharacters += chunkCharacters;
+  const currentTerms = tokenize(currentMessage);
+  const isSpecificSkillQuestion =
+    getIntentCategories(currentMessage).has("skills") &&
+    [...currentTerms].some((term) => !genericIntentTerms.has(term));
+
+  if (isSpecificSkillQuestion) {
+    const relatedExperience = ranked.find(
+      ({ chunk }) => chunk.category === "experience",
+    );
+
+    if (relatedExperience) {
+      addChunk(relatedExperience.chunk);
+    }
   }
 
   const context = formatContext(selected);
