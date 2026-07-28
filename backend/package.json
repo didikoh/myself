@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "tsx src/index.ts",
     "build": "tsc",
+    "test": "tsx --test src/retrieval/contextRetriever.test.ts tests/portfolioAlignment.test.ts",
     "start": "node dist/index.js",
     "vercel-build": "echo 'Build complete'"
   },

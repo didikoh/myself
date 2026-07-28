@@ -27,6 +27,12 @@ Run locally:
 npm run dev
 ```
 
+Run the retrieval tests:
+
+```bash
+npm test
+```
+
 ## Build & Production
 
 Build the project:
@@ -57,15 +63,28 @@ npm start
 **Response:**
 ```json
 {
-  "reply": "I have skills in TypeScript, React, Node.js..."
+  "reply": "I have skills in TypeScript, React, Node.js...",
+  "contextInfo": {
+    "dataUpdatedAt": "2026-07-27",
+    "retrievedSections": ["skills-2024-2025"]
+  }
 }
 ```
 
 ## Customization
 
-Edit the following in `src/controllers/chatController.ts`:
-- `systemPrompt`: Modify the AI assistant's behavior
-- `resumeContext`: Add your actual resume/portfolio information
+Portfolio facts are stored as small, searchable records in
+`src/data/portfolioKnowledge.ts`. Update those records and
+`portfolioDataUpdatedAt` when the public portfolio changes.
+
+`src/retrieval/contextRetriever.ts` ranks the current question and recent turns,
+then sends at most five relevant records to Gemini. The full portfolio is no
+longer included in every prompt. Retrieval limits can be adjusted through
+`RetrievalOptions`.
+
+Edit `systemPrompt` in `src/controllers/chatController.ts` to change assistant
+behaviour. You can also set `GEMINI_MODEL` to override the default
+`gemini-2.5-flash` model without changing source code.
 
 Edit CORS settings in `src/index.ts` to restrict origins if needed.
 
@@ -82,6 +101,10 @@ Edit CORS settings in `src/index.ts` to restrict origins if needed.
 backend/
 ├── src/
 │   ├── index.ts                 # Express app entry
+│   ├── data/
+│   │   └── portfolioKnowledge.ts # Dated portfolio knowledge records
+│   ├── retrieval/
+│   │   └── contextRetriever.ts  # On-demand context selection
 │   ├── routes/
 │   │   └── chat.ts             # Chat routes
 │   └── controllers/
@@ -93,6 +116,7 @@ backend/
 
 ## Notes
 
-- Uses Gemini 2.0 Flash Exp model
-- CORS configured to allow all origins (modify for production)
-- API key read from environment variables
+- Uses Gemini 2.5 Flash by default
+- CORS is configured to allow all origins (restrict this in production)
+- API key is read from `GEMINI_API_KEY`
+- Chat history is capped at 12 prior messages and each message at 4,000 characters
