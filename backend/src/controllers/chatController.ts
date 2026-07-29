@@ -18,6 +18,25 @@ interface ChatRequestBody {
   messages?: unknown;
 }
 
+interface TokenInfo {
+  promptTokenCount: number;
+  candidatesTokenCount: number;
+  totalTokenCount: number;
+  finishReason: string;
+}
+
+type ChatStreamEvent =
+  | { type: "delta"; text: string }
+  | {
+      type: "done";
+      tokenInfo: TokenInfo;
+      contextInfo: {
+        dataUpdatedAt: string;
+        retrievedSections: string[];
+      };
+    }
+  | { type: "error"; error: string };
+
 const MAX_REQUEST_MESSAGES = 50;
 const MAX_HISTORY_MESSAGES = 12;
 const MAX_MESSAGE_CHARACTERS = 4_000;
@@ -154,7 +173,25 @@ function fallbackReply(finishReason: string): string {
   return "I couldn't generate a response just now. Please try rephrasing the question or ask about a specific skill, project, or work experience.";
 }
 
+function writeStreamEvent(res: Response, event: ChatStreamEvent) {
+  if (!res.writableEnded) {
+    res.write(`${JSON.stringify(event)}\n`);
+  }
+}
+
 export async function handleChat(req: Request, res: Response) {
+  const abortController = new AbortController();
+  let clientDisconnected = false;
+
+  const handleDisconnect = () => {
+    if (!res.writableEnded) {
+      clientDisconnected = true;
+      abortController.abort();
+    }
+  };
+
+  res.once("close", handleDisconnect);
+
   try {
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -203,26 +240,67 @@ export async function handleChat(req: Request, res: Response) {
       },
     });
 
-    const result = await chat.sendMessage([
-      { text: retrieved.context },
-      { text: `VISITOR MESSAGE\n${lastUserMessage.content}` },
-    ]);
-    const response = result.response;
-    const finishReason = response.candidates?.[0]?.finishReason || "UNKNOWN";
+    const result = await chat.sendMessageStream(
+      [
+        { text: retrieved.context },
+        { text: `VISITOR MESSAGE\n${lastUserMessage.content}` },
+      ],
+      { signal: abortController.signal },
+    );
+
+    res.status(200);
+    res.setHeader("Content-Type", "application/x-ndjson; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.flushHeaders();
+
     let reply = "";
 
-    try {
-      reply = response.text();
-    } catch (error) {
-      console.error("Could not extract Gemini response text:", error);
-      const parts = response.candidates?.[0]?.content?.parts;
-      if (parts) {
-        reply = parts.map((part) => part.text ?? "").join("");
+    for await (const chunk of result.stream) {
+      if (clientDisconnected) {
+        return;
+      }
+
+      let chunkText = "";
+
+      try {
+        chunkText = chunk.text();
+      } catch (error) {
+        console.error("Could not extract Gemini stream chunk text:", error);
+        const parts = chunk.candidates?.[0]?.content?.parts;
+        if (parts) {
+          chunkText = parts.map((part) => part.text ?? "").join("");
+        }
+      }
+
+      if (chunkText) {
+        reply += chunkText;
+        writeStreamEvent(res, { type: "delta", text: chunkText });
+      }
+    }
+
+    const response = await result.response;
+    const finishReason = response.candidates?.[0]?.finishReason || "UNKNOWN";
+
+    if (!reply.trim()) {
+      try {
+        reply = response.text();
+      } catch (error) {
+        console.error("Could not extract Gemini response text:", error);
+        const parts = response.candidates?.[0]?.content?.parts;
+        if (parts) {
+          reply = parts.map((part) => part.text ?? "").join("");
+        }
+      }
+
+      if (reply.trim()) {
+        writeStreamEvent(res, { type: "delta", text: reply });
       }
     }
 
     if (!reply.trim()) {
       reply = fallbackReply(finishReason);
+      writeStreamEvent(res, { type: "delta", text: reply });
     }
 
     const usageMetadata = response.usageMetadata;
@@ -240,16 +318,31 @@ export async function handleChat(req: Request, res: Response) {
       ...tokenInfo,
     });
 
-    return res.status(200).json({
-      reply,
+    writeStreamEvent(res, {
+      type: "done",
       tokenInfo,
       contextInfo: {
         dataUpdatedAt: portfolioDataUpdatedAt,
         retrievedSections: retrieved.chunks.map((chunk) => chunk.id),
       },
     });
+    return res.end();
   } catch (error) {
+    if (clientDisconnected || abortController.signal.aborted) {
+      console.log("Chat request cancelled after the client disconnected");
+      return;
+    }
+
     console.error("Error processing chat request:", error);
+
+    if (res.headersSent) {
+      writeStreamEvent(res, {
+        type: "error",
+        error: "The response was interrupted. Please try again.",
+      });
+      return res.end();
+    }
+
     return res.status(500).json({
       error: "Internal server error",
       ...(process.env.NODE_ENV === "production"
@@ -259,5 +352,7 @@ export async function handleChat(req: Request, res: Response) {
               error instanceof Error ? error.message : "Unknown error",
           }),
     });
+  } finally {
+    res.off("close", handleDisconnect);
   }
 }

@@ -60,16 +60,20 @@ npm start
 }
 ```
 
-**Response:**
-```json
-{
-  "reply": "I have skills in TypeScript, React, Node.js...",
-  "contextInfo": {
-    "dataUpdatedAt": "2026-07-28",
-    "retrievedSections": ["skills-2024-2025"]
-  }
-}
+**Response:** `200 application/x-ndjson`
+
+The response is a newline-delimited stream. Append each `delta.text` value to
+the current assistant message. The final `done` event contains request metadata.
+
+```ndjson
+{"type":"delta","text":"I have skills in "}
+{"type":"delta","text":"TypeScript, React, and Node.js..."}
+{"type":"done","tokenInfo":{"promptTokenCount":120,"candidatesTokenCount":18,"totalTokenCount":138,"finishReason":"STOP"},"contextInfo":{"dataUpdatedAt":"2026-07-29","retrievedSections":["skills-2024-2025"]}}
 ```
+
+If generation fails after streaming begins, the last event has `type: "error"`.
+Request validation and setup errors that occur before streaming begins remain
+regular JSON error responses with a non-2xx status.
 
 ## Customization
 

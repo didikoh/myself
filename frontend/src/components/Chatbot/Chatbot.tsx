@@ -20,6 +20,102 @@ interface ChatApiResponse {
   };
 }
 
+type ChatStreamEvent =
+  | { type: 'delta'; text: string }
+  | {
+      type: 'done';
+      tokenInfo?: ChatApiResponse['tokenInfo'];
+      contextInfo?: ChatApiResponse['contextInfo'];
+    }
+  | { type: 'error'; error: string };
+
+const parseChatStreamEvent = (line: string): ChatStreamEvent => {
+  const event = JSON.parse(line) as Partial<ChatStreamEvent>;
+
+  if (event.type === 'delta' && typeof event.text === 'string') {
+    return { type: 'delta', text: event.text };
+  }
+
+  if (event.type === 'done') {
+    return {
+      type: 'done',
+      tokenInfo: event.tokenInfo,
+      contextInfo: event.contextInfo,
+    };
+  }
+
+  if (event.type === 'error' && typeof event.error === 'string') {
+    return { type: 'error', error: event.error };
+  }
+
+  throw new Error('Received an invalid chat stream event');
+};
+
+const consumeChatStream = async (
+  response: Response,
+  onDelta: (text: string, fullReply: string) => void,
+): Promise<{ reply: string; apiResponse: ChatApiResponse }> => {
+  if (!response.body) {
+    throw new Error('Streaming is not supported by this browser');
+  }
+
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let reply = '';
+  let apiResponse: ChatApiResponse = {};
+  let receivedDoneEvent = false;
+
+  const processLine = (line: string) => {
+    const trimmedLine = line.trim();
+    if (!trimmedLine) return;
+
+    const event = parseChatStreamEvent(trimmedLine);
+
+    if (event.type === 'delta') {
+      reply += event.text;
+      onDelta(event.text, reply);
+      return;
+    }
+
+    if (event.type === 'error') {
+      throw new Error(event.error);
+    }
+
+    receivedDoneEvent = true;
+    apiResponse = {
+      tokenInfo: event.tokenInfo,
+      contextInfo: event.contextInfo,
+    };
+  };
+
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
+      lines.forEach(processLine);
+    }
+
+    buffer += decoder.decode();
+    processLine(buffer);
+
+    if (!receivedDoneEvent) {
+      throw new Error('The chat stream ended unexpectedly');
+    }
+
+    return { reply, apiResponse };
+  } catch (error) {
+    await reader.cancel().catch(() => undefined);
+    throw error;
+  } finally {
+    reader.releaseLock();
+  }
+};
+
 const conversationStorageKey = 'portfolio-chat-conversation-id';
 
 const createUuid = (): string => {
@@ -137,7 +233,9 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const conversationIdRef = useRef(getConversationId());
+  const activeRequestRef = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -148,6 +246,10 @@ const Chatbot: React.FC = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => () => {
+    activeRequestRef.current?.abort();
+  }, []);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
@@ -160,9 +262,14 @@ const Chatbot: React.FC = () => {
     const newMessages = [...messages, userMessage];
     const conversationId = conversationIdRef.current;
     const turnId = createUuid();
+    const requestController = new AbortController();
+    activeRequestRef.current = requestController;
     setMessages(newMessages);
     setInputValue('');
     setIsLoading(true);
+    setIsStreaming(false);
+
+    let streamedReply = '';
 
     try {
       // Use localhost in development, production URL otherwise
@@ -177,14 +284,46 @@ const Chatbot: React.FC = () => {
         },
         body: JSON.stringify({
           messages: newMessages
-        })
+        }),
+        signal: requestController.signal,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to get response');
+        let errorMessage = 'Failed to get response';
+
+        try {
+          const errorData = await response.json() as { error?: string };
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // Keep the generic message when the server did not return JSON.
+        }
+
+        throw new Error(errorMessage);
       }
 
-      const data = await response.json() as ChatApiResponse;
+      const contentType = response.headers.get('Content-Type') || '';
+      let data: ChatApiResponse;
+      let replyContent: string;
+
+      if (contentType.includes('application/x-ndjson')) {
+        const streamedResponse = await consumeChatStream(
+          response,
+          (_text, fullReply) => {
+            streamedReply = fullReply;
+            setIsStreaming(true);
+            setMessages([...newMessages, {
+              role: 'assistant',
+              content: fullReply,
+            }]);
+          },
+        );
+        data = streamedResponse.apiResponse;
+        replyContent = streamedResponse.reply;
+      } else {
+        // Keep compatibility with a backend deployment that still returns JSON.
+        data = await response.json() as ChatApiResponse;
+        replyContent = data.reply || '';
+      }
       
       // Debug logging
       // console.log('📦 Full API Response:', data);
@@ -200,8 +339,9 @@ const Chatbot: React.FC = () => {
         });
       }
       
-      // Check if reply is empty
-      const replyContent = data.reply || 'I apologize, but I couldn\'t generate a response. Please try asking your question differently.';
+      if (!replyContent.trim()) {
+        replyContent = 'I apologize, but I couldn\'t generate a response. Please try asking your question differently.';
+      }
       
       setMessages([...newMessages, {
         role: 'assistant',
@@ -219,8 +359,14 @@ const Chatbot: React.FC = () => {
         console.warn('Unable to record chat history:', historyError);
       });
     } catch (error) {
+      if (requestController.signal.aborted) {
+        return;
+      }
+
       console.error('Error sending message:', error);
-      const errorReply = 'Sorry, I encountered an error. Please try again later.';
+      const errorReply = streamedReply
+        ? `${streamedReply}\n\nSorry, the response was interrupted. Please try again.`
+        : 'Sorry, I encountered an error. Please try again later.';
       setMessages([...newMessages, {
         role: 'assistant',
         content: errorReply
@@ -236,7 +382,11 @@ const Chatbot: React.FC = () => {
         console.warn('Unable to record failed chat turn:', historyError);
       });
     } finally {
-      setIsLoading(false);
+      if (activeRequestRef.current === requestController) {
+        activeRequestRef.current = null;
+        setIsLoading(false);
+        setIsStreaming(false);
+      }
     }
   };
 
@@ -252,11 +402,15 @@ const Chatbot: React.FC = () => {
   };
 
   const resetChat = () => {
+    activeRequestRef.current?.abort();
+    activeRequestRef.current = null;
     const conversationId = createUuid();
     conversationIdRef.current = conversationId;
     saveConversationId(conversationId);
     setMessages([welcomeMessage]);
     setInputValue('');
+    setIsLoading(false);
+    setIsStreaming(false);
   };
 
   return (
@@ -332,7 +486,7 @@ const Chatbot: React.FC = () => {
                 )}
               </div>
             ))}
-            {isLoading && (
+            {isLoading && !isStreaming && (
               <div className={`${styles.message} ${styles.assistantMessage}`}>
                 <div className={styles.messageContent}>
                   <div className={styles.typingIndicator}>
