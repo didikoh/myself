@@ -46,12 +46,22 @@ export const portfolioKnowledge: KnowledgeChunk[] = [
   {
     id: "profile-contact",
     category: "profile",
-    title: "Contact and social links",
+    title: "Contact options and social links",
     content:
-      "Email: didikoh@hotmail.com. GitHub: https://github.com/didikoh. LinkedIn: https://www.linkedin.com/in/wei-zhen-koh-54bb651a2/. Facebook: https://www.facebook.com/didi.koh.9/. Instagram: https://instagram.com/didikoh.",
+      "Visitors can contact Koh Wei Zhen directly by WhatsApp at +60 18-219 8225 (https://wa.me/60182198225) or by email at didikoh@hotmail.com. They can also use the Contact section and message form on this portfolio page. Professional and social profiles: GitHub: https://github.com/didikoh. LinkedIn: https://www.linkedin.com/in/wei-zhen-koh-54bb651a2/. Facebook: https://www.facebook.com/didi.koh.9/. Instagram: https://instagram.com/didikoh.",
     keywords: [
       "contact",
+      "contact form",
       "email",
+      "WhatsApp",
+      "phone",
+      "message",
+      "reach out",
+      "get in touch",
+      "talk to him",
+      "speak with him",
+      "schedule a call",
+      "meeting",
       "GitHub",
       "LinkedIn",
       "Facebook",
@@ -59,7 +69,7 @@ export const portfolioKnowledge: KnowledgeChunk[] = [
       "social",
       "hire",
     ],
-    priority: 7,
+    priority: 9,
   },
   {
     id: "profile-personal",

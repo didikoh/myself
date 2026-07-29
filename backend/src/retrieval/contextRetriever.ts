@@ -172,6 +172,9 @@ const selfIntroductionPattern =
 const opportunityIntentPattern =
   /\b(fit|hire|hiring|interview|opening|vacancy|recruiter|candidate|job description|position|opportunity|freelance|contract|client|collaborat|partner|partnership)\w*\b/;
 
+const contactIntentPattern =
+  /\b(contact|contact form|e-?mail|whats\s?app|phone|call him|reach (?:him|koh|wei zhen)|reach out|get in touch|message him|send (?:him )?(?:a )?message|talk (?:to|with) him|speak (?:to|with) him|connect with him|schedule (?:a )?(?:call|meeting)|set up (?:a )?(?:call|meeting))\b/;
+
 const categoryIntentPatterns: Array<{
   category: KnowledgeCategory;
   patterns: RegExp[];
@@ -401,6 +404,11 @@ export function retrieveRelevantContext(
   const selected: KnowledgeChunk[] = [];
   let selectedCharacters = 0;
   const bestScore = ranked[0]?.score ?? 0;
+  const normalizedCurrentMessage = normalize(currentMessage);
+  const hasOpportunityIntent = opportunityIntentPattern.test(
+    normalizedCurrentMessage,
+  );
+  const hasContactIntent = contactIntentPattern.test(normalizedCurrentMessage);
 
   const addChunk = (chunk: KnowledgeChunk): boolean => {
     if (
@@ -423,6 +431,19 @@ export function retrieveRelevantContext(
     return true;
   };
 
+  // Contact details must be available whenever a visitor explicitly wants to
+  // reach Koh Wei Zhen or is exploring an opportunity that should lead to a
+  // real conversation. Add them first so the context limit cannot omit them.
+  if (hasContactIntent || hasOpportunityIntent) {
+    const contactChunk = portfolioKnowledge.find(
+      (chunk) => chunk.id === "profile-contact",
+    );
+
+    if (contactChunk) {
+      addChunk(contactChunk);
+    }
+  }
+
   for (const { chunk, score } of ranked) {
     if (score < bestScore * 0.5) {
       break;
@@ -438,7 +459,7 @@ export function retrieveRelevantContext(
   // Opportunity questions may contain no technology or employer names to
   // match against. Fill any spare context with a balanced overview so job,
   // project, and collaboration advice stays grounded in real evidence.
-  if (opportunityIntentPattern.test(normalize(currentMessage))) {
+  if (hasOpportunityIntent) {
     const overviewCategories: KnowledgeCategory[] = [
       "roles",
       "experience",

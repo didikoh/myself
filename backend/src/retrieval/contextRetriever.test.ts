@@ -69,6 +69,22 @@ test("keeps a direct contact lookup focused", () => {
   );
 });
 
+test("retrieves actionable contact routes for different contact requests", () => {
+  for (const question of [
+    "How can I contact him?",
+    "Can I message him on WhatsApp?",
+    "I would like to speak with him",
+    "Can we schedule a call?",
+  ]) {
+    const result = retrieve(question);
+
+    assert.ok(result.chunks.some((chunk) => chunk.id === "profile-contact"));
+    assert.match(result.context, /https:\/\/wa\.me\/60182198225/);
+    assert.match(result.context, /didikoh@hotmail\.com/);
+    assert.match(result.context, /Contact section/);
+  }
+});
+
 test("treats a self-introduction request as a profile question", () => {
   for (const question of [
     "Tell me about yourself",
@@ -140,6 +156,7 @@ test("grounds broad job and collaboration questions in portfolio evidence", () =
     const result = retrieve(question);
 
     assert.ok(result.chunks.some((chunk) => chunk.id === "roles-focus"));
+    assert.ok(result.chunks.some((chunk) => chunk.id === "profile-contact"));
     assert.ok(
       result.chunks.some((chunk) => chunk.category === "experience"),
     );
