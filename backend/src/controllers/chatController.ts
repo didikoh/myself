@@ -40,6 +40,30 @@ type ChatStreamEvent =
 const MAX_REQUEST_MESSAGES = 50;
 const MAX_HISTORY_MESSAGES = 12;
 const MAX_MESSAGE_CHARACTERS = 4_000;
+const DEFAULT_GEMINI_REQUEST_TIMEOUT_MS = 30_000;
+const MAX_GEMINI_REQUEST_TIMEOUT_MS = 120_000;
+
+export function resolveGeminiRequestTimeoutMs(
+  value: string | undefined,
+): number {
+  if (value === undefined || value.trim() === "") {
+    return DEFAULT_GEMINI_REQUEST_TIMEOUT_MS;
+  }
+
+  const timeoutMs = Number(value);
+
+  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) {
+    return DEFAULT_GEMINI_REQUEST_TIMEOUT_MS;
+  }
+
+  const normalizedTimeoutMs = Math.floor(timeoutMs);
+
+  if (normalizedTimeoutMs <= 0) {
+    return DEFAULT_GEMINI_REQUEST_TIMEOUT_MS;
+  }
+
+  return Math.min(normalizedTimeoutMs, MAX_GEMINI_REQUEST_TIMEOUT_MS);
+}
 
 const systemPrompt = `You are the portfolio and opportunity assistant on Koh Wei Zhen's website.
 
@@ -182,6 +206,8 @@ function writeStreamEvent(res: Response, event: ChatStreamEvent) {
 export async function handleChat(req: Request, res: Response) {
   const abortController = new AbortController();
   let clientDisconnected = false;
+  let requestTimedOut = false;
+  let requestTimeout: ReturnType<typeof setTimeout> | undefined;
 
   const handleDisconnect = () => {
     if (!res.writableEnded) {
@@ -240,6 +266,14 @@ export async function handleChat(req: Request, res: Response) {
       },
     });
 
+    const requestTimeoutMs = resolveGeminiRequestTimeoutMs(
+      process.env.GEMINI_REQUEST_TIMEOUT_MS,
+    );
+    requestTimeout = setTimeout(() => {
+      requestTimedOut = true;
+      abortController.abort();
+    }, requestTimeoutMs);
+
     const result = await chat.sendMessageStream(
       [
         { text: retrieved.context },
@@ -279,7 +313,29 @@ export async function handleChat(req: Request, res: Response) {
       }
     }
 
+    if (clientDisconnected) {
+      return;
+    }
+
+    if (requestTimedOut) {
+      throw new Error("Gemini request timed out");
+    }
+
     const response = await result.response;
+
+    if (clientDisconnected) {
+      return;
+    }
+
+    if (requestTimedOut) {
+      throw new Error("Gemini request timed out");
+    }
+
+    if (requestTimeout !== undefined) {
+      clearTimeout(requestTimeout);
+      requestTimeout = undefined;
+    }
+
     const finishReason = response.candidates?.[0]?.finishReason || "UNKNOWN";
 
     if (!reply.trim()) {
@@ -328,23 +384,31 @@ export async function handleChat(req: Request, res: Response) {
     });
     return res.end();
   } catch (error) {
-    if (clientDisconnected || abortController.signal.aborted) {
+    if (clientDisconnected) {
       console.log("Chat request cancelled after the client disconnected");
       return;
     }
 
-    console.error("Error processing chat request:", error);
+    const publicError = requestTimedOut
+      ? "The response timed out. Please try again."
+      : "The response was interrupted. Please try again.";
+
+    if (requestTimedOut) {
+      console.error("Chat request timed out:", error);
+    } else {
+      console.error("Error processing chat request:", error);
+    }
 
     if (res.headersSent) {
       writeStreamEvent(res, {
         type: "error",
-        error: "The response was interrupted. Please try again.",
+        error: publicError,
       });
       return res.end();
     }
 
-    return res.status(500).json({
-      error: "Internal server error",
+    return res.status(requestTimedOut ? 504 : 500).json({
+      error: requestTimedOut ? publicError : "Internal server error",
       ...(process.env.NODE_ENV === "production"
         ? {}
         : {
@@ -353,6 +417,9 @@ export async function handleChat(req: Request, res: Response) {
           }),
     });
   } finally {
+    if (requestTimeout !== undefined) {
+      clearTimeout(requestTimeout);
+    }
     res.off("close", handleDisconnect);
   }
 }

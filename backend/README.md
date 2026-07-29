@@ -17,6 +17,7 @@ cp .env.example .env
 3. Add your Gemini API key and port to `.env`:
 ```
 GEMINI_API_KEY=your_actual_api_key
+GEMINI_REQUEST_TIMEOUT_MS=30000
 PORT=3000
 ```
 
@@ -27,7 +28,7 @@ Run locally:
 npm run dev
 ```
 
-Run the retrieval tests:
+Run the test suite:
 
 ```bash
 npm test
@@ -88,7 +89,9 @@ longer included in every prompt. Retrieval limits can be adjusted through
 
 Edit `systemPrompt` in `src/controllers/chatController.ts` to change assistant
 behaviour. You can also set `GEMINI_MODEL` to override the default
-`gemini-2.5-flash` model without changing source code.
+`gemini-2.5-flash` model without changing source code. Gemini requests time out
+after 30 seconds by default; set `GEMINI_REQUEST_TIMEOUT_MS` to override it, up
+to 120 seconds.
 
 Edit CORS settings in `src/index.ts` to restrict origins if needed.
 
