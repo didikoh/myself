@@ -1,16 +1,18 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
-  RewriteBase /
 
   # Redirect HTTP to HTTPS (uncomment if you have SSL)
   # RewriteCond %{HTTPS} off
   # RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # Handle Frontend Routes - redirect all requests to index.html
+  # Let the PHP API handle /{frontend path}/api/* requests.
+  RewriteCond %{REQUEST_URI} /api(?:/|$) [NC]
+  RewriteRule ^ - [L]
+
+  # Handle frontend routes relative to whichever subdirectory contains the app.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteCond %{REQUEST_URI} !^/api/
-  RewriteRule . /index.html [L]
+  RewriteRule ^ index.html [L]
 </IfModule>
 
 # Disable directory browsing

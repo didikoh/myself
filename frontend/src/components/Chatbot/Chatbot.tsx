@@ -6,6 +6,109 @@ interface Message {
   content: string;
 }
 
+interface ChatApiResponse {
+  reply?: string;
+  tokenInfo?: {
+    promptTokenCount?: number;
+    candidatesTokenCount?: number;
+    totalTokenCount?: number;
+    finishReason?: string;
+  };
+  contextInfo?: {
+    dataUpdatedAt?: string;
+    retrievedSections?: string[];
+  };
+}
+
+const conversationStorageKey = 'portfolio-chat-conversation-id';
+
+const createUuid = (): string => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+
+  const bytes = new Uint8Array(16);
+  if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
+    crypto.getRandomValues(bytes);
+  } else {
+    for (let index = 0; index < bytes.length; index += 1) {
+      bytes[index] = Math.floor(Math.random() * 256);
+    }
+  }
+
+  bytes[6] = (bytes[6] & 0x0f) | 0x40;
+  bytes[8] = (bytes[8] & 0x3f) | 0x80;
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
+
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+};
+
+const saveConversationId = (conversationId: string): void => {
+  try {
+    window.localStorage.setItem(conversationStorageKey, conversationId);
+  } catch {
+    // Storage can be unavailable in strict privacy modes. The in-memory ID
+    // still groups all turns until the page is refreshed.
+  }
+};
+
+const getConversationId = (): string => {
+  try {
+    const storedId = window.localStorage.getItem(conversationStorageKey);
+    if (storedId) return storedId;
+  } catch {
+    // Fall through and create an in-memory conversation ID.
+  }
+
+  const conversationId = createUuid();
+  saveConversationId(conversationId);
+  return conversationId;
+};
+
+const chatHistoryApiUrl = import.meta.env.VITE_CHAT_HISTORY_API_URL?.trim()
+  || (import.meta.env.DEV
+    ? 'http://localhost:8000/api/chat-history'
+    : `${import.meta.env.BASE_URL}api/chat-history`);
+
+const recordChatTurn = async ({
+  conversationId,
+  turnId,
+  userMessage,
+  assistantMessage,
+  status,
+  apiResponse,
+}: {
+  conversationId: string;
+  turnId: string;
+  userMessage: string;
+  assistantMessage: string;
+  status: 'completed' | 'error';
+  apiResponse?: ChatApiResponse;
+}): Promise<void> => {
+  const response = await fetch(chatHistoryApiUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    keepalive: true,
+    body: JSON.stringify({
+      conversationId,
+      turnId,
+      userMessage,
+      assistantMessage,
+      status,
+      metadata: {
+        tokenInfo: apiResponse?.tokenInfo ?? {},
+        contextInfo: apiResponse?.contextInfo ?? {},
+      },
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Chat history API returned ${response.status}`);
+  }
+};
+
 const welcomeMessage: Message = {
   role: 'assistant',
   content: 'Hi! Ask me about Koh Wei Zhen\'s experience and projects, or tell me about an opportunity—a role, client project, product idea, or collaboration. I\'ll connect it with relevant work and help you find a practical next step.'
@@ -34,6 +137,7 @@ const Chatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const conversationIdRef = useRef(getConversationId());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
@@ -54,6 +158,8 @@ const Chatbot: React.FC = () => {
     };
 
     const newMessages = [...messages, userMessage];
+    const conversationId = conversationIdRef.current;
+    const turnId = createUuid();
     setMessages(newMessages);
     setInputValue('');
     setIsLoading(true);
@@ -78,7 +184,7 @@ const Chatbot: React.FC = () => {
         throw new Error('Failed to get response');
       }
 
-      const data = await response.json();
+      const data = await response.json() as ChatApiResponse;
       
       // Debug logging
       // console.log('📦 Full API Response:', data);
@@ -101,12 +207,34 @@ const Chatbot: React.FC = () => {
         role: 'assistant',
         content: replyContent
       }]);
+
+      void recordChatTurn({
+        conversationId,
+        turnId,
+        userMessage: userMessage.content,
+        assistantMessage: replyContent,
+        status: 'completed',
+        apiResponse: data,
+      }).catch((historyError) => {
+        console.warn('Unable to record chat history:', historyError);
+      });
     } catch (error) {
       console.error('Error sending message:', error);
+      const errorReply = 'Sorry, I encountered an error. Please try again later.';
       setMessages([...newMessages, {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again later.'
+        content: errorReply
       }]);
+
+      void recordChatTurn({
+        conversationId,
+        turnId,
+        userMessage: userMessage.content,
+        assistantMessage: errorReply,
+        status: 'error',
+      }).catch((historyError) => {
+        console.warn('Unable to record failed chat turn:', historyError);
+      });
     } finally {
       setIsLoading(false);
     }
@@ -124,6 +252,9 @@ const Chatbot: React.FC = () => {
   };
 
   const resetChat = () => {
+    const conversationId = createUuid();
+    conversationIdRef.current = conversationId;
+    saveConversationId(conversationId);
     setMessages([welcomeMessage]);
     setInputValue('');
   };
