@@ -129,3 +129,22 @@ test("adds related work experience for a specific skill question", () => {
     ["skills-web-application", "experience-ck-group"],
   );
 });
+
+test("grounds broad job and collaboration questions in portfolio evidence", () => {
+  for (const question of [
+    "Would he be a good fit for our developer opening?",
+    "Can you help me decide whether to interview him?",
+    "Would he be interested in collaborating on a new product?",
+    "Could he help with a freelance client project?",
+  ]) {
+    const result = retrieve(question);
+
+    assert.ok(result.chunks.some((chunk) => chunk.id === "roles-focus"));
+    assert.ok(
+      result.chunks.some((chunk) => chunk.category === "experience"),
+    );
+    assert.ok(result.chunks.some((chunk) => chunk.category === "projects"));
+    assert.match(result.context, /Professional focus/);
+    assert.match(result.context, /work|developer/i);
+  }
+});

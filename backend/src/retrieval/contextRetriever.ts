@@ -169,6 +169,9 @@ const aliases: Record<string, string[]> = {
 const selfIntroductionPattern =
   /\b(who are you|about you|yourself|introduce yourself)\b/;
 
+const opportunityIntentPattern =
+  /\b(fit|hire|hiring|interview|opening|vacancy|recruiter|candidate|job description|position|opportunity|freelance|contract|client|collaborat|partner|partnership)\w*\b/;
+
 const categoryIntentPatterns: Array<{
   category: KnowledgeCategory;
   patterns: RegExp[];
@@ -430,6 +433,45 @@ export function retrieveRelevantContext(
     }
 
     addChunk(chunk);
+  }
+
+  // Opportunity questions may contain no technology or employer names to
+  // match against. Fill any spare context with a balanced overview so job,
+  // project, and collaboration advice stays grounded in real evidence.
+  if (opportunityIntentPattern.test(normalize(currentMessage))) {
+    const overviewCategories: KnowledgeCategory[] = [
+      "roles",
+      "experience",
+      "projects",
+    ];
+
+    const overviewByCategory = overviewCategories.map((category) =>
+      portfolioKnowledge
+        .filter((chunk) => chunk.category === category)
+        .sort(
+          (left, right) => (right.priority ?? 0) - (left.priority ?? 0),
+        ),
+    );
+
+    for (let index = 0; selected.length < maxChunks; index += 1) {
+      let foundChunk = false;
+
+      for (const categoryChunks of overviewByCategory) {
+        const chunk = categoryChunks[index];
+        if (chunk) {
+          foundChunk = true;
+          addChunk(chunk);
+        }
+
+        if (selected.length >= maxChunks) {
+          break;
+        }
+      }
+
+      if (!foundChunk) {
+        break;
+      }
+    }
   }
 
   const currentTerms = tokenize(currentMessage);

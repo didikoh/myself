@@ -6,6 +6,11 @@ interface Message {
   content: string;
 }
 
+const welcomeMessage: Message = {
+  role: 'assistant',
+  content: 'Hi! Ask me about Koh Wei Zhen\'s experience and projects, or tell me about an opportunity—a role, client project, product idea, or collaboration. I\'ll connect it with relevant work and help you find a practical next step.'
+};
+
 // Function to format Gemini response with proper styling
 const formatGeminiText = (text: string): string => {
   return text
@@ -26,12 +31,7 @@ const formatGeminiText = (text: string): string => {
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: 'Hi! I\'m here to help you learn more about my portfolio. Feel free to ask me anything!'
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -124,12 +124,7 @@ const Chatbot: React.FC = () => {
   };
 
   const resetChat = () => {
-    setMessages([
-      {
-        role: 'assistant',
-        content: 'Hi! I\'m here to help you learn more about my portfolio. Feel free to ask me anything!'
-      }
-    ]);
+    setMessages([welcomeMessage]);
     setInputValue('');
   };
 
@@ -226,7 +221,7 @@ const Chatbot: React.FC = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask me anything..."
+              placeholder="Ask about his work or explore an opportunity..."
               rows={1}
               disabled={isLoading}
             />
