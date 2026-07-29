@@ -1,4 +1,4 @@
-name: Deploy frontend
+name: Deploy frontend and API
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - "frontend/**"
+      - "api/**"
       - ".github/workflows/deploy-frontend.yml"
   workflow_dispatch:
 
@@ -18,7 +19,7 @@ concurrency:
 
 jobs:
   deploy:
-    name: Build and deploy frontend
+    name: Build and deploy frontend and API
     runs-on: ubuntu-latest
 
     env:
@@ -26,6 +27,7 @@ jobs:
       DEPLOY_PORT: ${{ secrets.SSH_PORT || '65002' }}
       DEPLOY_USER: ${{ secrets.SSH_USERNAME || 'u839013241' }}
       DEPLOY_PATH: /home/u839013241/domains/kooteefamily.com/public_html/portfolio
+      DEPLOY_URL: https://kooteefamily.com/portfolio
 
     steps:
       - name: Check out repository
@@ -46,6 +48,31 @@ jobs:
         working-directory: frontend
         run: npm run build
 
+      - name: Assemble deployment package
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          test -n "$DB_PASSWORD" || { echo "Missing DB_PASSWORD secret"; exit 1; }
+
+          install -d deploy-package/api
+          cp -a frontend/dist/. deploy-package/
+          cp -a api/. deploy-package/api/
+
+          encoded_password="$(printf '%s' "$DB_PASSWORD" | base64 -w 0)"
+          cat > deploy-package/api/config.php <<EOF
+          <?php
+
+          declare(strict_types=1);
+
+          // Generated during deployment from the GitHub DB_PASSWORD secret.
+          return [
+              'database' => [
+                  'password' => base64_decode('$encoded_password', true),
+              ],
+          ];
+          EOF
+          chmod 600 deploy-package/api/config.php
+
       - name: Configure SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -65,13 +92,19 @@ jobs:
           fi
           chmod 600 ~/.ssh/known_hosts
 
-      - name: Deploy frontend files
+      - name: Deploy frontend and API files
         run: |
           ssh -i ~/.ssh/deploy_key -p "$DEPLOY_PORT" \
             "$DEPLOY_USER@$DEPLOY_HOST" \
             "mkdir -p '$DEPLOY_PATH'"
 
-          rsync -az --delete --exclude='.htaccess' \
+          rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key -p $DEPLOY_PORT" \
-            frontend/dist/ \
+            deploy-package/ \
             "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+
+      - name: Verify deployed API
+        run: |
+          curl --fail --silent --show-error \
+            --retry 3 --retry-delay 2 \
+            "$DEPLOY_URL/api/health"

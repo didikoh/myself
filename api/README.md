@@ -29,6 +29,18 @@ Environment variables `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`,
 `DB_PASSWORD`, and comma-separated `CORS_ALLOWED_ORIGINS` can be used instead
 of `config.php` when the host supports them.
 
+### GitHub Actions deployment
+
+The repository workflow builds the frontend, adds this API under the same
+frontend path, and generates `api/config.php` during deployment. Add the
+database password as a GitHub Actions repository secret named `DB_PASSWORD`.
+The password is never committed to Git. Existing SSH deployment secrets are
+still required: `SSH_HOST` and `SSH_PRIVATE_KEY`. `SSH_PORT`, `SSH_USERNAME`,
+and `SSH_KNOWN_HOSTS` remain optional overrides.
+
+The workflow also checks `/portfolio/api/health` after uploading. The database
+schema must be imported once before the first deployment.
+
 ## Endpoint
 
 `POST /{frontend-path}/api/chat-history`
