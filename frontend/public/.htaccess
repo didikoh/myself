@@ -9,6 +9,10 @@
   RewriteCond %{REQUEST_URI} /api(?:/|$) [NC]
   RewriteRule ^ - [L]
 
+  # Missing media must return 404 rather than a cacheable HTML video response.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule \.(mp4|webm|mov)$ - [R=404,L,NC]
+
   # Handle frontend routes relative to whichever subdirectory contains the app.
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

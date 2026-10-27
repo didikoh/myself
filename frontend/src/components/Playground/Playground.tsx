@@ -2,10 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { usePortfolioData } from "../../data/usePortfolioData";
+import { getPublicAssetUrl } from "../../utils/publicAssetUrl";
 import styles from "./Playground.module.css";
-
-const getPublicAssetUrl = (path: string) =>
-  `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
 const Playground: React.FC = () => {
   const { t } = useTranslation();

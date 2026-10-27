@@ -9,6 +9,7 @@
 - `frontend/src/components/Skills/Skills.tsx` groups `timelineSkills` through `categoryBySkill`; classification depends on original English skill identifiers.
 - `frontend/src/components/Projects/Projects.tsx` handles featured ordering, per-project carousels, expansion, image gallery and video popups. Video buttons derive from `projects[].links` in `frontend/src/data/mockData.ts`; project `3` (Exsim Causewayz JBCC) has only a website link after removing its oversized `0930.mp4`. The removed `2D SideScroller game.mp4` has no reference in frontend source.
 - `frontend/src/components/Contact/Contact.tsx` owns form state and contact submission.
+- `frontend/src/utils/publicAssetUrl.ts` exports `getPublicAssetUrl`, joining Vite's base and public-relative paths with one slash; `Projects` (images/gallery/videos), `Playground`, and `About` use it. Data contains both leading-slash image paths and relative video paths. Guocoland's video link has `?v=20261027` to bypass a verified stale CDN HTML response; the versioned production URL returned `video/mp4` on 2026-10-27.
 - `frontend/src/components/Chatbot/Chatbot.tsx` owns conversation state and sends requests to the Node chat backend. `chatStream.ts` consumes streaming responses; chat history is posted separately to the PHP API.
 - `frontend/src/components/Hero/Hero.tsx` is a legacy component and is not imported by `App.tsx`.
 
@@ -25,6 +26,7 @@
 
 ## Frontend prerendering and deployment
 
+- `frontend/public/.htaccess` passes API requests through, returns 404 for missing MP4/WebM/MOV files before the SPA fallback, and rewrites other missing paths to `index.html`. This prevents missing video URLs from returning cacheable HTML; existing CDN cache entries still require a purge or a fresh URL.
 - `.github/workflows/deploy-frontend.yml` runs on `main` pushes touching `frontend/**`, `api/**`, or the workflow, and manual dispatch. It installs/builds the frontend, packages `frontend/dist` plus `api`, generates `api/config.php` from the `DB_PASSWORD` secret, then deploys with `rsync -az --delete` and checks `/api/health`. It does not deploy `backend` or protect server-only files from deletion.
 - The deployment workflow has no media download step or rsync exclusions; server-only media absent from the CI package can be deleted. Remaining project MP4 assets are included directly in Git for CI checkout. `api/.gitignore` excludes `/config.php`, which CI regenerates explicitly.
 - `frontend/src/entry-server.tsx` exports `render`, initializing English and rendering the same `App`/`StrictMode` tree as the client with `renderToString`. `entry-server.test.ts` checks deterministic rendering without browser APIs and the explicit hydration language.

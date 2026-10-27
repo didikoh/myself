@@ -110,7 +110,8 @@ export const projects: Project[] = [
       },
       {
         type: "video",
-        url: "projects/CKG/Guocoland_540/Guocoland_masterplan.mp4",
+        // Bypass the CDN's cached HTML response from before this file was deployed.
+        url: "projects/CKG/Guocoland_540/Guocoland_masterplan.mp4?v=20261027",
         label: "Video",
       },
     ],

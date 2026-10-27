@@ -18,6 +18,7 @@ import { FaGoogleDrive, FaReact, FaUnity } from "react-icons/fa";
 import { SiUnrealengine } from "react-icons/si";
 import { SlMagnifierAdd } from "react-icons/sl";
 import { usePortfolioData } from "../../data/usePortfolioData";
+import { getPublicAssetUrl } from "../../utils/publicAssetUrl";
 import type { ProjectLink, Project } from "../../types";
 import styles from "./Projects.module.css";
 import { IoLogoJavascript } from "react-icons/io";
@@ -310,7 +311,7 @@ const Projects: React.FC = () => {
                           currentImageIndices[project.id] || 0
                         }`}
                         src={
-                          import.meta.env.BASE_URL + project.images[currentImageIndices[project.id] || 0]
+                          getPublicAssetUrl(project.images[currentImageIndices[project.id] || 0])
                         }
                         alt={t("projects.projectImage", {
                           title: project.title,
@@ -500,7 +501,7 @@ const Projects: React.FC = () => {
                 <AnimatePresence mode="wait">
                   <motion.img
                     key={galleryIndex}
-                    src={import.meta.env.BASE_URL +galleryImages[galleryIndex]}
+                    src={getPublicAssetUrl(galleryImages[galleryIndex])}
                     alt={t("projects.galleryImage", { index: galleryIndex + 1 })}
                     className={styles.galleryImage}
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -566,7 +567,7 @@ const Projects: React.FC = () => {
 
                 <div className={styles.videoContent} onClick={(e) => e.stopPropagation()}>
                 <motion.video
-                  src={import.meta.env.BASE_URL + videoUrl}
+                  src={getPublicAssetUrl(videoUrl)}
                   controls
                   autoPlay
                   className={styles.videoPlayer}

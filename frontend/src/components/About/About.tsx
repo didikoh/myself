@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from 'react-i18next';
 import { usePortfolioData } from '../../data/usePortfolioData';
+import { getPublicAssetUrl } from '../../utils/publicAssetUrl';
 import styles from "./About.module.css";
 import { FaGoogleDrive } from "react-icons/fa6";
 import enfp from "../../assets/enfp.webp";
@@ -160,7 +161,7 @@ const About: React.FC = () => {
                   key={index}
                   className={styles.funFactItem}
                   style={{
-                    backgroundImage: `url(${import.meta.env.BASE_URL}${fact.src})`,
+                    backgroundImage: `url(${getPublicAssetUrl(fact.src)})`,
                     backgroundBlendMode: 'overlay',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
