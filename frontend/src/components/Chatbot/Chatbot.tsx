@@ -131,10 +131,14 @@ const Chatbot: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
-  const conversationIdRef = useRef(getConversationId());
+  const conversationIdRef = useRef<string | null>(null);
   const activeRequestRef = useRef<AbortController | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    conversationIdRef.current ??= getConversationId();
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -157,7 +161,7 @@ const Chatbot: React.FC = () => {
     };
 
     const newMessages = [...messages, userMessage];
-    const conversationId = conversationIdRef.current;
+    const conversationId = conversationIdRef.current ??= getConversationId();
     const turnId = createUuid();
     const requestController = new AbortController();
     activeRequestRef.current = requestController;

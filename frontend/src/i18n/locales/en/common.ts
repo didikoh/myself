@@ -6,6 +6,7 @@ const common = {
   },
   nav: {
     label: 'Main navigation', home: 'Home', about: 'About', experience: 'Experience',
+    backToTop: '{{name}} — Back to top',
     skills: 'Skills', projects: 'Projects', playground: 'Playground', contact: 'Contact',
     openMenu: 'Open navigation menu', closeMenu: 'Close navigation menu',
     language: 'Language', switchChinese: 'Switch to Chinese', switchEnglish: 'Switch to English',

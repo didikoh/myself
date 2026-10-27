@@ -81,3 +81,10 @@ html {
   background: var(--color-accent);
 }
 
+/* Show build-time content while scripts load (or if loading fails).
+   App removes the marker after hydration so motion keeps its normal behavior. */
+#root[data-prerendered="en"] [style] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+

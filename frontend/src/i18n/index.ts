@@ -21,14 +21,17 @@ function updateDocumentLanguage(): void {
   document.documentElement.lang = i18n.resolvedLanguage === 'zh' ? 'zh-CN' : 'en';
   document.title = i18n.t('page.title');
   document.querySelector('meta[name="description"]')?.setAttribute('content', i18n.t('page.description'));
+  document.querySelector('meta[property="og:title"]')?.setAttribute('content', i18n.t('page.title'));
+  document.querySelector('meta[property="og:description"]')?.setAttribute('content', i18n.t('page.description'));
+  document.querySelector('meta[property="og:locale"]')?.setAttribute('content', i18n.resolvedLanguage === 'zh' ? 'zh_CN' : 'en_US');
 }
 
 i18n.on('languageChanged', updateDocumentLanguage);
 
-export async function initializeI18n(): Promise<void> {
+export async function initializeI18n(language: SupportedLanguage = detectLanguage()): Promise<void> {
   await i18n.use(initReactI18next).init({
     resources,
-    lng: detectLanguage(),
+    lng: language,
     supportedLngs: ['en', 'zh'],
     fallbackLng: 'en',
     load: 'languageOnly',

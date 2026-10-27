@@ -46,7 +46,16 @@ describe('default language', () => {
     const storage = new Map<string, string>();
     const setItem = vi.fn((key: string, value: string) => { storage.set(key, value); });
     const description = { setAttribute: vi.fn() };
-    const documentStub = { documentElement: { lang: '' }, title: '', querySelector: () => description };
+    const ogTitle = { setAttribute: vi.fn() };
+    const ogDescription = { setAttribute: vi.fn() };
+    const ogLocale = { setAttribute: vi.fn() };
+    const metadata: Record<string, typeof description> = {
+      'meta[name="description"]': description,
+      'meta[property="og:title"]': ogTitle,
+      'meta[property="og:description"]': ogDescription,
+      'meta[property="og:locale"]': ogLocale,
+    };
+    const documentStub = { documentElement: { lang: '' }, title: '', querySelector: (selector: string) => metadata[selector] };
     vi.stubGlobal('window', { localStorage: { getItem: (key: string) => storage.get(key) ?? null, setItem } });
     vi.stubGlobal('navigator', { languages: ['zh-CN'], language: 'zh-CN' });
     vi.stubGlobal('document', documentStub);
@@ -55,12 +64,16 @@ describe('default language', () => {
     expect(i18n.resolvedLanguage).toBe('zh');
     expect(documentStub.documentElement.lang).toBe('zh-CN');
     expect(documentStub.title).toContain('个人作品集');
+    expect(ogTitle.setAttribute).toHaveBeenLastCalledWith('content', i18n.t('page.title'));
+    expect(ogLocale.setAttribute).toHaveBeenLastCalledWith('content', 'zh_CN');
     expect(setItem).not.toHaveBeenCalled();
 
     await changeLanguage('en');
     expect(documentStub.documentElement.lang).toBe('en');
     expect(documentStub.title).toBe('Portfolio - KOH WEI ZHEN');
     expect(description.setAttribute).toHaveBeenLastCalledWith('content', i18n.t('page.description'));
+    expect(ogDescription.setAttribute).toHaveBeenLastCalledWith('content', i18n.t('page.description'));
+    expect(ogLocale.setAttribute).toHaveBeenLastCalledWith('content', 'en_US');
     expect(setItem).toHaveBeenCalledWith(languageStorageKey, 'en');
     expect(detectLanguage()).toBe('en');
   });

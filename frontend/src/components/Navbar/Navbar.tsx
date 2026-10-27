@@ -8,6 +8,8 @@ import styles from './Navbar.module.css';
 const Navbar: React.FC = () => {
   const { t, i18n } = useTranslation();
   const language = i18n.resolvedLanguage === 'zh' ? 'zh' : 'en';
+  const nextLanguage = language === 'zh' ? 'en' : 'zh';
+  const languageToggleLabel = t(nextLanguage === 'zh' ? 'nav.switchChinese' : 'nav.switchEnglish');
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -47,14 +49,18 @@ const Navbar: React.FC = () => {
       transition={{ duration: 0.6 }}
     >
       <div className={styles.navContainer}>
-        <motion.div 
+        <button
+          type="button"
           className={styles.logo}
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 300 }}
+          aria-label={t('nav.backToTop', { name: t('identity.name') })}
+          onClick={() => {
+            setIsMobileMenuOpen(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
         >
-          <span className={styles.catIcon}>🐱</span>
+          <span className={styles.catIcon} aria-hidden="true">🐱</span>
           <span>{t('identity.name')}</span>
-        </motion.div>
+        </button>
 
         {/* Desktop Navigation */}
         <ul className={styles.navLinks}>
@@ -80,29 +86,29 @@ const Navbar: React.FC = () => {
         </ul>
 
         <div className={styles.navActions}>
-          <div className={styles.languageSwitcher} role="group" aria-label={t('nav.language')}>
-            <button
-              type="button"
-              className={`${styles.languageButton} ${language === 'zh' ? styles.activeLanguage : ''}`}
-              aria-label={t('nav.switchChinese')}
-              aria-pressed={language === 'zh'}
+          <button
+            type="button"
+            className={styles.languageSwitcher}
+            aria-label={languageToggleLabel}
+            title={languageToggleLabel}
+            onClick={() => { void changeLanguage(nextLanguage); }}
+          >
+            <span
+              className={`${styles.languageOption} ${language === 'zh' ? styles.activeLanguage : ''}`}
+              aria-hidden="true"
               lang="zh-CN"
-              onClick={() => { void changeLanguage('zh'); }}
             >
               中文
-            </button>
+            </span>
             <span aria-hidden="true">/</span>
-            <button
-              type="button"
-              className={`${styles.languageButton} ${language === 'en' ? styles.activeLanguage : ''}`}
-              aria-label={t('nav.switchEnglish')}
-              aria-pressed={language === 'en'}
+            <span
+              className={`${styles.languageOption} ${language === 'en' ? styles.activeLanguage : ''}`}
+              aria-hidden="true"
               lang="en"
-              onClick={() => { void changeLanguage('en'); }}
             >
               EN
-            </button>
-          </div>
+            </span>
+          </button>
           <button
             type="button"
             className={styles.mobileMenuButton}

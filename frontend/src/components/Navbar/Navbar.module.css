@@ -28,6 +28,7 @@
 .logo {
   font-size: 1.5rem;
   font-weight: 700;
+  line-height: inherit;
   color: var(--color-text-primary);
   display: flex;
   align-items: center;
@@ -71,7 +72,11 @@
   color: var(--color-text-secondary);
 }
 
-.languageButton {
+.languageSwitcher:hover {
+  border-color: var(--color-accent);
+}
+
+.languageOption {
   padding: 0.35rem 0.45rem;
   border-radius: 14px;
   color: var(--color-text-secondary);
@@ -79,7 +84,6 @@
   white-space: nowrap;
 }
 
-.languageButton:hover,
 .activeLanguage {
   color: var(--color-text-primary);
   background: var(--color-surface);

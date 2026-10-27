@@ -6,6 +6,7 @@ const common = {
   },
   nav: {
     label: '主导航', home: '首页', about: '关于我', experience: '工作经历',
+    backToTop: '{{name}} — 回到顶部',
     skills: '技能', projects: '项目', playground: '实验室', contact: '联系我',
     openMenu: '展开导航菜单', closeMenu: '收起导航菜单',
     language: '语言', switchChinese: '切换到中文', switchEnglish: '切换到英文',

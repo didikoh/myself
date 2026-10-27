@@ -61,8 +61,8 @@ describe('translation resources', () => {
       expect(html.includes(escaped), text).toBe(true);
     }
     expect(html).not.toMatch(/\{\{|portfolio\.projects|skills\.categories/);
-    expect(html).toContain(`aria-label="${language === 'zh' ? '切换到中文' : 'Switch to Chinese'}" aria-pressed="${language === 'zh'}"`);
-    expect(html).toContain(`aria-label="${language === 'zh' ? '切换到英文' : 'Switch to English'}" aria-pressed="${language === 'en'}"`);
+    expect(html).toContain(`aria-label="${language === 'zh' ? '切换到英文' : 'Switch to Chinese'}"`);
+    expect(html).not.toContain(`aria-label="${language === 'zh' ? '切换到中文' : 'Switch to English'}"`);
   });
 
   it('translates every portfolio entry while preserving metadata and the English source', async () => {
