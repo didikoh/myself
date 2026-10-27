@@ -156,11 +156,6 @@ export const projects: Project[] = [
         url: "https://causewayz.com.my/",
         label: "Website",
       },
-      {
-        type: "video",
-        url: "projects/CKG/Causewayz_Exsim/0930.mp4",
-        label: "Video",
-      },
     ],
     featured: true,
   },
