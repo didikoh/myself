@@ -1,9 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { workExperiences } from '../../data/mockData';
+import { useTranslation } from 'react-i18next';
+import { usePortfolioData } from '../../data/usePortfolioData';
 import styles from './Experience.module.css';
 
 const Experience: React.FC = () => {
+  const { t } = useTranslation();
+  const { workExperiences } = usePortfolioData();
   return (
     <section id="experience" className={styles.experience}>
       <div className={styles.container}>
@@ -13,7 +16,7 @@ const Experience: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.sectionTitle}>Work Experience</h2>
+          <h2 className={styles.sectionTitle}>{t('experience.title')}</h2>
         </motion.div>
 
         <div className={styles.timeline}>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -11,10 +12,13 @@ import {
   Facebook,
   Instagram,
 } from "lucide-react";
-import { personalInfo, socialLinks } from "../../data/mockData";
+import { socialLinks } from "../../data/mockData";
+import { usePortfolioData } from "../../data/usePortfolioData";
 import styles from "./Contact.module.css";
 
 const Contact: React.FC = () => {
+  const { t } = useTranslation();
+  const { personalInfo } = usePortfolioData();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -82,7 +86,7 @@ const Contact: React.FC = () => {
       } else {
         setSubmitStatus("error");
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -145,10 +149,9 @@ const Contact: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.title}>Get In Touch</h2>
+          <h2 className={styles.title}>{t("contact.title")}</h2>
           <p className={styles.subtitle}>
-            I'm always excited to discuss new opportunities, interesting
-            projects, or just chat about technology and cats! 🐱
+            {t("contact.subtitle")}
           </p>
         </motion.div>
 
@@ -160,11 +163,9 @@ const Contact: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className={styles.contactTitle}>Let's work together!</h3>
+            <h3 className={styles.contactTitle}>{t("contact.workTogether")}</h3>
             <p className={styles.contactText}>
-              Whether you have a project in mind, want to collaborate, or just
-              want to say hello, I'd love to hear from you. Drop me a message
-              and I'll get back to you as soon as possible.
+              {t("contact.description")}
             </p>
 
             <motion.div
@@ -187,7 +188,7 @@ const Contact: React.FC = () => {
                   <Phone size={20} />
                 </div>
                 <div className={styles.contactDetails}>
-                  <div className={styles.contactLabel}>WhatsApp</div>
+                  <div className={styles.contactLabel}>{t("contact.whatsapp")}</div>
                   <div className={styles.contactValue}>+60 18-219 8225</div>
                 </div>
               </motion.a>
@@ -203,7 +204,7 @@ const Contact: React.FC = () => {
                   <Mail size={20} />
                 </div>
                 <div className={styles.contactDetails}>
-                  <div className={styles.contactLabel}>Email</div>
+                  <div className={styles.contactLabel}>{t("contact.email")}</div>
                   <div className={styles.contactValue}>
                     {personalInfo.email}
                   </div>
@@ -219,9 +220,9 @@ const Contact: React.FC = () => {
                   <MapPin size={20} />
                 </div>
                 <div className={styles.contactDetails}>
-                  <div className={styles.contactLabel}>Location</div>
+                  <div className={styles.contactLabel}>{t("contact.location")}</div>
                   <div className={styles.contactValue}>
-                    Based in Kuala Lumpur, Malaysia<br/> Able to work remotely worldwide
+                    {t("contact.basedIn")}<br />{t("contact.remoteWork")}
                   </div>
                 </div>
               </motion.div>
@@ -236,11 +237,11 @@ const Contact: React.FC = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <form className={styles.contactForm} onSubmit={handleSubmit}>
-              <h3 className={styles.formTitle}>Send me a message</h3>
+              <h3 className={styles.formTitle}>{t("contact.formTitle")}</h3>
 
               <div className={styles.formGroup}>
                 <label htmlFor="name" className={styles.formLabel}>
-                  Name
+                  {t("contact.name")}
                 </label>
                 <input
                   type="text"
@@ -250,13 +251,13 @@ const Contact: React.FC = () => {
                   onChange={handleInputChange}
                   className={styles.formInput}
                   required
-                  placeholder="Your name"
+                  placeholder={t("contact.namePlaceholder")}
                 />
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="email" className={styles.formLabel}>
-                  Email
+                  {t("contact.email")}
                 </label>
                 <input
                   type="email"
@@ -266,13 +267,13 @@ const Contact: React.FC = () => {
                   onChange={handleInputChange}
                   className={styles.formInput}
                   required
-                  placeholder="your.email@example.com"
+                  placeholder={t("contact.emailPlaceholder")}
                 />
               </div>
 
               <div className={styles.formGroup}>
                 <label htmlFor="message" className={styles.formLabel}>
-                  Message
+                  {t("contact.message")}
                 </label>
                 <textarea
                   id="message"
@@ -281,20 +282,20 @@ const Contact: React.FC = () => {
                   onChange={handleInputChange}
                   className={styles.formTextarea}
                   required
-                  placeholder="Your message..."
+                  placeholder={t("contact.messagePlaceholder")}
                   rows={5}
                 />
               </div>
 
               {submitStatus === "success" && (
                 <div className={styles.successMessage}>
-                  ✅ Thank you! Your message has been sent.
+                  ✅ {t("contact.success")}
                 </div>
               )}
 
               {submitStatus === "error" && (
                 <div className={styles.errorMessage}>
-                  ❌ Sorry, something went wrong. Please try again later.
+                  ❌ {t("contact.error")}
                 </div>
               )}
 
@@ -306,7 +307,7 @@ const Contact: React.FC = () => {
                 whileTap={{ scale: 0.98 }}
               >
                 <Send size={18} />
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? t("contact.sending") : t("contact.send")}
               </motion.button>
             </form>
           </motion.div>
@@ -319,7 +320,7 @@ const Contact: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <h3 className={styles.socialTitle}>Connect with me</h3>
+          <h3 className={styles.socialTitle}>{t("contact.connect")}</h3>
           <motion.div
             className={styles.socialLinks}
             variants={containerVariants}

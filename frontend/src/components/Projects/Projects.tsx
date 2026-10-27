@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Github,
@@ -16,12 +17,14 @@ import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import { FaGoogleDrive, FaReact, FaUnity } from "react-icons/fa";
 import { SiUnrealengine } from "react-icons/si";
 import { SlMagnifierAdd } from "react-icons/sl";
-import { projects } from "../../data/mockData";
+import { usePortfolioData } from "../../data/usePortfolioData";
 import type { ProjectLink, Project } from "../../types";
 import styles from "./Projects.module.css";
 import { IoLogoJavascript } from "react-icons/io";
 
 const Projects: React.FC = () => {
+  const { t } = useTranslation();
+  const { projects } = usePortfolioData();
   const [currentImageIndices, setCurrentImageIndices] = useState<{
     [key: string]: number;
   }>({});
@@ -62,22 +65,26 @@ const Projects: React.FC = () => {
     }
   };
 
-  const getLinkLabel = (type: ProjectLink["type"]) => {
+  const getLinkLabel = (type: ProjectLink["type"], label?: string) => {
+    if (label && !["GitHub", "YouTube", "Video", "Demo", "Website", "Download", "Link"].includes(label)) {
+      return label;
+    }
+
     switch (type) {
       case "github":
-        return "GitHub";
+        return t("projects.links.github");
       case "youtube":
-        return "YouTube";
+        return t("projects.links.youtube");
       case "video":
-        return "Video";
+        return t("projects.links.video");
       case "demo":
-        return "Demo";
+        return t("projects.links.demo");
       case "website":
-        return "Website";
+        return t("projects.links.website");
       case "download":
-        return "Download";
+        return t("projects.links.download");
       default:
-        return "Link";
+        return t("projects.links.link");
     }
   };
 
@@ -163,10 +170,10 @@ const Projects: React.FC = () => {
     document.body.style.overflow = 'hidden';
   };
 
-  const closeGallery = () => {
+  const closeGallery = useCallback(() => {
     setGalleryOpen(false);
     document.body.style.overflow = 'auto';
-  };
+  }, []);
 
   const openVideoPopup = (url: string) => {
     setVideoUrl(url);
@@ -174,19 +181,19 @@ const Projects: React.FC = () => {
     document.body.style.overflow = 'hidden';
   };
 
-  const closeVideoPopup = () => {
+  const closeVideoPopup = useCallback(() => {
     setVideoPopupOpen(false);
     setVideoUrl("");
     document.body.style.overflow = 'auto';
-  };
+  }, []);
 
-  const nextGalleryImage = () => {
+  const nextGalleryImage = useCallback(() => {
     setGalleryIndex((prev) => (prev + 1) % galleryImages.length);
-  };
+  }, [galleryImages.length]);
 
-  const prevGalleryImage = () => {
+  const prevGalleryImage = useCallback(() => {
     setGalleryIndex((prev) => (prev - 1 + galleryImages.length) % galleryImages.length);
-  };
+  }, [galleryImages.length]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -202,7 +209,7 @@ const Projects: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [galleryOpen, galleryImages.length, videoPopupOpen]);
+  }, [galleryOpen, videoPopupOpen, closeGallery, closeVideoPopup, nextGalleryImage, prevGalleryImage]);
 
   useEffect(() => {
     // 组件卸载时清理所有定时器
@@ -244,10 +251,9 @@ const Projects: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.title}>My Projects</h2>
+          <h2 className={styles.title}>{t("projects.title")}</h2>
           <p className={styles.subtitle}>
-            Here are some of the projects I've worked on. Each one represents a
-            learning journey and a step forward in my development skills.
+            {t("projects.subtitle")}
           </p>
         </motion.div>
 
@@ -278,7 +284,7 @@ const Projects: React.FC = () => {
                 {project.featured && (
                   <div className={styles.featuredBadge}>
                     <Star size={12} fill="currentColor" />
-                    Featured
+                    {t("projects.featured")}
                   </div>
                 )}
 
@@ -293,7 +299,7 @@ const Projects: React.FC = () => {
                     <button
                       className={styles.enlargeButton}
                       onClick={() => openGallery(project.images, currentImageIndices[project.id] || 0)}
-                      aria-label="Enlarge image"
+                      aria-label={t("projects.enlargeImage")}
                     >
                       <SlMagnifierAdd size={20} />
                     </button>
@@ -306,9 +312,10 @@ const Projects: React.FC = () => {
                         src={
                           import.meta.env.BASE_URL + project.images[currentImageIndices[project.id] || 0]
                         }
-                        alt={`${project.title} - Image ${
-                          (currentImageIndices[project.id] || 0) + 1
-                        }`}
+                        alt={t("projects.projectImage", {
+                          title: project.title,
+                          index: (currentImageIndices[project.id] || 0) + 1,
+                        })}
                         className={styles.projectImage}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -324,7 +331,7 @@ const Projects: React.FC = () => {
                           onClick={() =>
                             prevImage(project.id, project.images.length, true)
                           }
-                          aria-label="Previous image"
+                          aria-label={t("projects.previousImage")}
                         >
                           <ChevronLeft size={20} />
                         </button>
@@ -334,7 +341,7 @@ const Projects: React.FC = () => {
                           onClick={() =>
                             nextImage(project.id, project.images.length, true)
                           }
-                          aria-label="Next image"
+                          aria-label={t("projects.nextImage")}
                         >
                           <ChevronRight size={20} />
                         </button>
@@ -354,7 +361,7 @@ const Projects: React.FC = () => {
                                   [project.id]: index,
                                 }))
                               }
-                              aria-label={`Go to image ${index + 1}`}
+                              aria-label={t("projects.goToImage", { index: index + 1 })}
                             />
                           ))}
                         </div>
@@ -402,7 +409,7 @@ const Projects: React.FC = () => {
                             whileTap={{ scale: 0.95 }}
                           >
                             <IconComponent size={16} />
-                            {link.label || getLinkLabel(link.type)}
+                            {getLinkLabel(link.type, link.label)}
                           </motion.button>
                         );
                       }
@@ -418,7 +425,7 @@ const Projects: React.FC = () => {
                           whileTap={{ scale: 0.95 }}
                         >
                           <IconComponent size={16} />
-                          {link.label || getLinkLabel(link.type)}
+                          {getLinkLabel(link.type, link.label)}
                         </motion.a>
                       );
                     })}
@@ -444,7 +451,7 @@ const Projects: React.FC = () => {
               whileTap={{ scale: 0.95 }}
             >
               <MdExpandMore size={20} />
-              View All Projects
+              {t("projects.viewAll")}
             </motion.button>
           ) : (
             <>
@@ -457,7 +464,7 @@ const Projects: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <FaGoogleDrive size={20} />
-                View More
+                {t("projects.viewMore")}
               </motion.a>
               <motion.button
                 onClick={() => setIsExpanded(false)}
@@ -466,7 +473,7 @@ const Projects: React.FC = () => {
                 whileTap={{ scale: 0.95 }}
               >
                 <MdExpandLess size={20} />
-                Collapse
+                {t("projects.collapse")}
               </motion.button>
             </>
           )}
@@ -484,7 +491,7 @@ const Projects: React.FC = () => {
               <button
                 className={styles.galleryCloseButton}
                 onClick={closeGallery}
-                aria-label="Close gallery"
+                aria-label={t("projects.closeGallery")}
               >
                 <X size={30} />
               </button>
@@ -494,7 +501,7 @@ const Projects: React.FC = () => {
                   <motion.img
                     key={galleryIndex}
                     src={import.meta.env.BASE_URL +galleryImages[galleryIndex]}
-                    alt={`Gallery image ${galleryIndex + 1}`}
+                    alt={t("projects.galleryImage", { index: galleryIndex + 1 })}
                     className={styles.galleryImage}
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -508,7 +515,7 @@ const Projects: React.FC = () => {
                     <button
                       className={`${styles.galleryNavButton} ${styles.galleryNavLeft}`}
                       onClick={prevGalleryImage}
-                      aria-label="Previous image"
+                      aria-label={t("projects.previousImage")}
                     >
                       <ChevronLeft size={30} />
                     </button>
@@ -516,7 +523,7 @@ const Projects: React.FC = () => {
                     <button
                       className={`${styles.galleryNavButton} ${styles.galleryNavRight}`}
                       onClick={nextGalleryImage}
-                      aria-label="Next image"
+                      aria-label={t("projects.nextImage")}
                     >
                       <ChevronRight size={30} />
                     </button>
@@ -529,7 +536,7 @@ const Projects: React.FC = () => {
                             index === galleryIndex ? styles.galleryDotActive : ''
                           }`}
                           onClick={() => setGalleryIndex(index)}
-                          aria-label={`Go to image ${index + 1}`}
+                          aria-label={t("projects.goToImage", { index: index + 1 })}
                         />
                       ))}
                     </div>
@@ -552,7 +559,7 @@ const Projects: React.FC = () => {
               <button
                 className={styles.videoCloseButton}
                 onClick={closeVideoPopup}
-                aria-label="Close video"
+                aria-label={t("projects.closeVideo")}
               >
                 <X size={30} />
               </button>

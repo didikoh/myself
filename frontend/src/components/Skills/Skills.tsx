@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { timelineSkills } from '../../data/mockData';
 import styles from './Skills.module.css';
 
@@ -91,51 +92,14 @@ const categoryBySkill: Record<string, SkillCategory> = {
 const catalogCategories: Array<{
   key: SkillCategory;
   index: string;
-  title: string;
-  description: string;
 }> = [
-  {
-    key: 'frontend',
-    index: '01',
-    title: 'Frontend',
-    description: 'Web interfaces, client state, and interactive browser experiences.',
-  },
-  {
-    key: 'backend',
-    index: '02',
-    title: 'Backend & Data',
-    description: 'APIs, server frameworks, authentication, databases, and data services.',
-  },
-  {
-    key: 'game',
-    index: '03',
-    title: 'Game, 3D & XR',
-    description: 'Gameplay, real-time 3D, immersive platforms, and streaming.',
-  },
-  {
-    key: 'ai',
-    index: '04',
-    title: 'AI & Automation',
-    description: 'LLM integration, RAG, automation, and multi-agent workflows.',
-  },
-  {
-    key: 'devops',
-    index: '05',
-    title: 'DevOps & Infrastructure',
-    description: 'Deployment pipelines, servers, process management, and networking.',
-  },
-  {
-    key: 'tools',
-    index: '06',
-    title: 'Tools & Design',
-    description: 'Testing, interface design, and supporting production tools.',
-  },
-  {
-    key: 'other',
-    index: '07',
-    title: 'Other',
-    description: 'Additional skills from the learning timeline.',
-  },
+  { key: 'frontend', index: '01' },
+  { key: 'backend', index: '02' },
+  { key: 'game', index: '03' },
+  { key: 'ai', index: '04' },
+  { key: 'devops', index: '05' },
+  { key: 'tools', index: '06' },
+  { key: 'other', index: '07' },
 ];
 
 const skillCatalog = catalogCategories
@@ -150,6 +114,9 @@ const skillCatalog = catalogCategories
   .filter((category) => category.skills.length > 0);
 
 const Skills: React.FC = () => {
+  const { t } = useTranslation();
+  const skillNames = t('skills.names', { returnObjects: true }) as Record<string, string>;
+  const skillLabel = (skill: string) => skillNames[skill] ?? skill;
   return (
     <section id="skills" className={styles.skills}>
       <div className={styles.container}>
@@ -161,10 +128,9 @@ const Skills: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.title}>My Skills Journey</h2>
+          <h2 className={styles.title}>{t('skills.title')}</h2>
           <p className={styles.subtitle}>
-            From my first line of code to cutting-edge technologies - 
-            here's my learning journey through the years
+            {t('skills.subtitle')}
           </p>
         </motion.div>
 
@@ -176,7 +142,7 @@ const Skills: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <h3 className={styles.sectionTitle}>Learning Timeline</h3>
+          <h3 className={styles.sectionTitle}>{t('skills.timeline')}</h3>
           <div className={styles.timelineWrapper}>
             <div className={styles.timeline}>
               <div className={styles.timelineLine} />
@@ -194,7 +160,7 @@ const Skills: React.FC = () => {
                     <div className={styles.timelineDate}>
                       {item.month} {item.year}
                     </div>
-                    <div className={styles.timelineSkill}>{item.skill}</div>
+                    <div className={styles.timelineSkill}>{skillLabel(item.skill)}</div>
                   </div>
                 </motion.div>
               ))}
@@ -211,9 +177,9 @@ const Skills: React.FC = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
         >
           <div className={styles.catalogIntro}>
-            <h3 className={styles.sectionTitle}>Skill Catalog</h3>
+            <h3 className={styles.sectionTitle}>{t('skills.catalog')}</h3>
             <p className={styles.catalogDescription}>
-              Every skill from my learning timeline, organized by area of expertise.
+              {t('skills.catalogDescription')}
             </p>
           </div>
 
@@ -231,15 +197,14 @@ const Skills: React.FC = () => {
                   <div className={styles.catalogGroupHeading}>
                     <span className={styles.categoryIndex}>{category.index}</span>
                     <div>
-                      <h4 className={styles.categoryTitle}>{category.title}</h4>
+                      <h4 className={styles.categoryTitle}>{t(`skills.categories.${category.key}.title`)}</h4>
                       <p className={styles.categoryDescription}>
-                        {category.description}
+                        {t(`skills.categories.${category.key}.description`)}
                       </p>
                     </div>
                   </div>
                   <span className={styles.categoryCount}>
-                    {category.skills.length}{' '}
-                    {category.skills.length === 1 ? 'skill' : 'skills'}
+                    {t('skills.count', { count: category.skills.length })}
                   </span>
                 </div>
 
@@ -252,7 +217,7 @@ const Skills: React.FC = () => {
                       transition={{ duration: 0.2 }}
                     >
                       <span className={styles.skillMarker} aria-hidden="true" />
-                      <span className={styles.skillName}>{skill}</span>
+                      <span className={styles.skillName}>{skillLabel(skill)}</span>
                     </motion.li>
                   ))}
                 </ul>

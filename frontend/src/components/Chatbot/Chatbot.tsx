@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './Chatbot.module.css';
 import { consumeChatStream } from './chatStream';
 import type { ChatApiResponse } from './chatStream';
@@ -6,6 +7,8 @@ import type { ChatApiResponse } from './chatStream';
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+  translationKey?: string;
+  translationPrefix?: string;
 }
 
 const conversationStorageKey = 'portfolio-chat-conversation-id';
@@ -99,7 +102,8 @@ const recordChatTurn = async ({
 
 const welcomeMessage: Message = {
   role: 'assistant',
-  content: 'Hi! Ask me about Koh Wei Zhen\'s experience and projects, or tell me about an opportunity—a role, client project, product idea, or collaboration. I\'ll connect it with relevant work and help you find a practical next step.'
+  content: 'Hi! Ask me about Koh Wei Zhen\'s experience and projects, or tell me about an opportunity—a role, client project, product idea, or collaboration. I\'ll connect it with relevant work and help you find a practical next step.',
+  translationKey: 'chatbot.welcome',
 };
 
 // Function to format Gemini response with proper styling
@@ -121,6 +125,7 @@ const formatGeminiText = (text: string): string => {
 };
 
 const Chatbot: React.FC = () => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([welcomeMessage]);
   const [inputValue, setInputValue] = useState('');
@@ -175,13 +180,13 @@ const Chatbot: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: newMessages
+          messages: newMessages.map(({ role, content }) => ({ role, content }))
         }),
         signal: requestController.signal,
       });
 
       if (!response.ok) {
-        let errorMessage = 'Failed to get response';
+        let errorMessage = t('chatbot.requestError');
 
         try {
           const errorData = await response.json() as { error?: string };
@@ -231,13 +236,13 @@ const Chatbot: React.FC = () => {
         });
       }
       
-      if (!replyContent.trim()) {
-        replyContent = 'I apologize, but I couldn\'t generate a response. Please try asking your question differently.';
-      }
+      const emptyReply = !replyContent.trim();
+      if (emptyReply) replyContent = t('chatbot.emptyReply');
       
       setMessages([...newMessages, {
         role: 'assistant',
-        content: replyContent
+        content: replyContent,
+        ...(emptyReply ? { translationKey: 'chatbot.emptyReply' } : {}),
       }]);
 
       void recordChatTurn({
@@ -256,12 +261,14 @@ const Chatbot: React.FC = () => {
       }
 
       console.error('Error sending message:', error);
-      const errorReply = streamedReply
-        ? `${streamedReply}\n\nSorry, the response was interrupted. Please try again.`
-        : 'Sorry, I encountered an error. Please try again later.';
+      const translationKey = streamedReply ? 'chatbot.interrupted' : 'chatbot.error';
+      const translationPrefix = streamedReply ? `${streamedReply}\n\n` : '';
+      const errorReply = `${translationPrefix}${t(translationKey)}`;
       setMessages([...newMessages, {
         role: 'assistant',
-        content: errorReply
+        content: errorReply,
+        translationKey,
+        translationPrefix,
       }]);
 
       void recordChatTurn({
@@ -283,7 +290,7 @@ const Chatbot: React.FC = () => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey && !e.nativeEvent.isComposing) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -311,7 +318,7 @@ const Chatbot: React.FC = () => {
       <button
         className={`${styles.floatingButton} ${isOpen ? styles.open : ''}`}
         onClick={toggleChat}
-        aria-label="Toggle chat"
+        aria-label={t('chatbot.toggle')}
       >
         {isOpen ? (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -329,13 +336,13 @@ const Chatbot: React.FC = () => {
       {isOpen && (
         <div className={styles.chatContainer} ref={chatContainerRef}>
           <div className={styles.chatHeader}>
-            <h3>Portfolio Assistant</h3>
+            <h3>{t('chatbot.title')}</h3>
             <div className={styles.headerButtons}>
               <button 
                 className={styles.resetButton} 
                 onClick={resetChat}
-                aria-label="Reset chat"
-                title="Reset chat"
+                aria-label={t('chatbot.reset')}
+                title={t('chatbot.reset')}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="1 4 1 10 7 10" />
@@ -346,7 +353,7 @@ const Chatbot: React.FC = () => {
               <button 
                 className={styles.closeButton} 
                 onClick={toggleChat}
-                aria-label="Close chat"
+                aria-label={t('chatbot.close')}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="18" y1="6" x2="6" y2="18" />
@@ -372,7 +379,9 @@ const Chatbot: React.FC = () => {
                   <div 
                     className={styles.messageContent}
                     dangerouslySetInnerHTML={{ 
-                      __html: formatGeminiText(message.content || '')
+                      __html: formatGeminiText(message.translationKey
+                        ? `${message.translationPrefix || ''}${t(message.translationKey)}`
+                        : message.content || '')
                     }}
                   />
                 )}
@@ -381,7 +390,7 @@ const Chatbot: React.FC = () => {
             {isLoading && !isStreaming && (
               <div className={`${styles.message} ${styles.assistantMessage}`}>
                 <div className={styles.messageContent}>
-                  <div className={styles.typingIndicator}>
+                  <div className={styles.typingIndicator} role="status" aria-label={t('chatbot.loading')}>
                     <span></span>
                     <span></span>
                     <span></span>
@@ -398,7 +407,8 @@ const Chatbot: React.FC = () => {
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about his work or explore an opportunity..."
+              placeholder={t('chatbot.placeholder')}
+              aria-label={t('chatbot.inputLabel')}
               rows={1}
               disabled={isLoading}
             />
@@ -406,7 +416,7 @@ const Chatbot: React.FC = () => {
               className={styles.sendButton}
               onClick={handleSendMessage}
               disabled={!inputValue.trim() || isLoading}
-              aria-label="Send message"
+              aria-label={t('chatbot.send')}
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="22" y1="2" x2="11" y2="13" />

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { changeLanguage } from '../../i18n';
 import styles from './Navbar.module.css';
 
 const Navbar: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const language = i18n.resolvedLanguage === 'zh' ? 'zh' : 'en';
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -17,13 +21,13 @@ const Navbar: React.FC = () => {
   }, []);
 
   const navItems = [
-    { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
-    { href: '#experience', label: 'Experience' },
-    { href: '#skills', label: 'Skills' },
-    { href: '#projects', label: 'Projects' },
-    { href: '#playground', label: 'Playground' },
-    { href: '#contact', label: 'Contact' }
+    { href: '#home', label: t('nav.home') },
+    { href: '#about', label: t('nav.about') },
+    { href: '#experience', label: t('nav.experience') },
+    { href: '#skills', label: t('nav.skills') },
+    { href: '#projects', label: t('nav.projects') },
+    { href: '#playground', label: t('nav.playground') },
+    { href: '#contact', label: t('nav.contact') }
   ];
 
   const handleNavClick = (href: string) => {
@@ -36,6 +40,7 @@ const Navbar: React.FC = () => {
 
   return (
     <motion.nav 
+      aria-label={t('nav.label')}
       className={`${styles.navbar} ${isScrolled ? styles.scrolled : ''}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -48,7 +53,7 @@ const Navbar: React.FC = () => {
           transition={{ type: "spring", stiffness: 300 }}
         >
           <span className={styles.catIcon}>🐱</span>
-          <span>KOH WEI ZHEN</span>
+          <span>{t('identity.name')}</span>
         </motion.div>
 
         {/* Desktop Navigation */}
@@ -74,18 +79,47 @@ const Navbar: React.FC = () => {
           ))}
         </ul>
 
-        {/* Mobile Menu Button */}
-        <button 
-          className={styles.mobileMenuButton}
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle mobile menu"
-        >
-          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className={styles.navActions}>
+          <div className={styles.languageSwitcher} role="group" aria-label={t('nav.language')}>
+            <button
+              type="button"
+              className={`${styles.languageButton} ${language === 'zh' ? styles.activeLanguage : ''}`}
+              aria-label={t('nav.switchChinese')}
+              aria-pressed={language === 'zh'}
+              lang="zh-CN"
+              onClick={() => { void changeLanguage('zh'); }}
+            >
+              中文
+            </button>
+            <span aria-hidden="true">/</span>
+            <button
+              type="button"
+              className={`${styles.languageButton} ${language === 'en' ? styles.activeLanguage : ''}`}
+              aria-label={t('nav.switchEnglish')}
+              aria-pressed={language === 'en'}
+              lang="en"
+              onClick={() => { void changeLanguage('en'); }}
+            >
+              EN
+            </button>
+          </div>
+          <button
+            type="button"
+            className={styles.mobileMenuButton}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label={t(isMobileMenuOpen ? 'nav.closeMenu' : 'nav.openMenu')}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-navigation"
+          >
+            {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
       <motion.div 
+        id="mobile-navigation"
+        inert={!isMobileMenuOpen}
         className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.open : ''}`}
         initial={false}
         animate={{ height: isMobileMenuOpen ? 'auto' : 0 }}

@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-//@ts-ignore
-import { ArrowDown, Github, Linkedin } from 'lucide-react';
-import { personalInfo } from '../../data/mockData';
+import { ArrowDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { usePortfolioData } from '../../data/usePortfolioData';
 import styles from './Home.module.css';
 
 const Home: React.FC = () => {
+  const { t, i18n } = useTranslation();
+  const { personalInfo } = usePortfolioData();
   const scrollToProjects = () => {
     const element = document.querySelector('#projects');
     if (element) {
@@ -35,6 +37,18 @@ const Home: React.FC = () => {
           >
             {personalInfo.name}
           </motion.h1>
+
+          {i18n.resolvedLanguage === 'zh' && (
+            <motion.p
+              className={styles.chineseName}
+              lang="zh-CN"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
+            >
+              {t('identity.name')}
+            </motion.p>
+          )}
           
           <motion.h2 
             className={styles.title}
@@ -66,7 +80,7 @@ const Home: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              View Projects <ArrowDown size={16} />
+              {t('home.viewProjects')} <ArrowDown size={16} />
             </motion.button>
             
             {/* <motion.a 

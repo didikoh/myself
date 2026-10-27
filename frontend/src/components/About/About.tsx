@@ -1,11 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { aboutInfo } from "../../data/mockData";
+import { useTranslation } from 'react-i18next';
+import { usePortfolioData } from '../../data/usePortfolioData';
 import styles from "./About.module.css";
 import { FaGoogleDrive } from "react-icons/fa6";
 import enfp from "../../assets/enfp.webp";
 
 const About: React.FC = () => {
+  const { t } = useTranslation();
+  const { aboutInfo } = usePortfolioData();
   return (
     <section id="about" className={styles.about}>
       <div className={styles.container}>
@@ -15,7 +18,7 @@ const About: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.sectionTitle}>About Me</h2>
+          <h2 className={styles.sectionTitle}>{t('about.title')}</h2>
         </motion.div>
 
         {/* Personal Introduction */}
@@ -36,7 +39,7 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.05, y: -5 }}
             >
               <div className={styles.introIcon}>🎂</div>
-              <h4 className={styles.introLabel}>Birthday</h4>
+              <h4 className={styles.introLabel}>{t('about.birthday')}</h4>
               <p className={styles.introValue}>1999/2/25</p>
             </motion.div>
             <motion.div
@@ -48,8 +51,8 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.05, y: -5 }}
             >
               <div className={styles.introIcon}>♓</div>
-              <h4 className={styles.introLabel}>Zodiac</h4>
-              <p className={styles.introValue}>Pisces</p>
+              <h4 className={styles.introLabel}>{t('about.zodiac')}</h4>
+              <p className={styles.introValue}>{t('about.pisces')}</p>
             </motion.div>
             <motion.div
               className={styles.introCard}
@@ -60,7 +63,7 @@ const About: React.FC = () => {
               whileHover={{ scale: 1.05, y: -5 }}
             >
               <div className={styles.introIcon}>
-                <img src={enfp} alt="MBTI Icon" />
+                <img src={enfp} alt={t('about.mbtiIcon')} />
               </div>
               <h4 className={styles.introLabel}>MBTI</h4>
               <p className={styles.introValue}>ENFP</p>
@@ -76,7 +79,7 @@ const About: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <h3 className={styles.blockTitle}>What I Do</h3>
+          <h3 className={styles.blockTitle}>{t('about.roles')}</h3>
           <div className={styles.rolesList}>
             {aboutInfo.roles.map((role, index) => (
               <motion.div
@@ -104,7 +107,7 @@ const About: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <h3 className={styles.blockTitle}>Education</h3>
+          <h3 className={styles.blockTitle}>{t('about.education')}</h3>
           <div className={styles.educationCard}>
             <div className={styles.educationIcon}>🎓</div>
             <div className={styles.educationContent}>
@@ -122,7 +125,7 @@ const About: React.FC = () => {
                 {aboutInfo.education.startYear} - {aboutInfo.education.endYear}
               </p>
               {aboutInfo.education.cgpa && (
-                <p className={styles.cgpa}>CGPA: {aboutInfo.education.cgpa}</p>
+                <p className={styles.cgpa}>{t('about.cgpa', { value: aboutInfo.education.cgpa })}</p>
               )}
               {aboutInfo.education.certificateLink && (
                 <a
@@ -134,7 +137,7 @@ const About: React.FC = () => {
                   <span className={styles.buttonIcon}>
                     <FaGoogleDrive />
                   </span>
-                  View Certificate
+                  {t('about.certificate')}
                 </a>
               )}
             </div>
@@ -150,7 +153,7 @@ const About: React.FC = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.5 }}
           >
-            <h3 className={styles.blockTitle}>Beyond Code</h3>
+            <h3 className={styles.blockTitle}>{t('about.beyondCode')}</h3>
             <div className={styles.funFactsList}>
               {aboutInfo.funFacts.map((fact, index) => (
                 <motion.div

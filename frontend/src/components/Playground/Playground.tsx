@@ -1,12 +1,15 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
-import { playgroundProjects } from "../../data/mockData";
+import { usePortfolioData } from "../../data/usePortfolioData";
 import styles from "./Playground.module.css";
 
 const getPublicAssetUrl = (path: string) =>
   `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
 const Playground: React.FC = () => {
+  const { t } = useTranslation();
+  const { playgroundProjects } = usePortfolioData();
   return (
     <section id="playground" className={styles.playground}>
       <div className={styles.container}>
@@ -16,10 +19,9 @@ const Playground: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className={styles.sectionTitle}>Playground</h2>
+          <h2 className={styles.sectionTitle}>{t("playground.title")}</h2>
           <p className={styles.sectionSubtitle}>
-            Personal projects and experimental work where I explore new ideas
-            and have fun with code
+            {t("playground.subtitle")}
           </p>
         </motion.div>
 
@@ -66,7 +68,7 @@ const Playground: React.FC = () => {
                       rel="noopener noreferrer"
                       className={styles.projectLink}
                     >
-                      View Project →
+                      {t("playground.viewProject")} →
                     </a>
                   )}
                 </div>
@@ -75,8 +77,8 @@ const Playground: React.FC = () => {
           </div>
         ) : (
           <div className={styles.comingSoon}>
-            <h3>Coming Soon!</h3>
-            <p>Exciting projects are on the way. Stay tuned!</p>
+            <h3>{t("playground.comingSoon")}</h3>
+            <p>{t("playground.comingSoonDescription")}</p>
           </div>
         )}
       </div>

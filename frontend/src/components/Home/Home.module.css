@@ -37,6 +37,15 @@
   line-height: 1.1;
 }
 
+.chineseName {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  color: var(--color-text-primary);
+  margin-bottom: 0.75rem;
+}
+
 .title {
   font-size: 1.5rem;
   color: var(--color-text-secondary);
