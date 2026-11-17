@@ -14,7 +14,12 @@ import {
 } from "lucide-react";
 import { socialLinks } from "../../data/mockData";
 import { usePortfolioData } from "../../data/usePortfolioData";
+import { getPublicAssetUrl } from "../../utils/publicAssetUrl";
 import styles from "./Contact.module.css";
+
+const contactApiUrl = import.meta.env.DEV
+  ? "http://localhost:8000/api/send_mail.php"
+  : getPublicAssetUrl("api/send_mail.php");
 
 const Contact: React.FC = () => {
   const { t } = useTranslation();
@@ -75,7 +80,7 @@ const Contact: React.FC = () => {
       formBody.append("email", formData.email);
       formBody.append("message", formData.message);
 
-      const response = await fetch("http://localhost:8000/api/send_mail.php", {
+      const response = await fetch(contactApiUrl, {
         method: "POST",
         body: formBody,
       });
@@ -288,13 +293,13 @@ const Contact: React.FC = () => {
               </div>
 
               {submitStatus === "success" && (
-                <div className={styles.successMessage}>
+                <div className={styles.successMessage} role="status">
                   ✅ {t("contact.success")}
                 </div>
               )}
 
               {submitStatus === "error" && (
-                <div className={styles.errorMessage}>
+                <div className={styles.errorMessage} role="alert">
                   ❌ {t("contact.error")}
                 </div>
               )}

@@ -1,4 +1,5 @@
 <?php
+header('Content-Type: text/plain; charset=UTF-8');
 // CORS headers for localhost:5173
 header('Access-Control-Allow-Origin: http://localhost:5173');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -12,7 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 // 确保是 POST 请求
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: index.php'); // 视情况改成你的主页
+    http_response_code(405);
+    header('Allow: POST, OPTIONS');
+    echo 'Method not allowed.';
     exit;
 }
 
@@ -37,6 +40,7 @@ if ($message === '') {
 }
 
 if (!empty($errors)) {
+    http_response_code(422);
     // 这里可以做成返回上一页并提示错误，先给个简单输出
     echo 'Form error:<br>';
     echo implode('<br>', $errors);
@@ -69,5 +73,6 @@ if ($sent) {
     // header('Location: thank_you.html');
     // exit;
 } else {
+    http_response_code(500);
     echo 'Sorry, something went wrong. Please try again later.';
 }
